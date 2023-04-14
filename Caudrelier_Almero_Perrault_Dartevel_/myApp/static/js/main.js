@@ -1,241 +1,250 @@
-/**
-* Template Name: Flattern - v4.7.0
-* Template URL: https://bootstrapmade.com/flattern-multipurpose-bootstrap-template/
-* Author: BootstrapMade.com
-* License: https://bootstrapmade.com/license/
+/*
+	Landed by HTML5 UP
+	html5up.net | @ajlkn
+	Free for personal and commercial use under the CCA 3.0 license (html5up.net/license)
 */
-(function() {
-  "use strict";
 
-  /**
-   * Easy selector helper function
-   */
-  const select = (el, all = false) => {
-    el = el.trim()
-    if (all) {
-      return [...document.querySelectorAll(el)]
-    } else {
-      return document.querySelector(el)
-    }
-  }
+(function($) {
 
-  /**
-   * Easy event listener function
-   */
-  const on = (type, el, listener, all = false) => {
-    let selectEl = select(el, all)
-    if (selectEl) {
-      if (all) {
-        selectEl.forEach(e => e.addEventListener(type, listener))
-      } else {
-        selectEl.addEventListener(type, listener)
-      }
-    }
-  }
+	var	$window = $(window),
+		$body = $('body');
 
-  /**
-   * Easy on scroll event listener 
-   */
-  const onscroll = (el, listener) => {
-    el.addEventListener('scroll', listener)
-  }
+	// Breakpoints.
+		breakpoints({
+			xlarge:   [ '1281px',  '1680px' ],
+			large:    [ '981px',   '1280px' ],
+			medium:   [ '737px',   '980px'  ],
+			small:    [ '481px',   '736px'  ],
+			xsmall:   [ null,      '480px'  ]
+		});
 
-  /**
-   * Scrolls to an element with header offset
-   */
-  const scrollto = (el) => {
-    let header = select('#header')
-    let offset = header.offsetHeight
+	// Play initial animations on page load.
+		$window.on('load', function() {
+			window.setTimeout(function() {
+				$body.removeClass('is-preload');
+			}, 100);
+		});
 
-    if (!header.classList.contains('header-scrolled')) {
-      offset -= 16
-    }
+	// Touch mode.
+		if (browser.mobile)
+			$body.addClass('is-touch');
 
-    let elementPos = select(el).offsetTop
-    window.scrollTo({
-      top: elementPos - offset,
-      behavior: 'smooth'
-    })
-  }
+	// Scrolly links.
+		$('.scrolly').scrolly({
+			speed: 2000
+		});
 
-  /**
-   * Header fixed top on scroll
-   */
-  let selectHeader = select('#header')
-  if (selectHeader) {
-    let headerOffset = selectHeader.offsetTop
-    let nextElement = selectHeader.nextElementSibling
-    const headerFixed = () => {
-      if ((headerOffset - window.scrollY) <= 0) {
-        selectHeader.classList.add('fixed-top')
-        nextElement.classList.add('scrolled-offset')
-      } else {
-        selectHeader.classList.remove('fixed-top')
-        nextElement.classList.remove('scrolled-offset')
-      }
-    }
-    window.addEventListener('load', headerFixed)
-    onscroll(document, headerFixed)
-  }
+	// Dropdowns.
+		$('#nav > ul').dropotron({
+			alignment: 'right',
+			hideDelay: 350
+		});
 
-  /**
-   * Back to top button
-   */
-  let backtotop = select('.back-to-top')
-  if (backtotop) {
-    const toggleBacktotop = () => {
-      if (window.scrollY > 100) {
-        backtotop.classList.add('active')
-      } else {
-        backtotop.classList.remove('active')
-      }
-    }
-    window.addEventListener('load', toggleBacktotop)
-    onscroll(document, toggleBacktotop)
-  }
+	// Nav.
 
-  /**
-   * Mobile nav toggle
-   */
-  on('click', '.mobile-nav-toggle', function(e) {
-    select('#navbar').classList.toggle('navbar-mobile')
-    this.classList.toggle('bi-list')
-    this.classList.toggle('bi-x')
-  })
+		// Title Bar.
+			$(
+				'<div id="titleBar">' +
+					'<a href="#navPanel" class="toggle"></a>' +
+					'<span class="title">' + $('#logo').html() + '</span>' +
+				'</div>'
+			)
+				.appendTo($body);
 
-  /**
-   * Mobile nav dropdowns activate
-   */
-  on('click', '.navbar .dropdown > a', function(e) {
-    if (select('#navbar').classList.contains('navbar-mobile')) {
-      e.preventDefault()
-      this.nextElementSibling.classList.toggle('dropdown-active')
-    }
-  }, true)
+		// Panel.
+			$(
+				'<div id="navPanel">' +
+					'<nav>' +
+						$('#nav').navList() +
+					'</nav>' +
+				'</div>'
+			)
+				.appendTo($body)
+				.panel({
+					delay: 500,
+					hideOnClick: true,
+					hideOnSwipe: true,
+					resetScroll: true,
+					resetForms: true,
+					side: 'left',
+					target: $body,
+					visibleClass: 'navPanel-visible'
+				});
 
-  /**
-   * Scrool with ofset on links with a class name .scrollto
-   */
-  on('click', '.scrollto', function(e) {
-    if (select(this.hash)) {
-      e.preventDefault()
+	// Parallax.
+	// Disabled on IE (choppy scrolling) and mobile platforms (poor performance).
+		if (browser.name == 'ie'
+		||	browser.mobile) {
 
-      let navbar = select('#navbar')
-      if (navbar.classList.contains('navbar-mobile')) {
-        navbar.classList.remove('navbar-mobile')
-        let navbarToggle = select('.mobile-nav-toggle')
-        navbarToggle.classList.toggle('bi-list')
-        navbarToggle.classList.toggle('bi-x')
-      }
-      scrollto(this.hash)
-    }
-  }, true)
+			$.fn._parallax = function() {
 
-  /**
-   * Scroll with ofset on page load with hash links in the url
-   */
-  window.addEventListener('load', () => {
-    if (window.location.hash) {
-      if (select(window.location.hash)) {
-        scrollto(window.location.hash)
-      }
-    }
-  });
+				return $(this);
 
-  /**
-   * Hero carousel indicators
-   */
-  let heroCarouselIndicators = select("#hero-carousel-indicators")
-  let heroCarouselItems = select('#heroCarousel .carousel-item', true)
+			};
 
-  heroCarouselItems.forEach((item, index) => {
-    (index === 0) ?
-    heroCarouselIndicators.innerHTML += "<li data-bs-target='#heroCarousel' data-bs-slide-to='" + index + "' class='active'></li>":
-      heroCarouselIndicators.innerHTML += "<li data-bs-target='#heroCarousel' data-bs-slide-to='" + index + "'></li>"
-  });
+		}
+		else {
 
-  /**
-   * Skills animation
-   */
-  let skilsContent = select('.skills-content');
-  if (skilsContent) {
-    new Waypoint({
-      element: skilsContent,
-      offset: '80%',
-      handler: function(direction) {
-        let progress = select('.progress .progress-bar', true);
-        progress.forEach((el) => {
-          el.style.width = el.getAttribute('aria-valuenow') + '%'
-        });
-      }
-    })
-  }
+			$.fn._parallax = function() {
 
-  /**
-   * Porfolio isotope and filter
-   */
-  window.addEventListener('load', () => {
-    let portfolioContainer = select('.portfolio-container');
-    if (portfolioContainer) {
-      let portfolioIsotope = new Isotope(portfolioContainer, {
-        itemSelector: '.portfolio-item',
-        layoutMode: 'fitRows'
-      });
+				$(this).each(function() {
 
-      let portfolioFilters = select('#portfolio-flters li', true);
+					var $this = $(this),
+						on, off;
 
-      on('click', '#portfolio-flters li', function(e) {
-        e.preventDefault();
-        portfolioFilters.forEach(function(el) {
-          el.classList.remove('filter-active');
-        });
-        this.classList.add('filter-active');
+					on = function() {
 
-        portfolioIsotope.arrange({
-          filter: this.getAttribute('data-filter')
-        });
-        portfolioIsotope.on('arrangeComplete', function() {
-          AOS.refresh()
-        });
-      }, true);
-    }
+						$this
+							.css('background-position', 'center 0px');
 
-  });
+						$window
+							.on('scroll._parallax', function() {
 
-  /**
-   * Initiate portfolio lightbox 
-   */
-  const portfolioLightbox = GLightbox({
-    selector: '.portfolio-lightbox'
-  });
+								var pos = parseInt($window.scrollTop()) - parseInt($this.position().top);
 
-  /**
-   * Portfolio details slider
-   */
-  new Swiper('.portfolio-details-slider', {
-    speed: 400,
-    loop: true,
-    autoplay: {
-      delay: 5000,
-      disableOnInteraction: false
-    },
-    pagination: {
-      el: '.swiper-pagination',
-      type: 'bullets',
-      clickable: true
-    }
-  });
+								$this.css('background-position', 'center ' + (pos * -0.15) + 'px');
 
-  /**
-   * Animation on scroll
-   */
-  window.addEventListener('load', () => {
-    AOS.init({
-      duration: 1000,
-      easing: 'ease-in-out',
-      once: true,
-      mirror: false
-    })
-  });
+							});
 
-})()
+					};
+
+					off = function() {
+
+						$this
+							.css('background-position', '');
+
+						$window
+							.off('scroll._parallax');
+
+					};
+
+					breakpoints.on('<=medium', off);
+					breakpoints.on('>medium', on);
+
+				});
+
+				return $(this);
+
+			};
+
+			$window
+				.on('load resize', function() {
+					$window.trigger('scroll');
+				});
+
+		}
+
+	// Spotlights.
+		var $spotlights = $('.spotlight');
+
+		$spotlights
+			._parallax()
+			.each(function() {
+
+				var $this = $(this),
+					on, off;
+
+				on = function() {
+
+					var top, bottom, mode;
+
+					// Use main <img>'s src as this spotlight's background.
+						$this.css('background-image', 'url("' + $this.find('.image.main > img').attr('src') + '")');
+
+					// Side-specific scrollex tweaks.
+						if ($this.hasClass('top')) {
+
+							mode = 'top';
+							top = '-20%';
+							bottom = 0;
+
+						}
+						else if ($this.hasClass('bottom')) {
+
+							mode = 'bottom-only';
+							top = 0;
+							bottom = '20%';
+
+						}
+						else {
+
+							mode = 'middle';
+							top = 0;
+							bottom = 0;
+
+						}
+
+					// Add scrollex.
+						$this.scrollex({
+							mode:		mode,
+							top:		top,
+							bottom:		bottom,
+							initialize:	function(t) { $this.addClass('inactive'); },
+							terminate:	function(t) { $this.removeClass('inactive'); },
+							enter:		function(t) { $this.removeClass('inactive'); },
+
+							// Uncomment the line below to "rewind" when this spotlight scrolls out of view.
+
+							//leave:	function(t) { $this.addClass('inactive'); },
+
+						});
+
+				};
+
+				off = function() {
+
+					// Clear spotlight's background.
+						$this.css('background-image', '');
+
+					// Remove scrollex.
+						$this.unscrollex();
+
+				};
+
+				breakpoints.on('<=medium', off);
+				breakpoints.on('>medium', on);
+
+			});
+
+	// Wrappers.
+		var $wrappers = $('.wrapper');
+
+		$wrappers
+			.each(function() {
+
+				var $this = $(this),
+					on, off;
+
+				on = function() {
+
+					$this.scrollex({
+						top:		250,
+						bottom:		0,
+						initialize:	function(t) { $this.addClass('inactive'); },
+						terminate:	function(t) { $this.removeClass('inactive'); },
+						enter:		function(t) { $this.removeClass('inactive'); },
+
+						// Uncomment the line below to "rewind" when this wrapper scrolls out of view.
+
+						//leave:	function(t) { $this.addClass('inactive'); },
+
+					});
+
+				};
+
+				off = function() {
+					$this.unscrollex();
+				};
+
+				breakpoints.on('<=medium', off);
+				breakpoints.on('>medium', on);
+
+			});
+
+	// Banner.
+		var $banner = $('#banner');
+
+		$banner
+			._parallax();
+
+})(jQuery);
