@@ -8,11 +8,11 @@ def index():
 def membres():
     return render_template("sgbd.html")
 @app.route("/fichiers")
-def index():
+def fichiers():
     return render_template("fichiers.html")
 @app.route("/login")
 def login():
     return render_template("login.html")
 @app.route("/logout")
 def logout():
-  #  return redirect('/login')
+  return redirect('/login')
