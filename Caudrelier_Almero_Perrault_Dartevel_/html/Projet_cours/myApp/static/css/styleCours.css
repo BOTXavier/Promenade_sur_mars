@@ -1,0 +1,43 @@
+@import url('https://fonts.googleapis.com/css2?family=Shadows+Into+Light&display=swap');
+body{
+    background-color: rgba(204, 204, 204, 0.151);
+    font-size: 15px;
+}
+
+table,
+tr,
+th,
+td {
+    border: 1px solid black;
+}
+
+h1{
+    color:red;
+    font-size: 2.5em;
+    font-family: 'Shadows Into Light', cursive;
+}
+
+div#S1,
+.S2{
+    border: 2px solid green;
+    /*padding-top: 70px;
+    padding-right: 100px;
+    padding-bottom: 150px;
+    padding-left: 25px;
+
+    padding: 70px 100px 150px 25px;
+    padding: 100px 50px;*/
+    padding: 50px;
+
+    margin: 25px 150px 50px 200px;
+}
+
+.S2{
+    border-color: blue;
+}
+
+h3:hover{
+    color: purple;
+    font-size: 2em;
+
+}
