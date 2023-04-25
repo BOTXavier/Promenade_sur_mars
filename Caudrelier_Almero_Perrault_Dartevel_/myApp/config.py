@@ -2,6 +2,7 @@ NV = "development"
 DEBUG = True
 SEND_FILE_MAX_AGE_DEFAULT = 0 #vider le cache
 SECRET_KEY="maCleSuperSecurisee"
+
 #Configuration du serveur web
 WEB_SERVER = {
     "host": "localhost",
