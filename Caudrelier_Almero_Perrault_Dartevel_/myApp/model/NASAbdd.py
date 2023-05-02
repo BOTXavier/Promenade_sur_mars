@@ -36,7 +36,8 @@ def check_NASA(compt,rover,sol,compt_api_key):
     with urllib.request.urlopen(url) as fichier:
          réordonnencement(fichier)
          compt+=1
-         # print(dico_rover, dico_camera)
+         print(compt,len(dico_photos))
+         return compt
 
 
 def data_base():
@@ -48,11 +49,13 @@ def data_base():
         while len(data["photos"])!=0:
             sol+=1
             # print(compt,sol)
-            if compt==5 and compt_api_key<len(API_KEY)-1:
+            if compt==100 and compt_api_key<len(API_KEY)-1:
                 compt_api_key+=1
                 compt=0
-            elif compt==5:
+            elif compt==100:
                 time.sleep(10)
-                check_NASA(compt, rover, sol, compt_api_key)
+                compt=check_NASA(compt, rover, sol, compt_api_key)
             else:
-                check_NASA(compt, rover, sol, compt_api_key)
+                compt=check_NASA(compt, rover, sol, compt_api_key)
+
+data_base()

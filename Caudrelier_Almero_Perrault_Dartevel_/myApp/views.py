@@ -34,3 +34,7 @@ def login():
 @app.route("/logout")
 def logout():
   return redirect('/login')
+
+@app.route("/streetview")
+def streetview():
+    return render_template("streetview.html")
