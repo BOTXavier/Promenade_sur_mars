@@ -31,10 +31,6 @@ def nosidebar():
 def login():
     return render_template("login.html")
 
-@app.route("/streetview")
-def streetview():
-    return render_template("streetview.html")
-
 @app.route("/logout")
 def logout():
   return redirect('/login')
