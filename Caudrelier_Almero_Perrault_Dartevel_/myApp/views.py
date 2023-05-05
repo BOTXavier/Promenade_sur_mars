@@ -11,7 +11,7 @@ def index():
 def membres():
     return render_template("sgbd.html")
 
-@app.route("/elements.html")
+@app.route("/elements")
 def elements():
     return render_template("elements.html")
 
@@ -30,6 +30,10 @@ def nosidebar():
 @app.route("/login")
 def login():
     return render_template("login.html")
+
+@app.route("/streetview")
+def streetview():
+    return render_template("streetview.html")
 
 @app.route("/logout")
 def logout():
