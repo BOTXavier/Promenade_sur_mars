@@ -10,3 +10,6 @@ for photo in dico_photos:
     rover = dico_photos[photo]["rover"]
     camera = dico_photos[photo]["camera"] 
     lien = dico_photos[photo]["lien_img"]
+
+def add_photo():
+    pass
