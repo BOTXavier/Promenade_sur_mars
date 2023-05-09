@@ -9,9 +9,9 @@ import time
 
 ###################################################################################
 
-ROVER=['perseverance','spirit','opportunity','curiosity']
+ROVER=['perseverance','curiosity','spirit','opportunity']
 API_KEY=['uFPg2xAvVYtXreHwgx9swNodGOnuqRCsqRX426T6','09r9lOKEqz9yGsPK6iiKDFFKRBLEvl7ZQKXyNaoS']
-LIENS_POSI=['https://mars.nasa.gov/mmgis-maps/M20/Layers/json/M20_waypoints.json'] # A ordonner dans le même ordre que ROVER
+LIENS_POSI=['https://mars.nasa.gov/mmgis-maps/M20/Layers/json/M20_waypoints.json','https://mars.nasa.gov/mmgis-maps/MSL/Layers/json/MSL_waypoints.json'] # A ordonner dans le même ordre que ROVER
 
 dico_photos={}
 dico_rover={}
