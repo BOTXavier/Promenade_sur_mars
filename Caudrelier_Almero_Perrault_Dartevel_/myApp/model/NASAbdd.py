@@ -57,5 +57,7 @@ def data_base():
                 compt=check_NASA(compt, rover, sol, compt_api_key)
             else:
                 compt=check_NASA(compt, rover, sol, compt_api_key)
+            print (dico_camera) #,dico_rover,dico_camera
+    
 
 data_base()
