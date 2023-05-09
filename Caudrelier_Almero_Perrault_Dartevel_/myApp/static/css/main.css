@@ -4109,3 +4109,10 @@ input, select, textarea {
 					}
 
 	}
+
+#footer img#yt {
+	position: relative;
+  	top: 10px;
+	width: 88%;
+	height: 88%;
+}

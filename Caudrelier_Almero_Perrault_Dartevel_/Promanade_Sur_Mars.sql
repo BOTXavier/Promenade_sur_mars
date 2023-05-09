@@ -36,7 +36,7 @@ CREATE TABLE `identification` (
   `motPasse` varchar(100) NOT NULL,
   `statut` int NOT NULL DEFAULT '1',
   `avatar` varchar(20) NOT NULL DEFAULT '1.png'
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
 
@@ -50,7 +50,7 @@ CREATE TABLE `Photos` (
   `rover` int NOT NULL,
   `camera` int NOT NULL,
   `url` text NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
 -- Indexes for dumped tables
