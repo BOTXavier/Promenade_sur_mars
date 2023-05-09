@@ -59,6 +59,11 @@ def data_base():
                 compt_req=check_NASA(compt_req, rover, sol, compt_api_key)
                 
 
+##################################################################################
+
+# Construit le dictionnaire des positions chaque jour de chaque rover
+
+###################################################################################
 
 
 def sol_max(rover_id):
