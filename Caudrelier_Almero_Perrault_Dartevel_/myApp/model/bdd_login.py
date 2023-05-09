@@ -67,7 +67,7 @@ def add_membreData(nom, prenom, mail, login, motPasse, statut):
         return None
     try:
         cursor = cnx.cursor()
-        sql = "INSERT INTO identification (nom, prenom, mail, login, motPasse, statut, avatar) VALUES (%s, %s, %s, %s, %s, %s, %s);"
+        sql = "INSERT INTO identification (nom, prenom, mail, login, motPasse, statut) VALUES (%s, %s, %s, %s, %s, %s);"
         param = (nom, prenom, mail, login, motPasse, statut)
         cursor.execute(sql, param)
         lastId = cursor.lastrowid  # récupère le dernier idUser, généré par le serveur sql
@@ -111,6 +111,7 @@ def verifAuthData(login, mdp):
         param=(login, mdp)
         cursor.execute(sql, param)
         user = cursor.fetchone()
+        print(user)
         close_bd(cursor, cnx)
         #session['successDB'] = "OK verifAuthData"
     except mysql.connector.Error as err:
@@ -132,7 +133,7 @@ def saveDataFromFile(data):
         cursor.execute(sql1)
         # insertion des nouvelles données
         for d in data:
-            sql = "INSERT INTO identification (nom, prenom, mail, login, motPasse, statut, avatar) VALUES (%s, %s, %s, %s, %s, %s, %s);"
+            sql = "INSERT INTO identification (nom, prenom, mail, login, motPasse, statut) VALUES (%s, %s, %s, %s, %s, %s);"
             param = (d['nom'], d['prenom'], d['mail'], d['login'], d['motPasse'], d['statut'])
             cursor.execute(sql, param)
             cnx.commit()

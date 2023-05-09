@@ -11,9 +11,9 @@ WEB_SERVER = {
 #Configuration du serveur de BDD
 DB_SERVER = {
     "user": "root",
-    "password": "mysql",
+ #   "password": "mysql",
     "host": "localhost",
     "port": 3306, #8889 si MAC
-    "database": "ienac_cours", #nom de la BDD
+    "database": "id", #nom de la BDD
     "raise_on_warnings": True
 }
