@@ -53,7 +53,7 @@ def data_base():
                 compt_api_key+=1
                 compt_req=0
             elif compt_req==5: # Si on a atteint le nombre maximal de requête pour toutes les clés, on attend 1h
-                time.sleep(10)
+                time.sleep(86400)
                 compt_req=check_NASA(compt_req, rover, sol, compt_api_key)
             else:
                 compt_req=check_NASA(compt_req, rover, sol, compt_api_key)
