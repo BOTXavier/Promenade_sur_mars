@@ -142,4 +142,21 @@ def saveDataFromFile(data):
         session['errorDB'] = "Failed saveDataFromFile data : {}".format(err)
         print(session['errorDB']) #le problème s'affiche dans le terminal
     return 1
-    
+
+#Ajout d'une photo à la table photos
+def add_photo(id_photo, sol, rover, camera, lien):
+    cnx = connexion()
+    if cnx is None: return None
+    try:
+        cursor = cnx.cursor()
+        sql = "INSERT INTO photos (id_photo, sol, rover, camera, url) VALUES (%s, %s, %s, %s, %s)"
+        param = (id_photo, sol, rover, camera, lien)
+        cursor.execute(sql, param)
+        lastId = cursor.lastrowid # dernier idUser généré
+        cnx.commit()
+        close_bd(cursor, cnx)
+        #session['successDB'] = "OK add_membreData"
+    except mysql.connector.Error as err:
+        lastId = None
+        session['errorDB'] = "Failed add membres data : {}".format(err)
+    return lastId
