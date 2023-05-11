@@ -52,6 +52,58 @@ CREATE TABLE `Photos` (
   `url` text NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
+------------------------------------------------------------
+
+-- Tables pour la gestion des photos
+
+CREATE TABLE `Photos` (
+  `photo_id` int NOT NULL,
+  `sol` int,
+  `rover_id` int NOT NULL,
+  `camera_id` int NOT NULL,
+  `url` text NOT NULL,
+  PRIMARY KEY(photo_id),
+  FOREIGN KEY(rover_id) REFERENCES Rovers(rover_id) ON DELETE SET NULL ON UPDATE CASCADE,
+  FOREIGN KEY(camera_id) REFERENCES Cameras(camera_id)ON DELETE SET NULL ON UPDATE CASCADE,
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+CREATE TABLE `Rovers` (
+  `rover_id` int NOT NULL,
+  `name` text NOT NULL,
+  `landing_date` datetime,
+  `launch_date` datetime,
+  `status` text NOT NULL,
+  PRIMARY KEY(rover_id),
+  FOREIGN KEY(photo_id) REFERENCES Photos(photo_id) ON DELETE SET NULL ON UPDATE CASCADE,
+  FOREIGN KEY(camera_id) REFERENCES Cameras(camera_id)ON DELETE SET NULL ON UPDATE CASCADE,
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+CREATE TABLE `Cameras` (
+  `camera_id` int NOT NULL,
+  `name` text NOT NULL,
+  `rover_id` int NOT NULL,
+  `full_name` text NOT NULL,
+  PRIMARY KEY(camera_id),
+  FOREIGN KEY(photo_id) REFERENCES Photos(photo_id)ON DELETE SET NULL ON UPDATE CASCADE,
+  FOREIGN KEY(rover_id) REFERENCES Rovers(rover_id) ON DELETE SET NULL ON UPDATE CASCADE,
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+CREATE TABLE `Positions` (
+  `posi_id` int NOT NULL,
+  'rover_id' int NOT NULL,
+  `lat` float,
+  `long` float,
+  `cap` float,
+  PRIMARY KEY(posi_id),
+  FOREIGN KEY(rover_id) REFERENCES Rovers(rover_id) ON DELETE SET NULL ON UPDATE CASCADE,
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+------------------------------------------------------------
+
+
+
+
+
 --
 -- Indexes for dumped tables
 --

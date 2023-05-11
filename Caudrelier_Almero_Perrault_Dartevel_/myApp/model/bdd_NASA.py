@@ -1,3 +1,11 @@
+#!/usr/bin/env python3
+# -*- coding: utf-8 -*-
+"""
+Created on Thu May 11 10:17:43 2023
+
+@author: louis-yann
+"""
+
 import urllib.request
 import json
 import time
@@ -41,7 +49,7 @@ def check_NASA(compt_req,rover,sol,compt_api_key):
          compt_req+=1 # une requête  a été effectuée
     return compt_req
 
-def data_base():
+def data_base(n):
     data={"photos":[0]}
     compt_api_key=0
     compt_req=0 # compteur pour limiter le nombre de requêtes à 1000 par heures
@@ -49,10 +57,13 @@ def data_base():
         sol=-1
         while len(data["photos"])!=0:
             sol+=1
-            if compt_req==5 and compt_api_key<len(API_KEY)-1: # Si on a atteint le nombre de requête maximale pour la clé, on passe à la suivante
+            print(sol)
+            if sol==n:
+                break
+            if compt_req==1000 and compt_api_key<len(API_KEY)-1: # Si on a atteint le nombre de requête maximale pour la clé, on passe à la suivante
                 compt_api_key+=1
                 compt_req=0
-            elif compt_req==5: # Si on a atteint le nombre maximal de requête pour toutes les clés, on attend 1h
+            elif compt_req==1000: # Si on a atteint le nombre maximal de requête pour toutes les clés, on attend 1h
                 time.sleep(86400)
                 compt_req=check_NASA(compt_req, rover, sol, compt_api_key)
             else:
@@ -88,17 +99,24 @@ def deter_rover_id_id(rover_id):
     
 def réordonnencement_posi(fichier,rover_id):
     data=json.load(fichier)
-    dico_posi[rover_id]={}
-    dico_posi_rov=dico_posi[rover_id]
+    dico_posi_interm={}
+    dico_posi_interm[rover_id]={}
+    dico_posi_rov=dico_posi_interm[rover_id]
     sol_max_rov=sol_max(rover_id)
     data_posi_0=data['features'][0]['properties']
-    dico_posi_rov[0]={'lat':data_posi_0['lat'],'long':data_posi_0['lon'],'cap':data_posi_0['yaw']}
+    dico_posi_rov[0]={'rover_id':rover_id,'lat':data_posi_0['lat'],'long':data_posi_0['lon'],'cap':data_posi_0['yaw']}
     for d in range(1,sol_max_rov):
         dico_posi_rov[d]=dico_posi_rov[d-1]
         data_posi_d=data['features'][d]['properties']
         if data_posi_d['lat']!=dico_posi_rov[d]['lat'] or data_posi_d['lon']!=dico_posi_rov[d]['long'] or data_posi_d['yaw']!=dico_posi_rov[d]['cap']:
-            dico_posi_rov[d]={'lat':data_posi_d['lat'],'long':data_posi_d['lon'],'cap':data_posi_d['yaw']}
-    
+            dico_posi_rov[d]={'rover_id':rover_id,'lat':data_posi_d['lat'],'long':data_posi_d['lon'],'cap':data_posi_d['yaw']}
+    for rover_id in dico_posi_interm:
+        num_rover=ROVER.index(dico_rover[rover_id]['name'].lower())
+        posi_rover=dico_posi_interm[rover_id]
+        for posi_id in posi_rover:
+            posi=posi_rover[posi_id]
+            dico_posi[num_rover*(10**6)+posi_id]=posi
+
 def check_posi():
     rover_id=0
     for lien in LIENS_POSI:

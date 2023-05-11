@@ -160,3 +160,42 @@ def add_photo(id_photo, sol, rover, camera, lien):
         lastId = None
         session['errorDB'] = "Failed add membres data : {}".format(err)
     return lastId
+
+##########################################################################
+### enregistrement des données de la NASA dans la base de données
+def saveDatafromNASA(dico_photos,dico_rovers,dico_cameras,dico_posi):
+    cnx = connexion() 
+    if cnx is None: 
+        return None
+    try:
+        cursor = cnx.cursor()
+        # insertion des données
+        for photo_id in dico_photos:
+            photo=dico_photos[photo_id]
+            sql = "INSERT INTO Photos (photo_id,sol,rover,camera,url) VALUES  (%s, %s, %s, %s);"
+            param=(photo_id,photo['sol'],photo['rover'],photo['camera'],photo['lien_img'])
+            cursor.execute(sql,param)
+            cnx.commit()
+        for rover_id in dico_rovers:
+            rover=dico_rovers[rover_id]
+            sql = "INSERT INTO Rovers (rover_id,name,landing_date,launch_date,status) VALUES  (%s, %s, %s, %s, %s);"
+            param=(rover_id,rover['name'],rover['landing_date'],rover['launch_date'],rover['status'])
+            cursor.execute(sql,param)
+            cnx.commit()
+        for camera_id in dico_cameras:
+            camera=dico_cameras[camera_id]
+            sql = "INSERT INTO Cameras (camera_id,name,rover_id,full_name) VALUES  (%s, %s, %s, %s);"
+            param=(camera_id,camera['name'],camera['rover_id'],camera['full_name'])
+            cursor.execute(sql,param)
+            cnx.commit()
+        for position_id in dico_posi:
+            posi=dico_posi[position_id]
+            sql = "INSERT INTO Positions (posi_id,rover_id,lat,long,cap) VALUES  (%s, %s, %s, %s, %s);"
+            param=(position_id,posi['rover_id'],posi['lat'],posi['long'],posi['cap'])
+            cursor.execute(sql,param)
+            cnx.commit()
+        close_bd(cursor,cnx)
+    except mysql.connector.Error as err:
+        session['errorDB'] = "Failed saveDataFromFile data : {}".format(err)
+        print(session['errorDB']) #le problème s'affiche dans le terminal
+    return 1
