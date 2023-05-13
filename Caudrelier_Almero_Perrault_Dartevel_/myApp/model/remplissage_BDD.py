@@ -24,5 +24,23 @@ for photo in dico_photos:
     param = (photo, sol, rover, camera, lien)
     cursor.execute(sql, param)
 
+for rover in dico_rover:
+    id_Rover = rover
+    name = dico_rover[rover]["name"]
+    landing_date = dico_rover[rover]["landing_date"]
+    launch_date = dico_rover[rover]["launch_date"]
+    status = dico_rover[rover]["status"]
+    sql = "INSERT INTO Rover (id_Rover, name, landing_date, launch_date, status) VALUES (%s, %s, %s, %s, %s)"
+    param = (id_Rover, name, landing_date, launch_date, status)
+    cursor.execute(sql, param)
+
+for camera in dico_camera:
+    id_camera = camera
+    name = dico_camera[camera]["name"]
+    full_name = dico_camera[camera]["full_name"]
+    sql = "INSERT INTO Camera (id_camera, name, full_name) VALUES (%s, %s, %s)"
+    param = (id_camera, name, full_name)
+    cursor.execute(sql, param)
+
 cnx.commit()
 cnx.close()
