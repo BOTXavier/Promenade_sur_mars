@@ -88,6 +88,6 @@ def connecter():
         
     else:
         print("Bienvenue, jeune utilisateur")
-        session[]
+        #session[]
         return redirect("/")
 

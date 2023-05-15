@@ -52,13 +52,13 @@ CREATE TABLE `identification` (
 -- Table structure for table `Photos`
 --
 
-CREATE TABLE `Photos` (
-  `id_photo` int NOT NULL,
-  `sol` int NOT NULL,
-  `rover` int NOT NULL,
-  `camera` int NOT NULL,
-  `url` text NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+--CREATE TABLE `Photos` (
+--  `id_photo` int NOT NULL,
+--  `sol` int NOT NULL,
+--  `rover` int NOT NULL,
+--  `camera` int NOT NULL,
+--  `url` text NOT NULL
+--) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 ------------------------------------------------------------
 
