@@ -56,7 +56,7 @@ def data_base(n,dernier_sol,dico_photos,dico_rovers,dico_cameras):
             sol+=1
             if sol==n+dernier_sol[compt_rover] and rover!='opportunity':
                 break
-            if rover=='opportunity' and sol==dernier_sol[compt_rover]+30:
+            if rover=='opportunity' and sol==dernier_sol[compt_rover]+3:
                 break
             print(sol)
             if compt_req==1000 and compt_api_key<len(API_KEY)-1: # Si on a atteint le nombre de requête maximale pour la clé, on passe à la suivante

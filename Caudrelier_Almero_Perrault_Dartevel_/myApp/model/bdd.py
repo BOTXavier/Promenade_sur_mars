@@ -2,7 +2,7 @@ import mysql.connector
 from flask import session
 from ..config import DB_SERVER
 
-import bdd_update as bup
+import myApp.model.bdd_update as bup
 
 ###################################################################################
 # connexion au serveur de la base de données
@@ -175,7 +175,7 @@ def saveDatafromNASA(dico_photos,dico_rovers,dico_cameras,dico_posi):
         for photo_id in dico_photos:
             photo=dico_photos[photo_id]
             sql = "INSERT INTO Photos (photo_id,sol,rover,camera,url) VALUES  (%s, %s, %s, %s);"
-            param=(photo_id,photo['sol'],photo['rover'],photo['camera'],photo['lien_img'])
+            param=(photo_id,photo['sol'],photo['rover_id'],photo['camera_id'],photo['lien_img'])
             cursor.execute(sql,param)
             cnx.commit()
         for rover_id in dico_rovers:
@@ -202,5 +202,6 @@ def saveDatafromNASA(dico_photos,dico_rovers,dico_cameras,dico_posi):
         print(session['errorDB']) #le problème s'affiche dans le terminal
     return 1
 
-#dico_photos,dico_rovers,dico_cameras,dico_posi=bup.créer_dicos()
-#saveDatafromNASA(dico_photos,dico_rovers,dico_cameras,dico_posi)
+def order_data():
+    dico_photos,dico_rovers,dico_cameras,dico_posi=bup.créer_dicos()
+    saveDatafromNASA(dico_photos,dico_rovers,dico_cameras,dico_posi)
