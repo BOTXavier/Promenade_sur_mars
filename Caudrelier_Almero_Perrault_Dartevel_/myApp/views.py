@@ -2,6 +2,7 @@ from flask import Flask, render_template, redirect, request, session
 from .controller import function as f
 from .model import bdd
 from werkzeug.utils import secure_filename
+import myApp.model.bdd as bdd
 
 app = Flask(__name__)
 app.config.from_object('myApp.config')
@@ -51,6 +52,12 @@ def logout():
 def streetview():
     return render_template("streetview.html")
 
+@app.route("/data")
+def data():
+    bdd.order_data()
+    print('succès des données')
+    return render_template("streetview.html")
+
 
 # ajout d'un membre
 @app.route("/addMembre", methods=['POST'])
@@ -82,3 +89,4 @@ def connecter():
     else:
         print("Bienvenue, jeune utilisateur")
         return redirect("/")
+
