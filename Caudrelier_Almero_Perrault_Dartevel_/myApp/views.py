@@ -1,6 +1,6 @@
 from flask import Flask, render_template, redirect, request, session
 from .controller import function as f
-from .model import bdd_login 
+from .model import bdd 
 from werkzeug.utils import secure_filename
 
 app = Flask(__name__)
@@ -61,7 +61,7 @@ def addMembre():
     login = request.form['login']
     motPasse = request.form['mdp']
     statut = request.form['statut']
-    lastId = bdd_login.add_membreData(nom, prenom, mail, login, motPasse, statut)
+    lastId = bdd.add_membreData(nom, prenom, mail, login, motPasse, statut)
     print(lastId)  # dernier id créé par la BDD
     if "errorDB" not in session:    
         session["infoVert"] = "Nouveau membre inséré"
@@ -74,7 +74,7 @@ def addMembre():
 def connecter():
     login = request.form['login']
     motPasse = request.form['mdp']
-    user = bdd_login.verifAuthData(login,motPasse)
+    user = bdd.verifAuthData(login,motPasse)
     if user == None:
         print("Les informations ne correspondent pas à notre base de donnée")
         return redirect("/login")
