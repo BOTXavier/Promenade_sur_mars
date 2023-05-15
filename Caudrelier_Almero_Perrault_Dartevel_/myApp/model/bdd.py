@@ -175,7 +175,7 @@ def saveDatafromNASA(dico_photos,dico_rovers,dico_cameras,dico_posi):
         for photo_id in dico_photos:
             photo=dico_photos[photo_id]
             sql = "INSERT INTO Photos (photo_id,sol,rover,camera,url) VALUES  (%s, %s, %s, %s);"
-            param=(photo_id,photo['sol'],photo['rover'],photo['camera'],photo['lien_img'])
+            param=(photo_id,photo['sol'],photo['rover_id'],photo['camera_id'],photo['lien_img'])
             cursor.execute(sql,param)
             cnx.commit()
         for rover_id in dico_rovers:
