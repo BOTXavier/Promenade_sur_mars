@@ -2,6 +2,8 @@ import mysql.connector
 from flask import session
 from ..config import DB_SERVER
 
+import bdd_update as bup
+
 ###################################################################################
 # connexion au serveur de la base de données
 
@@ -199,3 +201,6 @@ def saveDatafromNASA(dico_photos,dico_rovers,dico_cameras,dico_posi):
         session['errorDB'] = "Failed saveDataFromFile data : {}".format(err)
         print(session['errorDB']) #le problème s'affiche dans le terminal
     return 1
+
+#dico_photos,dico_rovers,dico_cameras,dico_posi=bup.créer_dicos()
+#saveDatafromNASA(dico_photos,dico_rovers,dico_cameras,dico_posi)

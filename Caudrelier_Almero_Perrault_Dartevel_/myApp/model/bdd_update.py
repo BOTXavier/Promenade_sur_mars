@@ -28,7 +28,7 @@ def deter_dernier_sol(dico_photos,dico_rovers):
         dernier_sol.append(sol+1)
     return dernier_sol
 
-if __name__=="__main__":
+def créer_dicos():
     N=2
     dicos123=ini.data_base(N,[0,0,0,0],{},{},{})
     dico_photos,dico_rovers,dico_cameras=dicos123[0],dicos123[1],dicos123[2]
@@ -37,10 +37,6 @@ if __name__=="__main__":
     ini.data_base(N,DERNIER_SOL,dico_photos,dico_rovers,dico_cameras)
 
     dico_posi=ini.check_posi([0,0,0,0],dico_photos,dico_rovers,dico_cameras,{})
+    return (dico_photos,dico_rovers,dico_cameras,dico_posi)
 
-     # for i in range(7):
-     #     compt=0
-     #     for photo_id in dico_photos:
-     #         if dico_photos[photo_id]['sol']==i:
-     #             compt+=1
-     #     print(compt)
+#dico_photos,dico_rovers,dico_cameras,dico_posi=créer_dicos()
