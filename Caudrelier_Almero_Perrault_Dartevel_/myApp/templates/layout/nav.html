@@ -22,8 +22,11 @@
     <li><a href="/elements">Elements</a></li>
     <li><a href="/streetview">Street View</a></li>
 
-
-    <li><a href="/login" class="button primary">Log in</a></li>
+    {% if session["login"] %}
+      <li><a href="/logout" class="button primary">Log out</a></li>
+    {% else %} 
+      <li><a href="/login" class="button primary">Log in</a></li>
+      {% endif %} 
 
     
   </ul>

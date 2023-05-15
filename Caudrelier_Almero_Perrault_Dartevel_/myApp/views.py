@@ -45,6 +45,7 @@ def login():
 
 @app.route("/logout")
 def logout():
+  session.clear()
   return redirect('/login')
 
 
@@ -88,6 +89,6 @@ def connecter():
         
     else:
         print("Bienvenue, jeune utilisateur")
-        session[]
+        session["login"] = login
         return redirect("/")
 
