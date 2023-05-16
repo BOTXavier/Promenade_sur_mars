@@ -1,11 +1,3 @@
-#!/usr/bin/env python3
-# -*- coding: utf-8 -*-
-"""
-Created on Mon May 15 13:56:08 2023
-
-@author: louis-yann
-"""
-
 -- phpMyAdmin SQL Dump
 -- version 5.1.4deb1
 -- https://www.phpmyadmin.net/
@@ -45,22 +37,6 @@ CREATE TABLE `identification` (
   `statut` int NOT NULL DEFAULT '1',
   `avatar` varchar(20) NOT NULL DEFAULT '1.png'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
--- --------------------------------------------------------
-
---
--- Table structure for table `Photos`
---
-
---CREATE TABLE `Photos` (
---  `id_photo` int NOT NULL,
---  `sol` int NOT NULL,
---  `rover` int NOT NULL,
---  `camera` int NOT NULL,
---  `url` text NOT NULL
---) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
-------------------------------------------------------------
 
 -- Tables pour la gestion des photos
 
