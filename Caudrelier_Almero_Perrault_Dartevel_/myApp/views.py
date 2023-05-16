@@ -59,6 +59,42 @@ def data():
     print('succès des données')
     return render_template("streetview.html")
 
+@app.route("/photo_droite")
+def photo_droite():
+    
+    print('succès droite')
+    return render_template("streetview.html")
+
+@app.route("/photo_gauche")
+def photo_gauche():
+    
+    print('succès gauche')
+    return render_template("streetview.html")
+
+@app.route("/photo_haut")
+def photo_haut():
+    
+    print('succès haut')
+    return render_template("streetview.html")
+
+@app.route("/photo_bas")
+def photo_bas():
+    
+    print('succès bas')
+    return render_template("streetview.html")
+
+@app.route("/photo_devant")
+def photo_devant():
+    
+    print('succès devant')
+    return render_template("streetview.html")
+
+@app.route("/photo_derriere")
+def photo_derriere():
+    
+    print('succès derriere')
+    return render_template("streetview.html")
+
 
 # ajout d'un membre
 @app.route("/addMembre", methods=['POST'])
