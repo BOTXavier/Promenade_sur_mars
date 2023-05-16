@@ -205,3 +205,18 @@ def saveDatafromNASA(dico_photos,dico_rovers,dico_cameras,dico_posi):
 def order_data():
     dico_photos,dico_rovers,dico_cameras,dico_posi=bup.créer_dicos()
     saveDatafromNASA(dico_photos,dico_rovers,dico_cameras,dico_posi)
+
+def bouton_droite():
+    cnx = connexion() 
+    if cnx is None: 
+        return None
+    try:
+        cursor = cnx.cursor(dictionary=True)
+        sql = "SELECT url FROM Photos WHERE photo_id=810974"
+        cursor.execute(sql)
+        url = cursor.fetchall()
+        close_bd(cursor, cnx)
+    except mysql.connector.Error as err:
+        session['errorDB'] = "Failed saveDataFromFile data : {}".format(err)
+        print(session['errorDB']) #le problème s'affiche dans le terminal
+    return url
