@@ -174,8 +174,8 @@ def saveDatafromNASA(dico_photos,dico_rovers,dico_cameras,dico_posi):
         # insertion des données
         for photo_id in dico_photos:
             photo=dico_photos[photo_id]
-            sql = "INSERT INTO Photos (photo_id,sol,rover,camera,url) VALUES  (%s, %s, %s, %s);"
-            param=(photo_id,photo['sol'],photo['rover_id'],photo['camera_id'],photo['lien_img'])
+            sql = "INSERT INTO Photos (photo_id,sol,rover_id,camera_id,url) VALUES  (%s, %s, %s, %s, %s);"
+            param=(photo_id,photo['sol'],photo['rover_id'],photo['camera_id'],photo['url'])
             cursor.execute(sql,param)
             cnx.commit()
         for rover_id in dico_rovers:
@@ -186,13 +186,13 @@ def saveDatafromNASA(dico_photos,dico_rovers,dico_cameras,dico_posi):
             cnx.commit()
         for camera_id in dico_cameras:
             camera=dico_cameras[camera_id]
-            sql = "INSERT INTO Cameras (camera_id,name,rover_id,full_name,orientation) VALUES  (%s, %s, %s, %s, %s);"
-            param=(camera_id,camera['name'],camera['rover_id'],camera['full_name'], camera['orientation'])
+            sql = "INSERT INTO Cameras (camera_id,name,rover_id,full_name,orientation_hori, orientation_verti) VALUES  (%s, %s, %s, %s, %s, %s);"
+            param=(camera_id,camera['name'],camera['rover_id'],camera['full_name'], camera['orient_hori'], camera['orient_verti'])
             cursor.execute(sql,param)
             cnx.commit()
         for position_id in dico_posi:
             posi=dico_posi[position_id]
-            sql = "INSERT INTO Positions (posi_id,rover_id,lat,long,cap) VALUES  (%s, %s, %s, %s, %s);"
+            sql = "INSERT INTO Positions (posi_id,rover_id,lat,longitude,cap) VALUES  (%s, %s, %s, %s, %s);"
             param=(position_id,posi['rover_id'],posi['lat'],posi['long'],posi['cap'])
             cursor.execute(sql,param)
             cnx.commit()
@@ -205,3 +205,18 @@ def saveDatafromNASA(dico_photos,dico_rovers,dico_cameras,dico_posi):
 def order_data():
     dico_photos,dico_rovers,dico_cameras,dico_posi=bup.créer_dicos()
     saveDatafromNASA(dico_photos,dico_rovers,dico_cameras,dico_posi)
+
+def bouton_droite():
+    cnx = connexion() 
+    if cnx is None: 
+        return None
+    try:
+        cursor = cnx.cursor(dictionary=True)
+        sql = "SELECT url FROM Photos WHERE photo_id=810974"
+        cursor.execute(sql)
+        url = cursor.fetchall()
+        close_bd(cursor, cnx)
+    except mysql.connector.Error as err:
+        session['errorDB'] = "Failed saveDataFromFile data : {}".format(err)
+        print(session['errorDB']) #le problème s'affiche dans le terminal
+    return url
