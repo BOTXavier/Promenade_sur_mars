@@ -19,7 +19,11 @@
 
         <h3>Streetview</h3>
 
+            {% if parameter %}
+            
             <img src=str({{parameter[1]}})>
+
+            {% endif %}
 
             <ul class="actions">
                 <li><a href="/data/" class="button small">data parameter</a></li>
