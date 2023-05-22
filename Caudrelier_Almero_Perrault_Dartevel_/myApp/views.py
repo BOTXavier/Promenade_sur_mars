@@ -3,7 +3,6 @@ from .controller import function as f
 from .model import bdd
 from werkzeug.utils import secure_filename
 import myApp.model.bdd as bdd
-import hashlib
 
 app = Flask(__name__)
 app.config.from_object('myApp.config')
@@ -61,96 +60,64 @@ def data():
     return render_template("streetview.html")
 
 @app.route("/photo_droite")
-def photo_droite():
-    url=bdd.bouton_droite()
+def photo_droite(id_prec):
+    id,url=bdd.bouton_droite(id_prec)
     print('succès droite')
     print (url[0]['url'])
-    return render_template("streetview.html")
+    return render_template("streetview.html", parameter=[id,url])
 
 @app.route("/photo_gauche")
-def photo_gauche():
-    url=bdd.bouton_gauche()
+def photo_gauche(id_prec):
+    id,url=bdd.bouton_gauche(id_prec)
     print(url)
     print('succès gauche')
-    return render_template("streetview.html")
+    return render_template("streetview.html", parameter=[id,url])
 
 @app.route("/photo_haut")
-def photo_haut():
-    url=bdd.bouton_haute()
+def photo_haut(id_prec):
+    id,url=bdd.bouton_haute(id_prec)
     print(url)
     print('succès haut')
-    return render_template("streetview.html")
+    return render_template("streetview.html", parameter=[id,url])
 
 @app.route("/photo_bas")
-def photo_bas():
-    url=bdd.bouton_bas()
+def photo_bas(id_prec):
+    id,url=bdd.bouton_bas(id_prec)
     print(url)
     print('succès bas')
-    return render_template("streetview.html")
+    return render_template("streetview.html", parameter=[id,url])
 
 @app.route("/photo_devant")
-def photo_devant():
-    url=bdd.bouton_devant()
+def photo_devant(id_prec):
+    id,url=bdd.bouton_devant(id_prec)
     print(url)
     print('succès devant')
-    return render_template("streetview.html")
+    return render_template("streetview.html", parameter=[id,url])
 
 @app.route("/photo_derriere")
-def photo_derriere():
-    url=bdd.bouton_derriere()
-    print(url)
+def photo_derriere(id_prec):
+    id,url=bdd.bouton_derriere(id_prec)
+    print(url,id)
     print('succès derriere')
-    return render_template("streetview.html")
+    return render_template("streetview.html", parameter=[id,url])
 
 
 # ajout d'un membre
-#@app.route("/addMembre", methods=['POST'])
-#def addMembre():
-#    nom = request.form['nom']
-#    prenom = request.form['prenom']
-#    mail = request.form['mail']
-#    login = request.form['login']
-#    mdp = request.form['mdp']
-#    statut = request.form['statut']
-#    lastId = bdd.add_membreData(nom, prenom, mail, login, mdp, statut)
-#    print(lastId)  # dernier id créé par la BDD
-#    if "errorDB" not in session:    
-#        session["infoVert"] = "Nouveau membre inséré"
-#    else:
-#        session["infoRouge"] = "Problème ajout utilisateur"
-#    return redirect("/login")
-
-from flask import request, redirect
-import hashlib
-
 @app.route("/addMembre", methods=['POST'])
 def addMembre():
     nom = request.form['nom']
     prenom = request.form['prenom']
     mail = request.form['mail']
     login = request.form['login']
-    mdp = request.form['mdp']
+    motPasse = request.form['mdp']
     statut = request.form['statut']
-    
-    # Chiffre le mot de passe en utilisant hashlib
-    hashed_password = encrypt_password(mdp)
-    
-    # Ajoute le membre à la base de données ou effectue toute autre opération nécessaire
-    lastId = bdd.add_membreData(nom, prenom, mail, login, hashed_password, statut)
+    lastId = bdd.add_membreData(nom, prenom, mail, login, motPasse, statut)
     print(lastId)  # dernier id créé par la BDD
-    
     if "errorDB" not in session:    
         session["infoVert"] = "Nouveau membre inséré"
     else:
         session["infoRouge"] = "Problème ajout utilisateur"
-        
-    return redirect("/login") 
-
-def encrypt_password(password):
-    sha256 = hashlib.sha256()
-    sha256.update(password.encode('utf-8'))
-    hashed_password = sha256.hexdigest()
-    return hashed_password
+    return redirect("/login")
 
 
 @app.route('/connecter', methods=['POST'])
