@@ -418,3 +418,80 @@ def bouton_apres(url):
         session['errorDB'] = "Failed saveDataFromFile data : {}".format(err)
         print(session['errorDB']) #le problème s'affiche dans le terminal
     return url_apres
+
+
+#Fonctions servant à afficher le contenu des bases de données sur une page web
+def get_Photos_table():
+    cnx = connexion() 
+    if cnx is None: 
+        return None
+    try:
+        cursor = cnx.cursor(dictionary=True)
+        sql = "SELECT * FROM Photos"
+        cursor.execute(sql)
+        Photos_table = cursor.fetchall()
+        close_bd(cursor, cnx)
+    except mysql.connector.Error as err:
+        session['errorDB'] = "Failed saveDataFromFile data : {}".format(err)
+        print(session['errorDB']) #le problème s'affiche dans le terminal
+    return Photos_table
+
+def get_Cameras_table():
+    cnx = connexion() 
+    if cnx is None: 
+        return None
+    try:
+        cursor = cnx.cursor(dictionary=True)
+        sql = "SELECT * FROM Cameras"
+        cursor.execute(sql)
+        Cameras_table = cursor.fetchall()
+        close_bd(cursor, cnx)
+    except mysql.connector.Error as err:
+        session['errorDB'] = "Failed saveDataFromFile data : {}".format(err)
+        print(session['errorDB']) #le problème s'affiche dans le terminal
+    return Cameras_table
+
+def get_Positions_table():
+    cnx = connexion() 
+    if cnx is None: 
+        return None
+    try:
+        cursor = cnx.cursor(dictionary=True)
+        sql = "SELECT * FROM Positions"
+        cursor.execute(sql)
+        Positions_table = cursor.fetchall()
+        close_bd(cursor, cnx)
+    except mysql.connector.Error as err:
+        session['errorDB'] = "Failed saveDataFromFile data : {}".format(err)
+        print(session['errorDB']) #le problème s'affiche dans le terminal
+    return Positions_table
+
+def get_identification_table():
+    cnx = connexion() 
+    if cnx is None: 
+        return None
+    try:
+        cursor = cnx.cursor(dictionary=True)
+        sql = "SELECT * FROM identification"
+        cursor.execute(sql)
+        identification_table = cursor.fetchall()
+        close_bd(cursor, cnx)
+    except mysql.connector.Error as err:
+        session['errorDB'] = "Failed saveDataFromFile data : {}".format(err)
+        print(session['errorDB']) #le problème s'affiche dans le terminal
+    return identification_table
+
+def get_Rovers_table():
+    cnx = connexion() 
+    if cnx is None: 
+        return None
+    try:
+        cursor = cnx.cursor(dictionary=True)
+        sql = "SELECT * FROM Rovers"
+        cursor.execute(sql)
+        Rovers_table = cursor.fetchall()
+        close_bd(cursor, cnx)
+    except mysql.connector.Error as err:
+        session['errorDB'] = "Failed saveDataFromFile data : {}".format(err)
+        print(session['errorDB']) #le problème s'affiche dans le terminal
+    return Rovers_table 
