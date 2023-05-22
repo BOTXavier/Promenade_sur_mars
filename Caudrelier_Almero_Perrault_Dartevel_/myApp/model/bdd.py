@@ -64,14 +64,14 @@ def del_membreData(idUser):
 
 #################################################################################
 #ajout d'un membre
-def add_membreData(nom, prenom, mail, login, motPasse, statut):
+def add_membreData(nom, prenom, mail, login, motPasse, statut, avatar):
     cnx = connexion() 
     if cnx is None: 
         return None
     try:
         cursor = cnx.cursor()
-        sql = "INSERT INTO identification (nom, prenom, mail, login, motPasse, statut) VALUES (%s, %s, %s, %s, %s, %s, %s);"
-        param = (nom, prenom, mail, login, motPasse, statut)
+        sql = "INSERT INTO identification (nom, prenom, mail, login, motPasse, statut, avatar) VALUES (%s, %s, %s, %s, %s, %s, %s);"
+        param = (nom, prenom, mail, login, motPasse, statut, avatar)
         cursor.execute(sql, param)
         lastId = cursor.lastrowid  # récupère le dernier idUser, généré par le serveur sql
         cnx.commit()
@@ -135,8 +135,8 @@ def saveDataFromFile(data):
         cursor.execute(sql1)
         # insertion des nouvelles données
         for d in data:
-            sql = "INSERT INTO identification (nom, prenom, mail, login, motPasse, statut) VALUES (%s, %s, %s, %s, %s, %s, %s);"
-            param = (d['nom'], d['prenom'], d['mail'], d['login'], d['motPasse'], d['statut'])
+            sql = "INSERT INTO identification (nom, prenom, mail, login, motPasse, statut, avatar) VALUES (%s, %s, %s, %s, %s, %s, %s);"
+            param = (d['nom'], d['prenom'], d['mail'], d['login'], d['motPasse'], d['statut'], d['avatar'])
             cursor.execute(sql, param)
             cnx.commit()
         close_bd(cursor, cnx)
@@ -207,15 +207,15 @@ def order_data():
     dico_photos,dico_rovers,dico_cameras,dico_posi=bup.créer_dicos()
     saveDatafromNASA(dico_photos,dico_rovers,dico_cameras,dico_posi)
 
-def bouton_droite(url):
+def bouton_droite(id):
     cnx = connexion() 
     if cnx is None: 
         return None
     try:
         cursor = cnx.cursor(dictionary=True)
 
-        sql="SELECT sol,rover_id,camera_id FROM Photos WHERE url=%s"
-        param=(url)
+        sql="SELECT sol,rover_id,camera_id FROM Photos WHERE photo_id=%s"
+        param=(id)
         cursor.execute(sql,param)
         data=cursor.fetchall()
         sol,rover_id,camera_id=data[0]['sol'],data[1]['rover_id'], data[2]['camera_id']
@@ -230,26 +230,27 @@ def bouton_droite(url):
         cursor.execute(sql,param)
         camera_droite_id=cursor.fetchall()[0]['camera_id']
 
-        sql = "SELECT url FROM Photos WHERE sol=%s AND rover_id=%s AND camera_id=%s"
+        sql = "SELECT photo_id,url FROM Photos WHERE sol=%s AND rover_id=%s AND camera_id=%s"
         param=(sol,rover_id,camera_droite_id)
         cursor.execute(sql,param)
-        url_droite = cursor.fetchall()[0]['url']
+        req = cursor.fetchall()
+        id_droite,url_droite=req[0],['photo_id'],req[1]['url']
 
         close_bd(cursor, cnx)
     except mysql.connector.Error as err:
         session['errorDB'] = "Failed saveDataFromFile data : {}".format(err)
         print(session['errorDB']) #le problème s'affiche dans le terminal
-    return url_droite
+    return id_droite, url_droite
 
-def bouton_gauche(url):
+def bouton_gauche(id):
     cnx = connexion() 
     if cnx is None: 
         return None
     try:
         cursor = cnx.cursor(dictionary=True)
 
-        sql="SELECT sol,rover_id,camera_id FROM Photos WHERE url=%s"
-        param=(url)
+        sql="SELECT sol,rover_id,camera_id FROM Photos WHERE photo_id=%s"
+        param=(id)
         cursor.execute(sql,param)
         data=cursor.fetchall()
         sol,rover_id,camera_id=data[0]['sol'],data[1]['rover_id'], data[2]['camera_id']
@@ -264,26 +265,27 @@ def bouton_gauche(url):
         cursor.execute(sql,param)
         camera_gauche_id=cursor.fetchall()[0]['camera_id']
 
-        sql = "SELECT url FROM Photos WHERE sol=%s AND rover_id=%s AND camera_id=%s"
+        sql = "SELECT photo_id,url FROM Photos WHERE sol=%s AND rover_id=%s AND camera_id=%s"
         param=(sol,rover_id,camera_gauche_id)
         cursor.execute(sql,param)
-        url_gauche = cursor.fetchall()
+        req = cursor.fetchall()
+        id_gauche,url_gauche=req[0]['photo_id'],req[1]['url']
 
         close_bd(cursor, cnx)
     except mysql.connector.Error as err:
         session['errorDB'] = "Failed saveDataFromFile data : {}".format(err)
         print(session['errorDB']) #le problème s'affiche dans le terminal
-    return url_gauche
+    return id_gauche,url_gauche
 
-def bouton_haut(url):
+def bouton_haut(id):
     cnx = connexion() 
     if cnx is None: 
         return None
     try:
         cursor = cnx.cursor(dictionary=True)
 
-        sql="SELECT sol,rover_id,camera_id FROM Photos WHERE url=%s"
-        param=(url)
+        sql="SELECT sol,rover_id,camera_id FROM Photos WHERE photo_id=%s"
+        param=(id)
         cursor.execute(sql,param)
         data=cursor.fetchall()
         sol,rover_id,camera_id=data[0]['sol'],data[1]['rover_id'], data[2]['camera_id']
@@ -298,26 +300,27 @@ def bouton_haut(url):
         cursor.execute(sql,param)
         camera_haute_id=cursor.fetchall()[0]['camera_id']
 
-        sql = "SELECT url FROM Photos WHERE sol=%s AND rover_id=%s AND camera_id=%s"
+        sql = "SELECT photo_id,url FROM Photos WHERE sol=%s AND rover_id=%s AND camera_id=%s"
         param=(sol,rover_id,camera_haute_id)
         cursor.execute(sql,param)
-        url_haute = cursor.fetchall()[0]['url']
+        req = cursor.fetchall()
+        id_haute,url_haute = req[0]['photo_id'], req[1]['url']
 
         close_bd(cursor, cnx)
     except mysql.connector.Error as err:
         session['errorDB'] = "Failed saveDataFromFile data : {}".format(err)
         print(session['errorDB']) #le problème s'affiche dans le terminal
-    return url_haute
+    return id_haute,url_haute
 
-def bouton_bas(url):
+def bouton_bas(id):
     cnx = connexion() 
     if cnx is None: 
         return None
     try:
         cursor = cnx.cursor(dictionary=True)
 
-        sql="SELECT sol,rover_id,camera_id FROM Photos WHERE url=%s"
-        param=(url)
+        sql="SELECT sol,rover_id,camera_id FROM Photos WHERE photo_id=%s"
+        param=(id)
         cursor.execute(sql,param)
         data=cursor.fetchall()
         sol,rover_id,camera_id=data[0]['sol'],data[1]['rover_id'], data[2]['camera_id']
@@ -332,26 +335,27 @@ def bouton_bas(url):
         cursor.execute(sql,param)
         camera_bas_id=cursor.fetchall()[0]['camera_id']
 
-        sql = "SELECT url FROM Photos WHERE sol=%s AND rover_id=%s AND camera_id=%s"
+        sql = "SELECT photo_id,url FROM Photos WHERE sol=%s AND rover_id=%s AND camera_id=%s"
         param=(sol,rover_id,camera_bas_id)
         cursor.execute(sql,param)
-        url_bas = cursor.fetchall()[0]['url']
+        req = cursor.fetchall()
+        id_bas,url_bas = req[0]['photo_id'],req[1]['url']
 
         close_bd(cursor, cnx)
     except mysql.connector.Error as err:
         session['errorDB'] = "Failed saveDataFromFile data : {}".format(err)
         print(session['errorDB']) #le problème s'affiche dans le terminal
-    return url_bas
+    return id_bas,url_bas
 
-def bouton_avant(url):
+def bouton_avant(id):
     cnx = connexion() 
     if cnx is None: 
         return None
     try:
         cursor = cnx.cursor(dictionary=True)
 
-        sql="SELECT sol,rover_id,camera_id FROM Photos WHERE url=%s"
-        param=(url)
+        sql="SELECT sol,rover_id,camera_id FROM Photos WHERE photo_id=%s"
+        param=(id)
         cursor.execute(sql,param)
         data=cursor.fetchall()
         sol,rover_id,camera_id=sol,rover_id,camera_id=data[0]['sol'],data[1]['rover_id'], data[2]['camera_id']
@@ -370,26 +374,27 @@ def bouton_avant(url):
         data=cursor.fetchall()
         lat,long,cap=data[0]['lat'], data[1]['long'], data[2]['cap']
 
-        sql = "SELECT url FROM Photos WHERE rover_id=%s AND camera_id=%s AND posi_id<%s AND (lat!=%s OR long!=%s OR cap!=%s)"
+        sql = "SELECT photo_id,url FROM Photos WHERE rover_id=%s AND camera_id=%s AND posi_id<%s AND (lat!=%s OR long!=%s OR cap!=%s)"
         param=(rover_id,camera_id,posi_id,lat,long,cap)
         cursor.execute(sql,param)
-        url_avant = cursor.fetchall()[0]['url']
+        req = cursor.fetchall()
+        id_avant,url_avant = req[0]['photo_id'], req[1]['url']
 
         close_bd(cursor, cnx)
     except mysql.connector.Error as err:
         session['errorDB'] = "Failed saveDataFromFile data : {}".format(err)
         print(session['errorDB']) #le problème s'affiche dans le terminal
-    return url_avant
+    return id_avant,url_avant
 
-def bouton_apres(url):
+def bouton_apres(id):
     cnx = connexion() 
     if cnx is None: 
         return None
     try:
         cursor = cnx.cursor(dictionary=True)
 
-        sql="SELECT sol,rover_id,camera_id FROM Photos WHERE url=%s"
-        param=(url)
+        sql="SELECT sol,rover_id,camera_id FROM Photos WHERE photo_id=%s"
+        param=(id)
         cursor.execute(sql,param)
         data=cursor.fetchall()
         sol,rover_id,camera_id=sol,rover_id,camera_id=data[0]['sol'],data[1]['rover_id'], data[2]['camera_id']
@@ -408,90 +413,14 @@ def bouton_apres(url):
         data=cursor.fetchall()
         lat,long,cap=data[0]['lat'], data[1]['long'], data[2]['cap']
 
-        sql = "SELECT url FROM Photos WHERE rover_id=%s AND camera_id=%s AND posi_id>%s AND (lat!=%s OR long!=%s OR cap!=%s)"
+        sql = "SELECT photo_id,url FROM Photos WHERE rover_id=%s AND camera_id=%s AND posi_id>%s AND (lat!=%s OR long!=%s OR cap!=%s)"
         param=(rover_id,camera_id,posi_id,lat,long,cap)
         cursor.execute(sql,param)
-        url_apres = cursor.fetchall()[0]['url']
+        req = cursor.fetchall()
+        id_apres,url_apres = req[0]['photo_id'],req[1]['url']
 
         close_bd(cursor, cnx)
     except mysql.connector.Error as err:
         session['errorDB'] = "Failed saveDataFromFile data : {}".format(err)
         print(session['errorDB']) #le problème s'affiche dans le terminal
-    return url_apres
-
-
-#Fonctions servant à afficher le contenu des bases de données sur une page web
-def get_Photos_table():
-    cnx = connexion() 
-    if cnx is None: 
-        return None
-    try:
-        cursor = cnx.cursor(dictionary=True)
-        sql = "SELECT * FROM Photos"
-        cursor.execute(sql)
-        Photos_table = cursor.fetchall()
-        close_bd(cursor, cnx)
-    except mysql.connector.Error as err:
-        session['errorDB'] = "Failed saveDataFromFile data : {}".format(err)
-        print(session['errorDB']) #le problème s'affiche dans le terminal
-    return Photos_table
-
-def get_Cameras_table():
-    cnx = connexion() 
-    if cnx is None: 
-        return None
-    try:
-        cursor = cnx.cursor(dictionary=True)
-        sql = "SELECT * FROM Cameras"
-        cursor.execute(sql)
-        Cameras_table = cursor.fetchall()
-        close_bd(cursor, cnx)
-    except mysql.connector.Error as err:
-        session['errorDB'] = "Failed saveDataFromFile data : {}".format(err)
-        print(session['errorDB']) #le problème s'affiche dans le terminal
-    return Cameras_table
-
-def get_Positions_table():
-    cnx = connexion() 
-    if cnx is None: 
-        return None
-    try:
-        cursor = cnx.cursor(dictionary=True)
-        sql = "SELECT * FROM Positions"
-        cursor.execute(sql)
-        Positions_table = cursor.fetchall()
-        close_bd(cursor, cnx)
-    except mysql.connector.Error as err:
-        session['errorDB'] = "Failed saveDataFromFile data : {}".format(err)
-        print(session['errorDB']) #le problème s'affiche dans le terminal
-    return Positions_table
-
-def get_identification_table():
-    cnx = connexion() 
-    if cnx is None: 
-        return None
-    try:
-        cursor = cnx.cursor(dictionary=True)
-        sql = "SELECT * FROM identification"
-        cursor.execute(sql)
-        identification_table = cursor.fetchall()
-        close_bd(cursor, cnx)
-    except mysql.connector.Error as err:
-        session['errorDB'] = "Failed saveDataFromFile data : {}".format(err)
-        print(session['errorDB']) #le problème s'affiche dans le terminal
-    return identification_table
-
-def get_Rovers_table():
-    cnx = connexion() 
-    if cnx is None: 
-        return None
-    try:
-        cursor = cnx.cursor(dictionary=True)
-        sql = "SELECT * FROM Rovers"
-        cursor.execute(sql)
-        Rovers_table = cursor.fetchall()
-        close_bd(cursor, cnx)
-    except mysql.connector.Error as err:
-        session['errorDB'] = "Failed saveDataFromFile data : {}".format(err)
-        print(session['errorDB']) #le problème s'affiche dans le terminal
-    return Rovers_table 
+    return id_apres,url_apres
