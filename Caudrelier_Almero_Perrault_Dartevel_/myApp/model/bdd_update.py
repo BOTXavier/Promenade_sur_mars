@@ -6,7 +6,7 @@ Created on Thu May 11 11:28:03 2023
 @author: louis-yann
 """
 
-import myApp.model.bdd_initiate as ini
+import bdd_initiate as ini
 
 ##################################################################################
 

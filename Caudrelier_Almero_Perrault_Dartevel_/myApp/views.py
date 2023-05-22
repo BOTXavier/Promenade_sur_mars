@@ -3,6 +3,7 @@ from .controller import function as f
 from .model import bdd
 from werkzeug.utils import secure_filename
 import myApp.model.bdd as bdd
+import hashlib
 
 app = Flask(__name__)
 app.config.from_object('myApp.config')
@@ -103,21 +104,53 @@ def photo_derriere():
 
 
 # ajout d'un membre
+#@app.route("/addMembre", methods=['POST'])
+#def addMembre():
+#    nom = request.form['nom']
+#    prenom = request.form['prenom']
+#    mail = request.form['mail']
+#    login = request.form['login']
+#    mdp = request.form['mdp']
+#    statut = request.form['statut']
+#    lastId = bdd.add_membreData(nom, prenom, mail, login, mdp, statut)
+#    print(lastId)  # dernier id créé par la BDD
+#    if "errorDB" not in session:    
+#        session["infoVert"] = "Nouveau membre inséré"
+#    else:
+#        session["infoRouge"] = "Problème ajout utilisateur"
+#    return redirect("/login")
+
+from flask import request, redirect
+import hashlib
+
 @app.route("/addMembre", methods=['POST'])
 def addMembre():
     nom = request.form['nom']
     prenom = request.form['prenom']
     mail = request.form['mail']
     login = request.form['login']
-    motPasse = request.form['mdp']
+    mdp = request.form['mdp']
     statut = request.form['statut']
-    lastId = bdd.add_membreData(nom, prenom, mail, login, motPasse, statut)
+    
+    # Chiffre le mot de passe en utilisant hashlib
+    hashed_password = encrypt_password(mdp)
+    
+    # Ajoute le membre à la base de données ou effectue toute autre opération nécessaire
+    lastId = bdd.add_membreData(nom, prenom, mail, login, hashed_password, statut)
     print(lastId)  # dernier id créé par la BDD
+    
     if "errorDB" not in session:    
         session["infoVert"] = "Nouveau membre inséré"
     else:
         session["infoRouge"] = "Problème ajout utilisateur"
-    return redirect("/login")
+        
+    return redirect("/login") 
+
+def encrypt_password(password):
+    sha256 = hashlib.sha256()
+    sha256.update(password.encode('utf-8'))
+    hashed_password = sha256.hexdigest()
+    return hashed_password
 
 
 @app.route('/connecter', methods=['POST'])
