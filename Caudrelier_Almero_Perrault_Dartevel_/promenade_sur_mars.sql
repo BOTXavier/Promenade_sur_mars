@@ -34,7 +34,7 @@ CREATE TABLE `Cameras` (
   `full_name` text NOT NULL,
   `orientation_hori` float NOT NULL,
   `orientation_verti` float NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
 -- Dumping data for table `Cameras`
@@ -89,7 +89,7 @@ CREATE TABLE `identification` (
   `login` varchar(100) NOT NULL,
   `motPasse` varchar(100) NOT NULL,
   `statut` int NOT NULL DEFAULT '1'
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- --------------------------------------------------------
 
@@ -103,7 +103,7 @@ CREATE TABLE `Photos` (
   `rover_id` int NOT NULL,
   `camera_id` int NOT NULL,
   `url` text NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
 -- Dumping data for table `Photos`
@@ -6731,7 +6731,7 @@ CREATE TABLE `Positions` (
   `lat` float NOT NULL,
   `longitude` float NOT NULL,
   `cap` float NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
 -- Dumping data for table `Positions`
@@ -6757,7 +6757,7 @@ CREATE TABLE `Rovers` (
   `landing_date` date NOT NULL,
   `launch_date` date NOT NULL,
   `status` text NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
 -- Dumping data for table `Rovers`
