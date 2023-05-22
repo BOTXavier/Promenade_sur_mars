@@ -59,42 +59,42 @@ def data():
     print('succès des données')
     return render_template("streetview.html")
 
-@app.route("/photo_droite")
-def photo_droite(id_prec):
-    id,url=bdd.bouton_droite(id_prec)
+@app.route("/photo_droite/<id>")
+def photo_droite(id=None):
+    id,url=bdd.bouton_droite(id)
     print('succès droite')
     print (url[0]['url'])
     return render_template("streetview.html", parameter=[id,url])
 
-@app.route("/photo_gauche")
+@app.route("/photo_gauche/<id>")
 def photo_gauche(id_prec):
     id,url=bdd.bouton_gauche(id_prec)
     print(url)
     print('succès gauche')
     return render_template("streetview.html", parameter=[id,url])
 
-@app.route("/photo_haut")
+@app.route("/photo_haut/<id>")
 def photo_haut(id_prec):
     id,url=bdd.bouton_haute(id_prec)
     print(url)
     print('succès haut')
     return render_template("streetview.html", parameter=[id,url])
 
-@app.route("/photo_bas")
+@app.route("/photo_bas/<id>")
 def photo_bas(id_prec):
     id,url=bdd.bouton_bas(id_prec)
     print(url)
     print('succès bas')
     return render_template("streetview.html", parameter=[id,url])
 
-@app.route("/photo_devant")
+@app.route("/photo_devant/<id>")
 def photo_devant(id_prec):
     id,url=bdd.bouton_devant(id_prec)
     print(url)
     print('succès devant')
     return render_template("streetview.html", parameter=[id,url])
 
-@app.route("/photo_derriere")
+@app.route("/photo_derriere/<id>")
 def photo_derriere(id_prec):
     id,url=bdd.bouton_derriere(id_prec)
     print(url,id)
