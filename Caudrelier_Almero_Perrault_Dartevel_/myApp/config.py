@@ -11,7 +11,7 @@ WEB_SERVER = {
 #Configuration du serveur de BDD
 DB_SERVER = {
     "user": "root",
-    "password": "8uYb9apMj", #8uYb9apMj
+#   "password": "8uYb9apMj", #8uYb9apMj
     "host": "localhost",
     "port": 3306, #8889 si MAC
     "database": "promenade_sur_mars", #nom de la BDD

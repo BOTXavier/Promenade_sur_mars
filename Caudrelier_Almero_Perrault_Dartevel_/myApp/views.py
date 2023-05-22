@@ -1,6 +1,5 @@
 from flask import Flask, render_template, redirect, request, session
 from .controller import function as f
-from .model import bdd
 from werkzeug.utils import secure_filename
 import myApp.model.bdd as bdd
 
