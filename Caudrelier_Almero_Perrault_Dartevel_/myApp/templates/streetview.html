@@ -19,17 +19,21 @@
 
         <h3>Streetview</h3>
 
-            <img src=str({{parameter[1]}})>
+            {% if parameter %}
+            
+            <img src={{parameter[1]}}>
 
             <ul class="actions">
                 <li><a href="/data/" class="button small">data parameter</a></li>
-                <li><a href="/photo_droite/"+str(id) class="button small">Droite</a></li>
-                <li><a href="/photo_gauche/"+str(id) class="button small">Gauche</a></li>
-                <li><a href="/photo_haut/"+str(id) class="button small">Haut</a></li>
-                <li><a href="/photo_bas/"+str(id) class="button small">Bas</a></li>
-                <li><a href="/photo_devant/"+str(id) class="button small">Devant</a></li>
-                <li><a href="/photo_derriere/"+str(id) class="button small">Derrière</a></li>
+                <li><a href="/photo_droite/"+{{parameter[0]}} class="button small">Droite</a></li>
+                <li><a href="/photo_gauche/"+str({{parameter[0]}}) class="button small">Gauche</a></li>
+                <li><a href="/photo_haut/"+str({{parameter[0]}}) class="button small">Haut</a></li>
+                <li><a href="/photo_bas/"+str({{parameter[0]}}) class="button small">Bas</a></li>
+                <li><a href="/photo_devant/"+str({{parameter[0]}}) class="button small">Devant</a></li>
+                <li><a href="/photo_derriere/"+str({{parameter[0]}}) class="button small">Derrière</a></li>
             </ul>
+
+            {% endif %}
         
         <!-- Footer -->
         {% include("layout/footer.html") %}
