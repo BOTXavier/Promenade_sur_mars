@@ -62,38 +62,43 @@ def data():
 
 @app.route("/photo_droite")
 def photo_droite():
-    url = bdd.bouton_droite()
+    url=bdd.bouton_droite()
     print('succès droite')
     print (url[0]['url'])
     return render_template("streetview.html")
 
 @app.route("/photo_gauche")
 def photo_gauche():
-    
+    url=bdd.bouton_gauche()
+    print(url)
     print('succès gauche')
     return render_template("streetview.html")
 
 @app.route("/photo_haut")
 def photo_haut():
-    
+    url=bdd.bouton_haute()
+    print(url)
     print('succès haut')
     return render_template("streetview.html")
 
 @app.route("/photo_bas")
 def photo_bas():
-    
+    url=bdd.bouton_bas()
+    print(url)
     print('succès bas')
     return render_template("streetview.html")
 
 @app.route("/photo_devant")
 def photo_devant():
-    
+    url=bdd.bouton_devant()
+    print(url)
     print('succès devant')
     return render_template("streetview.html")
 
 @app.route("/photo_derriere")
 def photo_derriere():
-    
+    url=bdd.bouton_derriere()
+    print(url)
     print('succès derriere')
     return render_template("streetview.html")
 
