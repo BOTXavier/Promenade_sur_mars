@@ -63,14 +63,14 @@ def del_membreData(idUser):
 
 #################################################################################
 #ajout d'un membre
-def add_membreData(nom, prenom, mail, login, motPasse, statut, avatar):
+def add_membreData(nom, prenom, mail, login, motPasse, statut):
     cnx = connexion() 
     if cnx is None: 
         return None
     try:
         cursor = cnx.cursor()
-        sql = "INSERT INTO identification (nom, prenom, mail, login, motPasse, statut, avatar) VALUES (%s, %s, %s, %s, %s, %s, %s);"
-        param = (nom, prenom, mail, login, motPasse, statut, avatar)
+        sql = "INSERT INTO identification (nom, prenom, mail, login, motPasse, statut) VALUES (%s, %s, %s, %s, %s, %s, %s);"
+        param = (nom, prenom, mail, login, motPasse, statut)
         cursor.execute(sql, param)
         lastId = cursor.lastrowid  # récupère le dernier idUser, généré par le serveur sql
         cnx.commit()
@@ -134,8 +134,8 @@ def saveDataFromFile(data):
         cursor.execute(sql1)
         # insertion des nouvelles données
         for d in data:
-            sql = "INSERT INTO identification (nom, prenom, mail, login, motPasse, statut, avatar) VALUES (%s, %s, %s, %s, %s, %s, %s);"
-            param = (d['nom'], d['prenom'], d['mail'], d['login'], d['motPasse'], d['statut'], d['avatar'])
+            sql = "INSERT INTO identification (nom, prenom, mail, login, motPasse, statut) VALUES (%s, %s, %s, %s, %s, %s, %s);"
+            param = (d['nom'], d['prenom'], d['mail'], d['login'], d['motPasse'], d['statut'])
             cursor.execute(sql, param)
             cnx.commit()
         close_bd(cursor, cnx)
