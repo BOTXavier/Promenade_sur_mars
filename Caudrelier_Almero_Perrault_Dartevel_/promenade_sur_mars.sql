@@ -28,12 +28,14 @@ SET time_zone = "+00:00";
 --
 
 CREATE TABLE `Cameras` (
-  `camera_id` int NOT NULL,
+  'camera_id' int NOT NULL,
   `name` text NOT NULL,
   `rover_id` int NOT NULL,
   `full_name` text NOT NULL,
   `orientation_hori` float NOT NULL,
-  `orientation_verti` float NOT NULL
+  `orientation_verti` float NOT NULL,
+  PRIMARY KEY ('camera_id'),
+  FOREIGN KEY ('rover_id') REFERENCES Rovers('rover_id')
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
@@ -102,7 +104,10 @@ CREATE TABLE `Photos` (
   `sol` int NOT NULL,
   `rover_id` int NOT NULL,
   `camera_id` int NOT NULL,
-  `url` text NOT NULL
+  `url` text NOT NULL,
+  PRIMARY KEY ('photo_id'),
+  FOREIGN KEY ('rover_id') REFERENCES Rovers('rover_id'),
+  FOREIGN KEY ('camera_id') REFERENCES Cameras('camera_id')
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
@@ -6730,7 +6735,9 @@ CREATE TABLE `Positions` (
   `rover_id` int NOT NULL,
   `lat` float NOT NULL,
   `longitude` float NOT NULL,
-  `cap` float NOT NULL
+  `cap` float NOT NULL,
+  PRIMARY KEY ('posi_id'),
+  FOREIGN KEY ('rover_id') REFERENCES Rovers('rover_id')
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
@@ -6756,7 +6763,8 @@ CREATE TABLE `Rovers` (
   `name` text NOT NULL,
   `landing_date` date NOT NULL,
   `launch_date` date NOT NULL,
-  `status` text NOT NULL
+  `status` text NOT NULL,
+  PRIMARY KEY ('rover_id')
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
@@ -6793,3 +6801,17 @@ COMMIT;
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
+
+--
+-- Table structure for table `Rovers` -- table d'association positions & rovers
+--
+
+CREATE TABLE `rovers-positions` (
+  `posi_id` int NOT NULL,
+  'rover_id' int NOT NULL,
+  `sol` text NOT NULL,
+  PRIMARY KEY ('posi_id'),
+  PRIMARY KEY ('rover_id'),
+  FOREIGN KEY 'posi_id' REFERENCES Position('posi_id'),
+  FOREIGN KEY 'rover_id' REFERENCES Rovers('rover_id')
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
