@@ -82,10 +82,10 @@ def orient_cams(dico_cameras,angles_mats,angles_sherlocks):
         cam_rov_id=camera['rover_id']
         cam_name=camera['name']
         if cam_rov_id==8: # Perseverance
-            angle_mat_hori=angles_mats[0][0] ######
-            angle_mat_verti=angles_mats[1][0] #####
-            angle_sherlock1=angles_sherlocks[0][0] #####
-            angle_sherlock2=angles_sherlocks[0][0] #####
+            angle_mat_hori=angles_mats[0][0]
+            angle_mat_verti=angles_mats[1][0]
+            angle_sherlock1=angles_sherlocks[0][0]
+            angle_sherlock2=angles_sherlocks[1][0]
             if cam_name=="FRONT_HAZCAM_LEFT_A":
                 camera['orient_hori']=1
                 camera['orient_verti']=0
@@ -110,76 +110,103 @@ def orient_cams(dico_cameras,angles_mats,angles_sherlocks):
             elif cam_name=="NAVCAM _LEFT":
                 camera['orient_hori']=angle_mat_hori+2
                 camera['orient_verti']=angle_mat_verti-1
-        #     elif cam_name=="NAVCAM _RIGHT":
-        #         camera['orientation']=[angle_mat_hori-2,angle_mat_verti-1]
-        #     elif cam_name=="EDL_RUCAM": # caméra vers le haut
-        #         camera['orientation']=[0,90]
-        #     elif cam_name=="EDL_DDCAM": # caméra vers le haut
-        #         camera['orientation']=[0,90]
-        #     elif cam_name=="EDL_RDCAM": # caméra vers le bas
-        #         camera['orientation']=[0,270]
-        #     elif cam_name=="EDL_PUCAM1": # caméra vers le bas
-        #         camera['orientation']=[0,270]
-        #     elif cam_name=="EDL_PUCAM1": # caméra vers le bas
-        #         camera['orientation']=[0,270]
-        #     elif cam_name=="SUPERCAM_RMI":
-        #         camera['orientation']=[angle_mat_hori+1,angle_mat_verti]
-        #     elif cam_name=="SHERLOC_WATSON":
-        #         camera['orientation']=[angle_sherlock1,angle_sherlock2]
-        # elif cam_rov_id==5: #Curiosity
-        #     angle_mat_hori=angles_mats[0][1] ######
-        #     angle_mat_verti=angles_mats[1][1] #####
-        #     angle_sherlock1=angles_sherlocks[0][1] #####
-        #     angle_sherlock2=angles_sherlocks[0][1] #####
-        #     if cam_name=="FHAZ":
-        #         camera['orientation']=[0,0]
-        #     elif cam_name=="RHAZ":
-        #         camera['orientation']=[180,0]
-        #     elif cam_name=="MAST":
-        #         camera['orientation']=[angle_mat_hori,angle_mat_verti-1]
-        #     elif cam_name=="CHEMCAM":
-        #         camera['orientation']=[angle_mat_hori,angle_mat_verti]
-        #     elif cam_name=="MAHLI":
-        #         camera['orientation']=[135,0]
-        #     elif cam_name=="MARDI":
-        #         camera['orientation']=[10,270]
-        #     elif cam_name=="NAVCAM":
-        #         camera['orientation']=[angle_mat_hori+1,angle_mat_verti-1]
-        # elif cam_rov_id==7: #Spirit
-        #     angle_mat_hori=angles_mats[0][2] ######
-        #     angle_mat_verti=angles_mats[1][2] #####
-        #     angle_sherlock1=angles_sherlocks[0][2] #####
-        #     angle_sherlock2=angles_sherlocks[0][2] #####
-        #     if cam_name=="FHAZ":
-        #         camera['orientation']=[0,0]
-        #     elif cam_name=="RHAZ":
-        #         camera['orientation']=[180,0]
-        #     elif cam_name=="NAVCAM":
-        #         camera['orientation']=[angle_mat_hori,angle_mat_verti]
-        #     elif cam_name=="PANCAM":
-        #         camera['orientation']=[angle_mat_hori+1,angle_mat_verti]
-        #     elif cam_name=="MINITES":
-        #         camera['orientation']=[(angle_mat_hori+180)%360,angle_mat_verti]
-        #     elif cam_name=="ENTRY":
-        #         camera['orientation']=[10,270]
-        # elif cam_rov_id==6: #Opportunity
-        #     angle_mat_hori=angles_mats[0][3] ######
-        #     angle_mat_verti=angles_mats[1][3] #####
-        #     angle_sherlock1=angles_sherlocks[0][3] #####
-        #     angle_sherlock2=angles_sherlocks[0][3] #####
-        #     if cam_name=="FHAZ":
-        #         camera['orientation']=[0,0]
-        #     elif cam_name=="RHAZ":
-        #         camera['orientation']=[180,0]
-        #     elif cam_name=="NAVCAM":
-        #         camera['orientation']=[angle_mat_hori,angle_mat_verti]
-        #     elif cam_name=="PANCAM":
-        #         camera['orientation']=[angle_mat_hori+1,angle_mat_verti]
-        #     elif cam_name=="MINITES":
-        #         camera['orientation']=[(angle_mat_hori+180)%360,angle_mat_verti]
-        #     elif cam_name=="ENTRY":
-        #         camera['orientation']=[10,270]
-            
+            elif cam_name=="NAVCAM _RIGHT":
+                camera['orient_hori']=angle_mat_hori-2
+                camera['orient_verti']=angle_mat_verti-1
+            elif cam_name=="EDL_RUCAM": # caméra vers le haut
+                camera['orient_hori']=0
+                camera['orient_verti']=90
+            elif cam_name=="EDL_DDCAM": # caméra vers le haut
+                camera['orient_hori']=0
+                camera['orient_verti']=90
+            elif cam_name=="EDL_RDCAM": # caméra vers le bas
+                camera['orient_hori']=0
+                camera['orient_verti']=270
+            elif cam_name=="EDL_PUCAM1": # caméra vers le bas
+                camera['orient_hori']=0
+                camera['orient_verti']=270
+            elif cam_name=="EDL_PUCAM1": # caméra vers le bas
+                camera['orient_hori']=0
+                camera['orient_verti']=270
+            elif cam_name=="SUPERCAM_RMI":
+                camera['orient_hori']=angle_mat_hori+1
+                camera['orient_verti']=angle_mat_verti
+            elif cam_name=="SHERLOC_WATSON":
+                camera['orient_hori']=angle_sherlock1
+                camera['orient_verti']=angle_sherlock2
+        elif cam_rov_id==5: #Curiosity
+             angle_mat_hori=angles_mats[0][1]
+             angle_mat_verti=angles_mats[1][1]
+             angle_sherlock1=angles_sherlocks[0][1]
+             angle_sherlock2=angles_sherlocks[0][1]
+             if cam_name=="FHAZ":
+                camera['orient_hori']=0
+                camera['orient_verti']=0
+             elif cam_name=="RHAZ":
+                camera['orient_hori']=180
+                camera['orient_verti']=0
+             elif cam_name=="MAST":
+                camera['orient_hori']=angle_mat_hori
+                camera['orient_verti']=angle_mat_verti-1
+             elif cam_name=="CHEMCAM":
+                camera['orient_hori']=angle_mat_hori
+                camera['orient_verti']=angle_mat_verti
+             elif cam_name=="MAHLI":
+                camera['orient_hori']=135
+                camera['orient_verti']=0
+             elif cam_name=="MARDI":
+                camera['orient_hori']=10
+                camera['orient_verti']=270
+             elif cam_name=="NAVCAM":
+                camera['orient_hori']=angle_mat_hori+1
+                camera['orient_verti']=angle_mat_verti-1
+        elif cam_rov_id==7: #Spirit
+             angle_mat_hori=angles_mats[0][2]
+             angle_mat_verti=angles_mats[1][2]
+             angle_sherlock1=angles_sherlocks[0][2]
+             angle_sherlock2=angles_sherlocks[0][2]
+             if cam_name=="FHAZ":
+                 camera['orient_hori']=0
+                 camera['orient_verti']=0
+             elif cam_name=="RHAZ":
+                camera['orient_hori']=180
+                camera['orient_verti']=0
+             elif cam_name=="NAVCAM":
+                camera['orient_hori']=angle_mat_hori
+                camera['orient_verti']=angle_mat_verti
+             elif cam_name=="PANCAM":
+                camera['orient_hori']=angle_mat_hori+1
+                camera['orient_verti']=angle_mat_verti
+             elif cam_name=="MINITES":
+                camera['orient_hori']=(angle_mat_hori+180)%360
+                camera['orient_verti']=angle_mat_verti
+             elif cam_name=="ENTRY":
+                camera['orient_hori']=10
+                camera['orient_verti']=270
+        elif cam_rov_id==6: #Opportunity
+             angle_mat_hori=angles_mats[0][3]
+             angle_mat_verti=angles_mats[1][3]
+             angle_sherlock1=angles_sherlocks[0][3]
+             angle_sherlock2=angles_sherlocks[0][3]
+             if cam_name=="FHAZ":
+                 camera['orient_hori']=0
+                 camera['orient_verti']=0
+             elif cam_name=="RHAZ":
+                camera['orient_hori']=180
+                camera['orient_verti']=0
+             elif cam_name=="NAVCAM":
+                camera['orient_hori']=angle_mat_hori
+                camera['orient_verti']=angle_mat_verti
+             elif cam_name=="PANCAM":
+                camera['orient_hori']=angle_mat_hori+1
+                camera['orient_verti']=angle_mat_verti
+             elif cam_name=="MINITES":
+                camera['orient_hori']=(angle_mat_hori+180)%360
+                camera['orient_verti']=angle_mat_verti
+             elif cam_name=="ENTRY":
+                camera['orient_hori']=10
+                camera['orient_verti']=270
+           
             
                 
 
