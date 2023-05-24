@@ -212,40 +212,31 @@ def bouton_droite(id):
     if cnx is None: 
         return None
     try:
-        print('edcoucoucoucoucoucocuocuocuocuocuocucoucoucocuocucouc')
-        print(id,type(id))
         cursor = cnx.cursor(dictionary=True)
 
-        print('avant')
         sql="SELECT sol,rover_id,camera_id FROM Photos WHERE photo_id=%s"
         param=([id])
-        print('alorspeutetre')
         cursor.execute(sql,param)
-        print('cestnon')
         data=cursor.fetchall()
-        print('data')
-        print(data)
-        print('findata')
-        sol,rover_id,camera_id=data[0]['sol'],data[0]['rover_id'], data[0]['camera_id']
-        print('après')
+        sol,rover_id,camera_id=data[0]['sol'],data[0]['rover_id'], data[0]['camera_id'] #récuparation des données de la photo affichée
 
-        sql="SELECT orientation_hori FROM Cameras WHERE camera_id=%s"
+        sql="SELECT orientation_hori,orientation_verti FROM Cameras WHERE camera_id=%s"
         param=([camera_id])
         cursor.execute(sql,param)
-        orient_hori=cursor.fetchall()[0]['orientation_hori']
-        print(orient_hori)
+        req=cursor.fetchall()[0]
+        orient_hori,orient_verti=req['orientation_hori'],req['orientation_verti']
 
-        sql="SELECT camera_id FROM Cameras WHERE %s>orientation_hori>(%s-180)%360"
-        param=([orient_hori,orient_hori])
+        sql="SELECT camera_id, orientation_hori FROM Cameras WHERE %s>orientation_hori>(%s-180)%360 AND %s+10>orientation_verti>%s-10"
+        param=([orient_hori,orient_hori,orient_verti,orient_verti])
         cursor.execute(sql,param)
-        camera_droite_id=cursor.fetchall()[0]['camera_id']
-        print(camera_droite_id)
+        cameras_droite=cursor.fetchall()
+        cameras_droite.sort(key = lambda cam: cam['orientation_hori'])
+        camera_droite_id=cameras_droite[0]['camera_id']
 
         sql = "SELECT photo_id,url FROM Photos WHERE sol=%s AND rover_id=%s AND camera_id=%s"
         param=([sol,rover_id,camera_droite_id])
         cursor.execute(sql,param)
         req = cursor.fetchall()
-        print(req)
         id_droite,url_droite=req[0]['photo_id'],req[0]['url']
         print(0)
         print(id_droite,url_droite)
