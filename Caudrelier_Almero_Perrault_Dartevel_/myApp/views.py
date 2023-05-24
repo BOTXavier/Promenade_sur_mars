@@ -60,9 +60,9 @@ def data():
 
 @app.route("/photo_droite/<id>")
 def photo_droite(id=None):
-    id,url=bdd.bouton_droite(id)
+    id,url=bdd.bouton_droite(int(id))
     print('succès droite')
-    print (url[0]['url'])
+    print (id,url)
     return render_template("streetview.html", parameter=[id,url])
 
 @app.route("/photo_gauche/<id>")

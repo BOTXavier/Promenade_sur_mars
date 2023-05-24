@@ -212,30 +212,45 @@ def bouton_droite(id):
     if cnx is None: 
         return None
     try:
+        print('edcoucoucoucoucoucocuocuocuocuocuocucoucoucocuocucouc')
+        print(id,type(id))
         cursor = cnx.cursor(dictionary=True)
 
+        print('avant')
         sql="SELECT sol,rover_id,camera_id FROM Photos WHERE photo_id=%s"
-        param=(id)
+        param=([id])
+        print('alorspeutetre')
         cursor.execute(sql,param)
+        print('cestnon')
         data=cursor.fetchall()
-        sol,rover_id,camera_id=data[0]['sol'],data[1]['rover_id'], data[2]['camera_id']
-        
-        sql="SELECT orient_hori FROM Cameras WHERE camera_id=%s"
-        param=(camera_id)
-        cursor.execute(sql,param)
-        orient_hori=cursor.fetchall()[0]['orient_hori']
+        print('data')
+        print(data)
+        print('findata')
+        sol,rover_id,camera_id=data[0]['sol'],data[0]['rover_id'], data[0]['camera_id']
+        print('après')
 
-        sql="SELECT camera_id FROM Cameras WHERE %s>orient_hori>(%s-180)%360"
-        param=(orient_hori)
+        sql="SELECT orientation_hori FROM Cameras WHERE camera_id=%s"
+        param=([camera_id])
+        cursor.execute(sql,param)
+        orient_hori=cursor.fetchall()[0]['orientation_hori']
+        print(orient_hori)
+
+        sql="SELECT camera_id FROM Cameras WHERE %s>orientation_hori>(%s-180)%360"
+        param=([orient_hori,orient_hori])
         cursor.execute(sql,param)
         camera_droite_id=cursor.fetchall()[0]['camera_id']
+        print(camera_droite_id)
 
         sql = "SELECT photo_id,url FROM Photos WHERE sol=%s AND rover_id=%s AND camera_id=%s"
-        param=(sol,rover_id,camera_droite_id)
+        param=([sol,rover_id,camera_droite_id])
         cursor.execute(sql,param)
         req = cursor.fetchall()
-        id_droite,url_droite=req[0],['photo_id'],req[1]['url']
-
+        print(req)
+        id_droite,url_droite=req[0]['photo_id'],req[0]['url']
+        print(0)
+        print(id_droite,url_droite)
+        print(type(id_droite),type(url_droite))
+        print(1)
         close_bd(cursor, cnx)
     except mysql.connector.Error as err:
         session['errorDB'] = "Failed saveDataFromFile data : {}".format(err)
