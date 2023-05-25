@@ -20,6 +20,7 @@ import time
 ROVER=['perseverance','curiosity','spirit','opportunity']
 API_KEY=['uFPg2xAvVYtXreHwgx9swNodGOnuqRCsqRX426T6','09r9lOKEqz9yGsPK6iiKDFFKRBLEvl7ZQKXyNaoS']
 LIENS_POSI=['https://mars.nasa.gov/mmgis-maps/M20/Layers/json/M20_waypoints.json','https://mars.nasa.gov/mmgis-maps/MSL/Layers/json/MSL_waypoints.json'] # A ordonner dans le même ordre que ROVER
+LIST_CAM_MOBILES=[41,40,38,39,22,23,26,29,30,31,16,17,18,47] # missing : SHERLOC_WATSON rover8, 
 
 def réordonnencement(fichier,dico_photos,dico_rovers,dico_cameras):
     data=fichier.read().decode('utf-8')
@@ -38,6 +39,7 @@ def réordonnencement(fichier,dico_photos,dico_rovers,dico_cameras):
             dico_cameras[camera_id]=camera
             dico_cameras[camera_id]['orient_hori']=0 # coordonnée spérique regardant vers l'avant du rover, horizontalement
             dico_cameras[camera_id]['orient_verti']=0 # coordonnée spérique regardant vers l'avant du rover, verticalement
+        
             
 def check_NASA(compt_req,rover,sol,compt_api_key,dico_photos,dico_rovers,dico_cameras):
     url='https://api.nasa.gov/mars-photos/api/v1/rovers/'+rover+'/photos?sol='+str(sol)+'&api_key='+API_KEY[compt_api_key]
@@ -68,6 +70,9 @@ def data_base(n,dernier_sol,dico_photos,dico_rovers,dico_cameras):
                 compt_req=check_NASA(compt_req, rover, sol,compt_api_key,dico_photos,dico_rovers,dico_cameras)
             else:
                 compt_req=check_NASA(compt_req, rover, sol,compt_api_key,dico_photos,dico_rovers,dico_cameras)
+    angles_mats=[[0,0,0,0],[0,0,0,0]] # On suppose les bras initialement orienté vers l'avant
+    angles_sherlocks=[[0,0,0,0],[0,0,0,0]]
+    orient_cams(dico_cameras,angles_mats,angles_sherlocks)
     return [dico_photos,dico_rovers,dico_cameras]
 
 ##################################################################################
@@ -75,138 +80,136 @@ def data_base(n,dernier_sol,dico_photos,dico_rovers,dico_cameras):
 # Donne la position des caméras dans le référentiel du rover
 
 ###################################################################################
-
-def orient_cams(camera_a_orient,angles_mats,angles_sherlocks, camera): #camera=[camera_id,rover_id, nom]
-        cam_rov_id=camera_a_orient[1]
-        cam_name=camera_a_orient[2]
+           
+def orient_cams(dico_cameras,angles_mats,angles_sherlocks):
+    for camera_id in dico_cameras:
+        cam_rov_id=dico_cameras[camera_id]['rover_id']
+        cam_name=dico_cameras[camera_id]['name']
         if cam_rov_id==8: # Perseverance
             angle_mat_hori=angles_mats[0][0]
             angle_mat_verti=angles_mats[1][0]
             angle_sherlock1=angles_sherlocks[0][0]
             angle_sherlock2=angles_sherlocks[1][0]
             if cam_name=="FRONT_HAZCAM_LEFT_A":
-                camera['orient_hori']=1
-                camera['orient_verti']=0
+                dico_cameras[camera_id]['orient_hori']=1
+                dico_cameras[camera_id]['orient_verti']=0
             elif cam_name=="FRONT_HAZCAM_RIGHT_A":
-                camera['orient_hori']=359
-                camera['orient_verti']=0
+                dico_cameras[camera_id]['orient_hori']=359
+                dico_cameras[camera_id]['orient_verti']=0
             elif cam_name=="REAR_HAZCAM_LEFT":
-                camera['orient_hori']=179
-                camera['orient_verti']=0
+                dico_cameras[camera_id]['orient_hori']=179
+                dico_cameras[camera_id]['orient_verti']=0
             elif cam_name=="REAR_HAZCAM_RIGHT":
-                camera['orient_hori']=181
-                camera['orient_verti']=0
+                dico_cameras[camera_id]['orient_hori']=181
+                dico_cameras[camera_id]['orient_verti']=0
             elif cam_name=="SKYCAM": # caméra vers le haut
-                camera['orient_hori']=0
-                camera['orient_verti']=90
+                dico_cameras[camera_id]['orient_hori']=0
+                dico_cameras[camera_id]['orient_verti']=90
             elif cam_name=="MCZ_LEFT":
-                camera['orient_hori']=angle_mat_hori+1
-                camera['orient_verti']=angle_mat_verti-1
+                dico_cameras[camera_id]['orient_hori']=angle_mat_hori+1
+                dico_cameras[camera_id]['orient_verti']=angle_mat_verti-1
             elif cam_name=="MCZ_RIGHT":
-                camera['orient_hori']=angle_mat_hori-1
-                camera['orient_verti']=angle_mat_verti-1
+                dico_cameras[camera_id]['orient_hori']=angle_mat_hori-1
+                dico_cameras[camera_id]['orient_verti']=angle_mat_verti-1
             elif cam_name=="NAVCAM _LEFT":
-                camera['orient_hori']=angle_mat_hori+2
-                camera['orient_verti']=angle_mat_verti-1
+                dico_cameras[camera_id]['orient_hori']=angle_mat_hori+2
+                dico_cameras[camera_id]['orient_verti']=angle_mat_verti-1
             elif cam_name=="NAVCAM _RIGHT":
-                camera['orient_hori']=angle_mat_hori-2
-                camera['orient_verti']=angle_mat_verti-1
+                dico_cameras[camera_id]['orient_hori']=angle_mat_hori-2
+                dico_cameras[camera_id]['orient_verti']=angle_mat_verti-1
             elif cam_name=="EDL_RUCAM": # caméra vers le haut
-                camera['orient_hori']=0
-                camera['orient_verti']=90
+                dico_cameras[camera_id]['orient_hori']=0
+                dico_cameras[camera_id]['orient_verti']=90
             elif cam_name=="EDL_DDCAM": # caméra vers le haut
-                camera['orient_hori']=0
-                camera['orient_verti']=90
+                dico_cameras[camera_id]['orient_hori']=0
+                dico_cameras[camera_id]['orient_verti']=90
             elif cam_name=="EDL_RDCAM": # caméra vers le bas
-                camera['orient_hori']=0
-                camera['orient_verti']=270
+                dico_cameras[camera_id]['orient_hori']=0
+                dico_cameras[camera_id]['orient_verti']=270
             elif cam_name=="EDL_PUCAM1": # caméra vers le bas
-                camera['orient_hori']=0
-                camera['orient_verti']=270
+                dico_cameras[camera_id]['orient_hori']=0
+                dico_cameras[camera_id]['orient_verti']=270
             elif cam_name=="EDL_PUCAM1": # caméra vers le bas
-                camera['orient_hori']=0
-                camera['orient_verti']=270
+                dico_cameras[camera_id]['orient_hori']=0
+                dico_cameras[camera_id]['orient_verti']=270
             elif cam_name=="SUPERCAM_RMI":
-                camera['orient_hori']=angle_mat_hori+1
-                camera['orient_verti']=angle_mat_verti
+                dico_cameras[camera_id]['orient_hori']=angle_mat_hori+1
+                dico_cameras[camera_id]['orient_verti']=angle_mat_verti
             elif cam_name=="SHERLOC_WATSON":
-                camera['orient_hori']=angle_sherlock1
-                camera['orient_verti']=angle_sherlock2
+                dico_cameras[camera_id]['orient_hori']=angle_sherlock1
+                dico_cameras[camera_id]['orient_verti']=angle_sherlock2
         elif cam_rov_id==5: #Curiosity
              angle_mat_hori=angles_mats[0][1]
              angle_mat_verti=angles_mats[1][1]
              angle_sherlock1=angles_sherlocks[0][1]
-             angle_sherlock2=angles_sherlocks[0][1]
+             angle_sherlock2=angles_sherlocks[1][1]
              if cam_name=="FHAZ":
-                camera['orient_hori']=0
-                camera['orient_verti']=0
+                dico_cameras[camera_id]['orient_hori']=0
+                dico_cameras[camera_id]['orient_verti']=0
              elif cam_name=="RHAZ":
-                camera['orient_hori']=180
-                camera['orient_verti']=0
+                dico_cameras[camera_id]['orient_hori']=180
+                dico_cameras[camera_id]['orient_verti']=0
              elif cam_name=="MAST":
-                camera['orient_hori']=angle_mat_hori
-                camera['orient_verti']=angle_mat_verti-1
+                dico_cameras[camera_id]['orient_hori']=angle_mat_hori
+                dico_cameras[camera_id]['orient_verti']=angle_mat_verti-1
              elif cam_name=="CHEMCAM":
-                camera['orient_hori']=angle_mat_hori
-                camera['orient_verti']=angle_mat_verti
+                dico_cameras[camera_id]['orient_hori']=angle_mat_hori
+                dico_cameras[camera_id]['orient_verti']=angle_mat_verti
              elif cam_name=="MAHLI":
-                camera['orient_hori']=135
-                camera['orient_verti']=0
+                dico_cameras[camera_id]['orient_hori']=135
+                dico_cameras[camera_id]['orient_verti']=0
              elif cam_name=="MARDI":
-                camera['orient_hori']=10
-                camera['orient_verti']=270
+                dico_cameras[camera_id]['orient_hori']=10
+                dico_cameras[camera_id]['orient_verti']=270
              elif cam_name=="NAVCAM":
-                camera['orient_hori']=angle_mat_hori+1
-                camera['orient_verti']=angle_mat_verti-1
+                dico_cameras[camera_id]['orient_hori']=angle_mat_hori+1
+                dico_cameras[camera_id]['orient_verti']=angle_mat_verti-1
         elif cam_rov_id==7: #Spirit
              angle_mat_hori=angles_mats[0][2]
              angle_mat_verti=angles_mats[1][2]
              angle_sherlock1=angles_sherlocks[0][2]
-             angle_sherlock2=angles_sherlocks[0][2]
+             angle_sherlock2=angles_sherlocks[1][2]
              if cam_name=="FHAZ":
-                 camera['orient_hori']=0
-                 camera['orient_verti']=0
+                 dico_cameras[camera_id]['orient_hori']=0
+                 dico_cameras[camera_id]['orient_verti']=0
              elif cam_name=="RHAZ":
-                camera['orient_hori']=180
-                camera['orient_verti']=0
+                dico_cameras[camera_id]['orient_hori']=180
+                dico_cameras[camera_id]['orient_verti']=0
              elif cam_name=="NAVCAM":
-                camera['orient_hori']=angle_mat_hori
-                camera['orient_verti']=angle_mat_verti
+                dico_cameras[camera_id]['orient_hori']=angle_mat_hori
+                dico_cameras[camera_id]['orient_verti']=angle_mat_verti
              elif cam_name=="PANCAM":
-                camera['orient_hori']=angle_mat_hori+1
-                camera['orient_verti']=angle_mat_verti
+                dico_cameras[camera_id]['orient_hori']=angle_mat_hori+1
+                dico_cameras[camera_id]['orient_verti']=angle_mat_verti
              elif cam_name=="MINITES":
-                camera['orient_hori']=(angle_mat_hori+180)%360
-                camera['orient_verti']=angle_mat_verti
+                dico_cameras[camera_id]['orient_hori']=(angle_mat_hori+180)%360
+                dico_cameras[camera_id]['orient_verti']=angle_mat_verti
              elif cam_name=="ENTRY":
-                camera['orient_hori']=10
-                camera['orient_verti']=270
+                dico_cameras[camera_id]['orient_hori']=10
+                dico_cameras[camera_id]['orient_verti']=270
         elif cam_rov_id==6: #Opportunity
              angle_mat_hori=angles_mats[0][3]
              angle_mat_verti=angles_mats[1][3]
              angle_sherlock1=angles_sherlocks[0][3]
-             angle_sherlock2=angles_sherlocks[0][3]
+             angle_sherlock2=angles_sherlocks[1][3]
              if cam_name=="FHAZ":
-                 camera['orient_hori']=0
-                 camera['orient_verti']=0
+                 dico_cameras[camera_id]['orient_hori']=0
+                 dico_cameras[camera_id]['orient_verti']=0
              elif cam_name=="RHAZ":
-                camera['orient_hori']=180
-                camera['orient_verti']=0
+                dico_cameras[camera_id]['orient_hori']=180
+                dico_cameras[camera_id]['orient_verti']=0
              elif cam_name=="NAVCAM":
-                camera['orient_hori']=angle_mat_hori
-                camera['orient_verti']=angle_mat_verti
+                dico_cameras[camera_id]['orient_hori']=angle_mat_hori
+                dico_cameras[camera_id]['orient_verti']=angle_mat_verti
              elif cam_name=="PANCAM":
-                camera['orient_hori']=angle_mat_hori+1
-                camera['orient_verti']=angle_mat_verti
+                dico_cameras[camera_id]['orient_hori']=angle_mat_hori+1
+                dico_cameras[camera_id]['orient_verti']=angle_mat_verti
              elif cam_name=="MINITES":
-                camera['orient_hori']=(angle_mat_hori+180)%360
-                camera['orient_verti']=angle_mat_verti
+                dico_cameras[camera_id]['orient_hori']=(angle_mat_hori+180)%360
+                dico_cameras[camera_id]['orient_verti']=angle_mat_verti
              elif cam_name=="ENTRY":
-                camera['orient_hori']=10
-                camera['orient_verti']=270
-        return camera
-           
-            
+                dico_cameras[camera_id]['orient_hori']=10
+                dico_cameras[camera_id]['orient_verti']=270
                 
 
 
