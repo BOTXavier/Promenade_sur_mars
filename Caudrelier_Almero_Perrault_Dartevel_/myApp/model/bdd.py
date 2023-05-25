@@ -430,3 +430,38 @@ def bouton_apres(id):
         session['errorDB'] = "Failed saveDataFromFile data : {}".format(err)
         print(session['errorDB']) #le problème s'affiche dans le terminal
     return id_apres,url_apres
+
+def update_angle_cam(angles_mats, angles_sherlocks): # angles_mats=[[angle_mats_hori, angle_mats_verti], ...], angles_sherlocks=[[angle_sherlocks_hori, angle_sherlocks_verti], ...] dans le référentiel du rover
+    
+    ##### A refaire, faut update toutes les positions au moins une fois car toute est defnie à 0
+    
+    cnx = connexion() 
+    if cnx is None: 
+        return None
+    try:
+        cursor = cnx.cursor(dictionary=True)
+
+        camera=None
+
+        sql="SELECT camera_id, rover_id, nom FROM Cameras"
+        cursor.execute(sql)
+        req=cursor.fetchall()[0]
+        cameras=[]
+        for cam in req: 
+            cam_id,rover_id, nom=cam['camera_id'],cam['rover_id'],cam['nom']
+            cameras.append([cam_id, rover_id, nom]) #liste de toutes cameras les cameras, rover_id et noms
+
+        for cam in cameras:
+            sql="UPDATE Cameras SET orientation_hori = %s AND orientation_verti = %s WHERE camera_id = %s"
+            camera_orients=bini.orient_cams(cam,angles_mats, angles_sherlocks,camera)
+            param=[camera_orients['orientation_hori'], camera_orients['orientation_verti'], cam[0]]
+            cursor.execute(sql,param)
+        
+        close_bd(cursor, cnx)
+    except mysql.connector.Error as err:
+        session['errorDB'] = "Failed saveDataFromFile data : {}".format(err)
+        print(session['errorDB']) #le problème s'affiche dans le terminal
+    return 1
+
+def update_angles(photo_id,angles_mats, angles_sherlocks): # détermine les angles de rota des caméras si la photo a été prise par un bras mobile
+    return 1

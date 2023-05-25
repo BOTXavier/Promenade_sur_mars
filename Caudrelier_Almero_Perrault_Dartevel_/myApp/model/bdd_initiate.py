@@ -76,11 +76,9 @@ def data_base(n,dernier_sol,dico_photos,dico_rovers,dico_cameras):
 
 ###################################################################################
 
-def orient_cams(dico_cameras,angles_mats,angles_sherlocks):
-    for camera_id in dico_cameras:
-        camera=dico_cameras[camera_id]
-        cam_rov_id=camera['rover_id']
-        cam_name=camera['name']
+def orient_cams(camera_a_orient,angles_mats,angles_sherlocks, camera): #camera=[camera_id,rover_id, nom]
+        cam_rov_id=camera_a_orient[1]
+        cam_name=camera_a_orient[2]
         if cam_rov_id==8: # Perseverance
             angle_mat_hori=angles_mats[0][0]
             angle_mat_verti=angles_mats[1][0]
@@ -206,6 +204,7 @@ def orient_cams(dico_cameras,angles_mats,angles_sherlocks):
              elif cam_name=="ENTRY":
                 camera['orient_hori']=10
                 camera['orient_verti']=270
+        return camera
            
             
                 

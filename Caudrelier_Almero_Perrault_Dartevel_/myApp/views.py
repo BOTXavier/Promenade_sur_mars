@@ -60,6 +60,8 @@ def data():
 
 @app.route("/photo_droite/<id>")
 def photo_droite(id=None):
+    #if camera est sur un mat:
+    #    update angles
     id,url=bdd.bouton_droite(int(id))
     print('succès droite')
     print (id,url)
