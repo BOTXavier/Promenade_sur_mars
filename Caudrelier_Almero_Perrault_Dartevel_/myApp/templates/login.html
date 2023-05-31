@@ -1,5 +1,4 @@
 <!DOCTYPE HTML>
-
 <html>
 
 <head>
@@ -8,6 +7,61 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
     <link rel="stylesheet" href="/static/css/main.css" />
     <noscript><link rel="stylesheet" href="/static/css/noscript.css" /></noscript>
+    <style>
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        .card {
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            background-color: #fff;
+            padding: 30px;
+        }
+
+        .card-title {
+            font-weight: bold;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .form-floating {
+            margin-bottom: 20px;
+        }
+
+        .form-floating label {
+            color: #888;
+        }
+
+        .form-floating input {
+            border: none;
+            border-radius: 5px;
+            padding: 10px;
+            width: 100%;
+        }
+
+        .form-floating input:focus {
+            outline: none;
+            box-shadow: none;
+        }
+
+        .form-check-label {
+            margin-left: 10px;
+        }
+
+        .btn-login {
+            background-color: #007bff;
+            border-color: #007bff;
+            color: #fff;
+        }
+
+        .btn-login:hover {
+            background-color: #0056b3;
+            border-color: #0056b3;
+        }
+    </style>
 </head>
 
 <body class="is-preload">
@@ -15,96 +69,91 @@
 
         <!-- Header -->
         {% include("layout/header.html") %}
+
         <!-- Main -->
         <section id="connecter" class="contact">
             <div class="container">
-              {% include("layout/info.html") %}
-              
-              <div class="row no-gutters">
-          
-                <div class="col-6 contact offset-3" data-aos="fade-up" data-aos-delay="300">
-      
-                  <form action="/connecter" method="post" role="form">
-                    <h4 class="w-100 text-center"><i class="fas fa-user-circle fa-2x"></i> Authentification des utilisateurs</h4>
-                    <div class="row mt-3">
-                      <div class="col-lg-6 form-group">
-                        <label for="login"></label>
-                        <input type="text" name="login" class="form-control" id="login" placeholder="Votre login" required>
-                      </div>
-                      <div class="col-lg-6 form-group">
-                        <label for="pwd"></label>
-                        <input type="paswword" class="form-control" name="mdp" id="mdp"
-                          placeholder="Votre mot de passe" required>
-                      </div>
-                    </div>
-               
-      
-                    <div class="w-100 text-center mt-4"><button type="submit">Se connecter</button></div>
-                  </form>
-                </div>
-      
-              </div>
-      
-      
-            </div>
-            <div class="col-3 offset-1">
+                {% include("layout/info.html") %}
 
-                <form method="post" action="/addMembre">
-                  <h4 class="card-title text-center mb-2 fw-light">S'enregistrer</h4>
-    
-                  <div class="form-floating mb-3">
-                    <label for="nom">Nom</label>
-                    <input type="text" class="form-control" id="nom" name="nom" placeholder="Nom" required autofocus>
-                    
-                  </div>
-    
-                  <div class="form-floating mb-3">
-                    <label for="prenom">Prénom</label>
-                    <input type="text" class="form-control" id="prenom" name="prenom" placeholder="Prénom" required>
-                    
-                  </div>
-    
-                  <div class="form-floating mb-3">
-                    <label for="mail">E-mail</label>
-                    <input type="email" class="form-control" id="mail" name="mail" placeholder="name@example.com" required>
-                    
-                  </div>
-    
-                  <hr>
-    
-                  <div class="form-floating mb-3">
-                    <label for="nom">Login</label>
-                    <input type="text" class="form-control" id="login" name="login" placeholder="login" required>
-                    
-                  </div>
-    
-                  <div class="form-floating mb-3">
-                    <label for="mdp">Mot de passe</label>
-                    <input type="text" class="form-control" id="mdp" name="mdp" placeholder="mot de passe" required>
-                    
-                  </div>
-    
-                  <div class="form-floating mb-3 d-flex">
-    
-                    <div class="form-check">
-                      <input type="radio" id="R1" name="statut" class="form-check-input" value="1" checked>
-                      <label class="form-check-label" for="R1">Utilisateur</label>
+                <div class="row no-gutters">
+
+                    <div class="col-6 contact offset-3" data-aos="fade-up" data-aos-delay="300">
+
+                        <form action="/connecter" method="post" role="form">
+                            <h4 class="w-100 text-center"><i class="fas fa-user-circle fa-2x"></i> Authentification des utilisateurs</h4>
+                            <div class="row mt-3">
+                                <div class="col-lg-6 form-group">
+                                    <label for="login"></label>
+                                    <input type="text" name="login" class="form-control" id="login" placeholder="Votre login" required>
+                                </div>
+                                <div class="col-lg-6 form-group">
+                                    <label for="pwd"></label>
+                                    <input type="password" class="form-control" name="mdp" id="mdp"
+                                        placeholder="Votre mot de passe" required>
+                                </div>
+                            </div>
+
+                            <div class="w-100 text-center mt-4"><button type="submit">Se connecter</button></div>
+                        </form>
                     </div>
-                    <div class="form-check ms-5">
-                      <input type="radio" id="R2" name="statut" class="form-check-input" value="0">
-                      <label class="form-check-label" for="R2">Administrateur</label>
-                    </div>
-    
-                  </div>
-                  
-                  <div class="d-grid mb-2 mt-5">
-                    <button class="btn btn-primary btn-login fw-bold text-uppercase" type="submit">Enregistrer</button>
-                  </div>
-    
-                </form>
-              </div>
+
+                </div>
+
+                <div class="col-6 contact offset-3" data-aos="fade-up" data-aos-delay="300">
+
+                    <form method="post" action="/addMembre">
+                        <h4 class="w-100 text-center"><i class="fas fa-user-circle fa-2x"></i> S'enregistrer</h4>
+                        <div class="row mt-3">
+                            <div class="col-lg-6 form-group">
+                                <label for="nom"></label>
+                                <input type="text" name="nom" class="form-control" id="nom" placeholder="Votre nom" required>
+                            </div>
+                            <div class="col-lg-6 form-group">
+                                <label for="prenom"></label>
+                                <input type="text" class="form-control" name="prenom" id="prenom"
+                                    placeholder="Votre prénom" required>
+                            </div>
+                        </div>
+
+                        <div class="col-lg-6 form-group">
+                            <label for="mail"></label>
+                            <input type="email" class="form-control" id="mail" name="mail" placeholder="name@example.com" required>
+                        </div>
+
+                        <div class="row mt-3">
+                            <div class="col-lg-6 form-group">
+                                <label for="login"></label>
+                                <input type="text" name="login" class="form-control" id="login" placeholder="Votre login" required>
+                            </div>
+                            <div class="col-lg-6 form-group">
+                                <label for="mdp"></label>
+                                <input type="password" class="form-control" name="mdp" id="mdp"
+                                    placeholder="Votre mot de passe" required>
+                            </div>
+                        </div>
+
+
+                        <div class="row my-5">
+                          <div class="form-group">
+                            -------------------------------------------------------------------------------------------------
+                              <div class="form-check">
+                                  <input type="radio" id="utilisateur" name="statut" class="form-check-input" value="1" checked>
+                                  <label class="form-check-label" for="utilisateur">Utilisateur</label>
+                              </div>
+                              <div class="form-check">
+                                  <input type="radio" id="administrateur" name="statut" class="form-check-input" value="0">
+                                  <label class="form-check-label" for="administrateur">Administrateur</label>
+                              </div>
+                          </div>
+                        </div>
+
+                        <div class="w-100 text-center mt-4"><button type="submit">S'enregistrer</button></div>
+                    </form>
+                </div>
+
+            </div>
         </section><!-- End Contact Section -->
-        
+
         <!-- Footer -->
         {% include("layout/footer.html") %}
 

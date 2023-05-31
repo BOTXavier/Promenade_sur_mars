@@ -21,20 +21,25 @@
         <li><a href="/left-sidebar">Left Sidebar</a></li>
         <li><a href="/right-sidebar">Right Sidebar</a></li>
         <li><a href="/no-sidebar">No Sidebar</a></li>
-        
-    </ul>
-  </li>
+      </ul>
+    </li>
 
-  {% if session['login'] %}
-  <li><a href="/logout" class="button primary">{{ session['login'] }}</a></li>
-{% else %} 
-  <li><a href="/login" class="button primary">Se connecter</a></li>
-{% endif %}
-
-
-
-    
-
-    
+    {% if session['login'] %}
+    <li><a href="/logout" id="logout" class="button primary">{{ session['login'] }}</a></li>
+    {% else %} 
+    <li><a href="/login" class="button primary">Se Connecter</a></li>
+    {% endif %}
   </ul>
 </nav>
+
+<!-- Scripts -->
+<script>
+  document.getElementById('logout').addEventListener('click', function(e) {
+      e.preventDefault();
+      if (confirm('Voulez-vous vous déconnecter ?')) {
+          window.location.href = '/logout'; // Mettez l'URL de déconnexion ici
+      }
+  });
+</script>
+</body>
+</html>
