@@ -207,6 +207,9 @@ def order_data():
     dico_photos,dico_rovers,dico_cameras,dico_posi=bup.créer_dicos()
     saveDatafromNASA(dico_photos,dico_rovers,dico_cameras,dico_posi)
 
+##########################################################################
+### Boutons d'affichage des photos voisines de id
+
 def bouton_droite(id):
     cnx = connexion() 
     if cnx is None: 
@@ -215,26 +218,29 @@ def bouton_droite(id):
         cursor = cnx.cursor(dictionary=True)
 
         sql="SELECT sol,rover_id,camera_id FROM Photos WHERE photo_id=%s"
-        param=(id)
+        param=([id])
         cursor.execute(sql,param)
         data=cursor.fetchall()
-        sol,rover_id,camera_id=data[0]['sol'],data[1]['rover_id'], data[2]['camera_id']
-        
-        sql="SELECT orient_hori FROM Cameras WHERE camera_id=%s"
-        param=(camera_id)
-        cursor.execute(sql,param)
-        orient_hori=cursor.fetchall()[0]['orient_hori']
+        sol,rover_id,camera_id=data[0]['sol'],data[0]['rover_id'], data[0]['camera_id'] #récuparation des données de la photo affichée
 
-        sql="SELECT camera_id FROM Cameras WHERE %s>orient_hori>(%s-180)%360"
-        param=(orient_hori)
+        sql="SELECT orientation_hori,orientation_verti FROM Cameras WHERE camera_id=%s"
+        param=([camera_id])
         cursor.execute(sql,param)
-        camera_droite_id=cursor.fetchall()[0]['camera_id']
+        req=cursor.fetchall()[0]
+        orient_hori,orient_verti=req['orientation_hori'],req['orientation_verti']
+
+        sql="SELECT camera_id, orientation_hori FROM Cameras WHERE %s>orientation_hori>(%s-180)%360 AND %s+10>orientation_verti>%s-10"
+        param=([orient_hori,orient_hori,orient_verti,orient_verti])
+        cursor.execute(sql,param)
+        cameras_droite=cursor.fetchall()
+        cameras_droite.sort(key = lambda cam: cam['orientation_hori'])
+        camera_droite_id=cameras_droite[0]['camera_id']
 
         sql = "SELECT photo_id,url FROM Photos WHERE sol=%s AND rover_id=%s AND camera_id=%s"
-        param=(sol,rover_id,camera_droite_id)
+        param=([sol,rover_id,camera_droite_id])
         cursor.execute(sql,param)
         req = cursor.fetchall()
-        id_droite,url_droite=req[0],['photo_id'],req[1]['url']
+        id_droite,url_droite=req[0]['photo_id'],req[0]['url']
 
         close_bd(cursor, cnx)
     except mysql.connector.Error as err:
@@ -250,32 +256,35 @@ def bouton_gauche(id):
         cursor = cnx.cursor(dictionary=True)
 
         sql="SELECT sol,rover_id,camera_id FROM Photos WHERE photo_id=%s"
-        param=(id)
+        param=([id])
         cursor.execute(sql,param)
         data=cursor.fetchall()
-        sol,rover_id,camera_id=data[0]['sol'],data[1]['rover_id'], data[2]['camera_id']
-        
-        sql="SELECT orient_hori FROM Cameras WHERE camera_id=%s"
-        param=(camera_id)
-        cursor.execute(sql,param)
-        orient_hori=cursor.fetchall()[0]['orient_hori']
+        sol,rover_id,camera_id=data[0]['sol'],data[0]['rover_id'], data[0]['camera_id'] #récuparation des données de la photo affichée
 
-        sql="SELECT camera_id FROM Cameras WHERE %s<orient_hori<(%s-180)%360"
-        param=(orient_hori)
+        sql="SELECT orientation_hori,orientation_verti FROM Cameras WHERE camera_id=%s"
+        param=([camera_id])
         cursor.execute(sql,param)
-        camera_gauche_id=cursor.fetchall()[0]['camera_id']
+        req=cursor.fetchall()[0]
+        orient_hori,orient_verti=req['orientation_hori'],req['orientation_verti']
+
+        sql="SELECT camera_id, orientation_hori FROM Cameras WHERE %s<orientation_hori<(%s-180)%360 AND %s+10>orientation_verti>%s-10"
+        param=([orient_hori,orient_hori,orient_verti,orient_verti])
+        cursor.execute(sql,param)
+        cameras_droite=cursor.fetchall()
+        cameras_droite.sort(key = lambda cam: cam['orientation_hori'])
+        camera_droite_id=cameras_droite[0]['camera_id']
 
         sql = "SELECT photo_id,url FROM Photos WHERE sol=%s AND rover_id=%s AND camera_id=%s"
-        param=(sol,rover_id,camera_gauche_id)
+        param=([sol,rover_id,camera_droite_id])
         cursor.execute(sql,param)
         req = cursor.fetchall()
-        id_gauche,url_gauche=req[0]['photo_id'],req[1]['url']
-
+        id_gauche,url_gauche=req[0]['photo_id'],req[0]['url']
+        
         close_bd(cursor, cnx)
     except mysql.connector.Error as err:
         session['errorDB'] = "Failed saveDataFromFile data : {}".format(err)
         print(session['errorDB']) #le problème s'affiche dans le terminal
-    return id_gauche,url_gauche
+    return id_gauche, url_gauche
 
 def bouton_haut(id):
     cnx = connexion() 
@@ -285,32 +294,35 @@ def bouton_haut(id):
         cursor = cnx.cursor(dictionary=True)
 
         sql="SELECT sol,rover_id,camera_id FROM Photos WHERE photo_id=%s"
-        param=(id)
+        param=([id])
         cursor.execute(sql,param)
         data=cursor.fetchall()
-        sol,rover_id,camera_id=data[0]['sol'],data[1]['rover_id'], data[2]['camera_id']
-        
-        sql="SELECT orient_hori FROM Cameras WHERE camera_id=%s"
-        param=(camera_id)
-        cursor.execute(sql,param)
-        orient_verti=cursor.fetchall()[0]['orient_hori']
+        sol,rover_id,camera_id=data[0]['sol'],data[0]['rover_id'], data[0]['camera_id'] #récuparation des données de la photo affichée
 
-        sql="SELECT camera_id FROM Cameras WHERE (%s-180)%360>orient_verti>%s"
-        param=(orient_verti)
+        sql="SELECT orientation_hori,orientation_verti FROM Cameras WHERE camera_id=%s"
+        param=([camera_id])
         cursor.execute(sql,param)
-        camera_haute_id=cursor.fetchall()[0]['camera_id']
+        req=cursor.fetchall()[0]
+        orient_hori,orient_verti=req['orientation_hori'],req['orientation_verti']
+
+        sql="SELECT camera_id, orientation_hori FROM Cameras WHERE (%s-180)%360>orientation_verti>%s AND %s+10>orientation_hori>%s-10"
+        param=([orient_verti,orient_verti,orient_hori,orient_hori])
+        cursor.execute(sql,param)
+        cameras_droite=cursor.fetchall()
+        cameras_droite.sort(key = lambda cam: cam['orientation_hori'])
+        camera_droite_id=cameras_droite[0]['camera_id']
 
         sql = "SELECT photo_id,url FROM Photos WHERE sol=%s AND rover_id=%s AND camera_id=%s"
-        param=(sol,rover_id,camera_haute_id)
+        param=([sol,rover_id,camera_droite_id])
         cursor.execute(sql,param)
         req = cursor.fetchall()
-        id_haute,url_haute = req[0]['photo_id'], req[1]['url']
-
+        id_haut,url_haut=req[0]['photo_id'],req[0]['url']
+        
         close_bd(cursor, cnx)
     except mysql.connector.Error as err:
         session['errorDB'] = "Failed saveDataFromFile data : {}".format(err)
         print(session['errorDB']) #le problème s'affiche dans le terminal
-    return id_haute,url_haute
+    return id_haut, url_haut
 
 def bouton_bas(id):
     cnx = connexion() 
@@ -320,32 +332,35 @@ def bouton_bas(id):
         cursor = cnx.cursor(dictionary=True)
 
         sql="SELECT sol,rover_id,camera_id FROM Photos WHERE photo_id=%s"
-        param=(id)
+        param=([id])
         cursor.execute(sql,param)
         data=cursor.fetchall()
-        sol,rover_id,camera_id=data[0]['sol'],data[1]['rover_id'], data[2]['camera_id']
-        
-        sql="SELECT orient_hori FROM Cameras WHERE camera_id=%s"
-        param=(camera_id)
-        cursor.execute(sql,param)
-        orient_verti=cursor.fetchall()[0]['orient_hori']
+        sol,rover_id,camera_id=data[0]['sol'],data[0]['rover_id'], data[0]['camera_id'] #récuparation des données de la photo affichée
 
-        sql="SELECT camera_id FROM Cameras WHERE (%s-180)%360<orient_verti<%s"
-        param=(orient_verti)
+        sql="SELECT orientation_hori,orientation_verti FROM Cameras WHERE camera_id=%s"
+        param=([camera_id])
         cursor.execute(sql,param)
-        camera_bas_id=cursor.fetchall()[0]['camera_id']
+        req=cursor.fetchall()[0]
+        orient_hori,orient_verti=req['orientation_hori'],req['orientation_verti']
+
+        sql="SELECT camera_id, orientation_hori FROM Cameras  WHERE (%s-180)%360<orientation_verti<%s AND %s+10>orientation_hori>%s-10"
+        param=([orient_verti,orient_verti,orient_hori,orient_hori])
+        cursor.execute(sql,param)
+        cameras_droite=cursor.fetchall()
+        cameras_droite.sort(key = lambda cam: cam['orientation_hori'])
+        camera_droite_id=cameras_droite[0]['camera_id']
 
         sql = "SELECT photo_id,url FROM Photos WHERE sol=%s AND rover_id=%s AND camera_id=%s"
-        param=(sol,rover_id,camera_bas_id)
+        param=([sol,rover_id,camera_droite_id])
         cursor.execute(sql,param)
         req = cursor.fetchall()
-        id_bas,url_bas = req[0]['photo_id'],req[1]['url']
-
+        id_bas,url_bas=req[0]['photo_id'],req[0]['url']
+        
         close_bd(cursor, cnx)
     except mysql.connector.Error as err:
         session['errorDB'] = "Failed saveDataFromFile data : {}".format(err)
         print(session['errorDB']) #le problème s'affiche dans le terminal
-    return id_bas,url_bas
+    return id_bas, url_bas
 
 def bouton_avant(id):
     cnx = connexion() 
@@ -355,13 +370,13 @@ def bouton_avant(id):
         cursor = cnx.cursor(dictionary=True)
 
         sql="SELECT sol,rover_id,camera_id FROM Photos WHERE photo_id=%s"
-        param=(id)
+        param=([id])
         cursor.execute(sql,param)
         data=cursor.fetchall()
-        sol,rover_id,camera_id=sol,rover_id,camera_id=data[0]['sol'],data[1]['rover_id'], data[2]['camera_id']
+        sol,rover_id,camera_id=data[0]['sol'],data[0]['rover_id'], data[0]['camera_id'] #récuparation des données de la photo affichée
 
         sql="SELECT name FROM Rovers WHERE rover_id=%s"
-        param=(rover_id)
+        param=([rover_id])
         cursor.execute(sql,param)
         rover_name=cursor.fetchall()[0]['name']
 
@@ -369,22 +384,22 @@ def bouton_avant(id):
         posi_id=num_rover*(10**6)+sol
 
         sql="SELECT lat,lon,cap FROM Positions WHERE posi_id=%s"
-        param=(posi_id)
+        param=([posi_id])
         cursor.execute(sql,param)
-        data=cursor.fetchall()
-        lat,long,cap=data[0]['lat'], data[1]['long'], data[2]['cap']
+        data=cursor.fetchall()[0]
+        lat,long,cap=data['lat'], data['long'], data['cap']
 
         sql = "SELECT photo_id,url FROM Photos WHERE rover_id=%s AND camera_id=%s AND posi_id<%s AND (lat!=%s OR long!=%s OR cap!=%s)"
-        param=(rover_id,camera_id,posi_id,lat,long,cap)
+        param=([rover_id,camera_id,posi_id,lat,long,cap])
         cursor.execute(sql,param)
         req = cursor.fetchall()
         id_avant,url_avant = req[0]['photo_id'], req[1]['url']
-
+        
         close_bd(cursor, cnx)
     except mysql.connector.Error as err:
         session['errorDB'] = "Failed saveDataFromFile data : {}".format(err)
         print(session['errorDB']) #le problème s'affiche dans le terminal
-    return id_avant,url_avant
+    return id_avant, url_avant
 
 def bouton_apres(id):
     cnx = connexion() 
@@ -394,13 +409,13 @@ def bouton_apres(id):
         cursor = cnx.cursor(dictionary=True)
 
         sql="SELECT sol,rover_id,camera_id FROM Photos WHERE photo_id=%s"
-        param=(id)
+        param=([id])
         cursor.execute(sql,param)
         data=cursor.fetchall()
-        sol,rover_id,camera_id=sol,rover_id,camera_id=data[0]['sol'],data[1]['rover_id'], data[2]['camera_id']
+        sol,rover_id,camera_id=data[0]['sol'],data[0]['rover_id'], data[0]['camera_id'] #récuparation des données de la photo affichée
 
         sql="SELECT name FROM Rovers WHERE rover_id=%s"
-        param=(rover_id)
+        param=([rover_id])
         cursor.execute(sql,param)
         rover_name=cursor.fetchall()[0]['name']
 
@@ -408,19 +423,70 @@ def bouton_apres(id):
         posi_id=num_rover*(10**6)+sol
 
         sql="SELECT lat,lon,cap FROM Positions WHERE posi_id=%s"
-        param=(posi_id)
+        param=([posi_id])
         cursor.execute(sql,param)
-        data=cursor.fetchall()
-        lat,long,cap=data[0]['lat'], data[1]['long'], data[2]['cap']
+        data=cursor.fetchall()[0]
+        lat,long,cap=data['lat'], data['long'], data['cap']
 
         sql = "SELECT photo_id,url FROM Photos WHERE rover_id=%s AND camera_id=%s AND posi_id>%s AND (lat!=%s OR long!=%s OR cap!=%s)"
-        param=(rover_id,camera_id,posi_id,lat,long,cap)
+        param=([rover_id,camera_id,posi_id,lat,long,cap])
         cursor.execute(sql,param)
         req = cursor.fetchall()
-        id_apres,url_apres = req[0]['photo_id'],req[1]['url']
-
+        id_apres,url_apres = req[0]['photo_id'], req[1]['url']
+        
         close_bd(cursor, cnx)
     except mysql.connector.Error as err:
         session['errorDB'] = "Failed saveDataFromFile data : {}".format(err)
         print(session['errorDB']) #le problème s'affiche dans le terminal
-    return id_apres,url_apres
+    return id_apres, url_apres
+
+
+##########################################################################
+### Ajustement des angles des caméras montées sur des mats mobiles
+def update_angle_cam(angles_mats, angles_sherlocks): # angles_mats=[[angle_mats_hori], [angle_mats_verti]], angles_sherlocks=[[angle_sherlocks_hori], [angle_sherlocks_verti]] dans le référentiel du rover
+    cnx = connexion() 
+    if cnx is None: 
+        return None
+    try:
+        cursor = cnx.cursor(dictionary=True)
+
+        sql="SELECT camera_id, rover_id, nom FROM Cameras"
+        cursor.execute(sql)
+        req=cursor.fetchall()[0]
+        cameras=[]
+        for cam in req: 
+            cam_id,rover_id, nom=cam['camera_id'],cam['rover_id'],cam['nom']
+            cameras.append([cam_id, rover_id, nom]) #liste de toutes les cameras
+
+        for cam in cameras:
+            sql="UPDATE Cameras SET orientation_hori = %s AND orientation_verti = %s WHERE camera_id = %s"
+            camera_orients=bup.aligner_cams(cam[0],cam[2], cam[1],angles_mats, angles_sherlocks)
+            param=[camera_orients[0], camera_orients[1], cam[0]]
+            cursor.execute(sql,param)
+        
+        close_bd(cursor, cnx)
+    except mysql.connector.Error as err:
+        session['errorDB'] = "Failed saveDataFromFile data : {}".format(err)
+        print(session['errorDB']) #le problème s'affiche dans le terminal
+    return 1
+
+def ajuster_cams_mats(photo_id,angles_mats,angles_sherlocks):
+    cnx = connexion() 
+    if cnx is None: 
+        return None
+    try:
+        cursor = cnx.cursor(dictionary=True)
+
+        sql="SELECT camera_id FROM Photos WHERE photo_id=%s"
+        param=[photo_id]
+        cursor.execute(sql,param)
+        req=cursor.fetchall()[0]
+        cam_id=req['camera_id']
+
+        if cam_id in bini.LIST_CAM_MOBILES:
+            update_angle_cam(angles_mats, angles_sherlocks)
+
+    except mysql.connector.Error as err:
+        session['errorDB'] = "Failed saveDataFromFile data : {}".format(err)
+        print(session['errorDB']) #le problème s'affiche dans le terminal
+    return 1

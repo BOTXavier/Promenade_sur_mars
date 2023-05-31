@@ -60,44 +60,50 @@ def data():
 
 @app.route("/photo_droite/<id>")
 def photo_droite(id=None):
-    id,url=bdd.bouton_droite(id)
-    print('succès droite')
-    print (url[0]['url'])
+    angles_mats=[[0,0,0,0],[0,0,0,0]]
+    angles_sherlocks=[[0,0,0,0],[0,0,0,0]]
+    bdd.ajuster_cams_mats(id,angles_mats,angles_sherlocks) #Trouver comment déterminer les angles des mats mobiles
+    id,url=bdd.bouton_droite(int(id))
     return render_template("streetview.html", parameter=[id,url])
 
 @app.route("/photo_gauche/<id>")
-def photo_gauche(id_prec):
-    id,url=bdd.bouton_gauche(id_prec)
-    print(url)
-    print('succès gauche')
+def photo_gauche(id=None):
+    angles_mats=[[0,0,0,0],[0,0,0,0]]
+    angles_sherlocks=[[0,0,0,0],[0,0,0,0]]
+    bdd.ajuster_cams_mats(id,angles_mats,angles_sherlocks) #Trouver comment déterminer les angles des mats mobiles
+    id,url=bdd.bouton_gauche(int(id))
     return render_template("streetview.html", parameter=[id,url])
 
 @app.route("/photo_haut/<id>")
-def photo_haut(id_prec):
-    id,url=bdd.bouton_haute(id_prec)
-    print(url)
-    print('succès haut')
+def photo_haut(id=None):
+    angles_mats=[[0,0,0,0],[0,0,0,0]]
+    angles_sherlocks=[[0,0,0,0],[0,0,0,0]]
+    bdd.ajuster_cams_mats(id,angles_mats,angles_sherlocks) #Trouver comment déterminer les angles des mats mobiles
+    id,url=bdd.bouton_haute(int(id))
     return render_template("streetview.html", parameter=[id,url])
 
 @app.route("/photo_bas/<id>")
-def photo_bas(id_prec):
-    id,url=bdd.bouton_bas(id_prec)
-    print(url)
-    print('succès bas')
+def photo_bas(id=None):
+    angles_mats=[[0,0,0,0],[0,0,0,0]]
+    angles_sherlocks=[[0,0,0,0],[0,0,0,0]]
+    bdd.ajuster_cams_mats(id,angles_mats,angles_sherlocks) #Trouver comment déterminer les angles des mats mobiles
+    id,url=bdd.bouton_bas(int(id))
     return render_template("streetview.html", parameter=[id,url])
 
 @app.route("/photo_devant/<id>")
-def photo_devant(id_prec):
-    id,url=bdd.bouton_devant(id_prec)
-    print(url)
-    print('succès devant')
+def photo_devant(id=None):
+    angles_mats=[[0,0,0,0],[0,0,0,0]]
+    angles_sherlocks=[[0,0,0,0],[0,0,0,0]]
+    bdd.ajuster_cams_mats(id,angles_mats,angles_sherlocks) #Trouver comment déterminer les angles des mats mobiles
+    id,url=bdd.bouton_devant(int(id))
     return render_template("streetview.html", parameter=[id,url])
 
 @app.route("/photo_derriere/<id>")
-def photo_derriere(id_prec):
-    id,url=bdd.bouton_derriere(id_prec)
-    print(url,id)
-    print('succès derriere')
+def photo_derriere(id=None):
+    angles_mats=[[0,0,0,0],[0,0,0,0]]
+    angles_sherlocks=[[0,0,0,0],[0,0,0,0]]
+    bdd.ajuster_cams_mats(id,angles_mats,angles_sherlocks) #Trouver comment déterminer les angles des mats mobiles
+    id,url=bdd.bouton_derriere(int(id))
     return render_template("streetview.html", parameter=[id,url])
 
 

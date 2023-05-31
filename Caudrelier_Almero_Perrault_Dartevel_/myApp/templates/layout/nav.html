@@ -1,32 +1,39 @@
 <nav id="nav">
   <ul>
-    <li><a href="/">Home</a></li>
+    <li><a href="/">Accueil</a></li>
+   
+    <li><a href="/streetview">StreetView de Mars</a></li>
+  {% if session['nom'] and session['prenom'] %}
+    <li><a href="/logout" class="button primary">{{ session['nom'] }} {{ session['prenom'] }}</a></li>
+  {% else %} 
+    <li><a href="/login" class="button primary">Se connecter</a></li>
+  {% endif %}
+
+    <li>
+      <a href="#">Membres du groupe</a>
+      <ul>
+        <li><a href="/#">Almero Hugo</a></li>
+        <li><a href="/#">Caudrelier Louis-Yann</a></li>
+        <li><a href="/#">Dartevel Xavier</a></li>
+        <li><a href="/#">Perrault Hugo</a></li>
+      </ul>
+    </li> 
     <li>
       <a href="#">Layouts</a>
       <ul>
-        <li><a href="/streetview">StreetView</a></li>
+        <li><a href="/elements">Elements</a></li>
         <li><a href="/left-sidebar">Left Sidebar</a></li>
         <li><a href="/right-sidebar">Right Sidebar</a></li>
         <li><a href="/no-sidebar">No Sidebar</a></li>
-        <li>
-          <a href="#">CV du groupe</a>
-          <ul>
-            <li><a href="/#">Almero Hugo</a></li>
-            <li><a href="/#">Caudrelier Louis-Yann</a></li>
-            <li><a href="/#">Dartevel Xavier</a></li>
-            <li><a href="/#">Perrault Hugo</a></li>
-          </ul>
-      </li>
+        
     </ul>
   </li>
-    <li><a href="/elements">Elements</a></li>
-    <li><a href="/streetview">Street View</a></li>
 
-    {% if session['nom'] and session['prenom'] %}
-      <li><a href="/logout" class="button primary">{{ session['nom'] }} {{ session['prenom'] }}</a></li>
-    {% else %} 
-      <li><a href="/login" class="button primary">Log in</a></li>
-    {% endif %}
+
+
+
+
+    
 
     
   </ul>
