@@ -3,11 +3,7 @@
     <li><a href="/">Accueil</a></li>
    
     <li><a href="/streetview">StreetView de Mars</a></li>
-  {% if session['nom'] and session['prenom'] %}
-    <li><a href="/logout" class="button primary">{{ session['nom'] }} {{ session['prenom'] }}</a></li>
-  {% else %} 
-    <li><a href="/login" class="button primary">Se connecter</a></li>
-  {% endif %}
+  
 
     <li>
       <a href="#">Membres du groupe</a>
@@ -29,7 +25,11 @@
     </ul>
   </li>
 
-
+  {% if session['login'] %}
+  <li><a href="/logout" class="button primary">{{ session['login'] }}</a></li>
+{% else %} 
+  <li><a href="/login" class="button primary">Se connecter</a></li>
+{% endif %}
 
 
 
