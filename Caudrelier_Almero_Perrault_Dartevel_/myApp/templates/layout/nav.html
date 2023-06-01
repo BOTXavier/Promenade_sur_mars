@@ -4,6 +4,7 @@
    
     <li><a href="/streetview">StreetView de Mars</a></li>
   
+  
 
     <li>
       <a href="#">Membres du groupe</a>
@@ -45,3 +46,15 @@
     
   </ul>
 </nav>
+
+<!-- Scripts -->
+<script>
+  document.getElementById('logout').addEventListener('click', function(e) {
+      e.preventDefault();
+      if (confirm('Voulez-vous vous déconnecter ?')) {
+          window.location.href = '/logout'; // Mettez l'URL de déconnexion ici
+      }
+  });
+</script>
+</body>
+</html>
