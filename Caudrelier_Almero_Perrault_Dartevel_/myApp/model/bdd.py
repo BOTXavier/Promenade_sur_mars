@@ -44,6 +44,24 @@ def get_membresData():
         print(session['errorDB']) #le problème s'affiche dans le terminal
     return listeMembres
 
+def get_membreData(login,mdp):
+    cnx = connexion() 
+    if cnx is None: return None
+    
+    try:
+        cursor = cnx.cursor(dictionary=True)
+        sql = "SELECT * FROM identification WHERE login = %s AND motPasse = %s"
+        cursor.execute(sql, (login, mdp))
+        listeMembre = cursor.fetchall()
+        print(listeMembre)
+        close_bd(cursor, cnx)
+        #session['successDB'] = "OK get_membresData"
+    except mysql.connector.Error as err:
+        listeMembre = None
+        session['errorDB'] = "Failed get membres data : {}".format(err)
+        print(session['errorDB']) #le problème s'affiche dans le terminal
+    return listeMembre
+
 #################################################################################
 #suppression d'un membre
 def del_membreData(idUser):

@@ -1,15 +1,19 @@
 from flask import Flask, render_template, redirect, request, session
-from .controller import function as f
+from .controller import function 
 from werkzeug.utils import secure_filename
 import myApp.model.bdd as bdd
+import myApp.config as config
 
 app = Flask(__name__)
 app.config.from_object('myApp.config')
 
+app.config['SECRET_KEY'] = config.SECRET_KEY
+app.config['SESSION_TYPE'] = 'filesystem'
 
 @app.route("/")
 def index():
-    return render_template("index.html")
+    params = function.messageInfo(None)
+    return render_template("index.html",**params)
 
 
 @app.route("/sgbd")
@@ -39,18 +43,32 @@ def nosidebar():
 
 @app.route("/login")
 def login():
-    return render_template("login.html")
+    params = function.messageInfo(None)
+    return render_template("login.html",**params)
+
+@app.route("/admin")
+def admin():
+    return render_template("admin.html")
 
 
 @app.route("/logout")
 def logout():
-  session.clear()
-  return redirect('/login')
+    print("logout sucessfully")
+    session.clear()
+    session["infoBleu"] = "Vous êtes déconnecté. Merci de votre visite"
+    params = function.messageInfo(None)
+    return redirect('/login')
+
+
+@app.route("/monespace")
+def monespace():
+    return render_template("monespace.html")
 
 
 @app.route("/streetview")
 def streetview():
     return render_template("streetview.html", parameter=[811204,'https://mars.nasa.gov/mars2020-raw-images/pub/ods/surface/sol/00001/ids/edr/browse/fcam/FRR_0001_0667035458_958ECM_N0010052AUT_04096_00_2I3J01_1200.jpg'])
+
 
 @app.route("/data")
 def data():
@@ -132,10 +150,16 @@ def connecter():
     user = bdd.verifAuthData(login,motPasse)
     if user == None:
         print("Les informations ne correspondent pas à notre base de donnée")
+        session["infoRouge"]="Authentification refusée"
         return redirect("/login")
         
     else:
         print("Bienvenue, jeune utilisateur")
-        session["login"] = login
+        data = bdd.get_membreData(login,motPasse)[0]
+        session["login"] = data["login"]
+        session["nom"] = data["nom"]
+        session["prenom"]= data["prenom"]
+        session["idUser"] = data["idUser"]
+        session["statut"] = data["statut"]
+        session["infoVert"]="Authentification réussie"
         return redirect("/")
-

@@ -3,11 +3,7 @@
     <li><a href="/">Accueil</a></li>
    
     <li><a href="/streetview">StreetView de Mars</a></li>
-  {% if session['nom'] and session['prenom'] %}
-    <li><a href="/logout" class="button primary">{{ session['nom'] }} {{ session['prenom'] }}</a></li>
-  {% else %} 
-    <li><a href="/login" class="button primary">Se connecter</a></li>
-  {% endif %}
+  
 
     <li>
       <a href="#">Membres du groupe</a>
@@ -20,16 +16,27 @@
     </li> 
     <li>
       <a href="#">Layouts</a>
+
       <ul>
         <li><a href="/elements">Elements</a></li>
         <li><a href="/left-sidebar">Left Sidebar</a></li>
         <li><a href="/right-sidebar">Right Sidebar</a></li>
         <li><a href="/no-sidebar">No Sidebar</a></li>
-        
-    </ul>
+      </ul>
+
+      {% if session['statut'] == 0 %}
+      <li><a href="/admin">Admin</a></li>
+      {% else %}
+      {% endif %}
+
+
   </li>
 
-
+    {% if session['nom'] and session['prenom'] %}
+      <li><a href="/monespace" class="button primary">{{ session['nom'] }} {{ session['prenom'] }}</a></li>
+    {% else %} 
+      <li><a href="/login" class="button primary">Se connecter</a></li>
+    {% endif %}
 
 
 
