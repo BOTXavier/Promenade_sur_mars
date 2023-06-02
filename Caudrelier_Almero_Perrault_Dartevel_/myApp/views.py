@@ -53,16 +53,12 @@ def admin():
 
 @app.route("/logout")
 def logout():
-    print("logout sucessfully")
     session.clear()
-    session["infoBleu"] = "Vous êtes déconnecté. Merci de votre visite"
-    params = function.messageInfo(None)
     return redirect('/login')
 
-
-@app.route("/monespace")
-def monespace():
-    return render_template("monespace.html")
+@app.route("/profil")
+def profil():
+    return render_template("profil.html")
 
 
 @app.route("/streetview")
