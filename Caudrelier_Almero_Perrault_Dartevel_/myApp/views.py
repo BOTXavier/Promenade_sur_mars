@@ -54,7 +54,8 @@ def admin():
 @app.route("/logout")
 def logout():
     session.clear()
-    return redirect('/login')
+    params = function.messageInfo(None)
+    return render_template('/index.html', **params)
 
 @app.route("/profil")
 def profil():
