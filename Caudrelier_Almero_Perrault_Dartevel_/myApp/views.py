@@ -66,6 +66,13 @@ def profil():
 def streetview():
     return render_template("streetview.html", parameter=[811204,'https://mars.nasa.gov/mars2020-raw-images/pub/ods/surface/sol/00001/ids/edr/browse/fcam/FRR_0001_0667035458_958ECM_N0010052AUT_04096_00_2I3J01_1200.jpg'])
 
+@app.route("/Membres/HugoA")
+def HugoA():
+    return render_template("HugoA.html")
+
+@app.route("/Membres/Louis-Yann")
+def LouisYann():
+    return render_template("Louis-Yann.html")
 
 @app.route("/data")
 def data():
