@@ -9,8 +9,8 @@
     <li>
       <a href="#">Membres du groupe</a>
       <ul>
-        <li><a href="/#">Almero Hugo</a></li>
-        <li><a href="/#">Caudrelier Louis-Yann</a></li>
+        <li><a href="/Membres/HugoA">Almero Hugo</a></li>
+        <li><a href="/Membres/Louis-Yann">Caudrelier Louis-Yann</a></li>
         <li><a href="/#">Dartevel Xavier</a></li>
         <li><a href="/#">Perrault Hugo</a></li>
       </ul>
@@ -33,17 +33,31 @@
 
   </li>
 
-    {% if session['nom'] and session['prenom'] %}
-      <li><a href="/monespace" class="button primary">{{ session['nom'] }} {{ session['prenom'] }}</a></li>
-    {% else %} 
-      <li><a href="/login" class="button primary">Se connecter</a></li>
-    {% endif %}
+  <li>
+    <a href="#">Bases de données</a>
+    <ul>
+      <li><a href="/Cameras">Cameras</a></li>
+      <li><a href="/Photos">Photos</a></li>
+      <li><a href="/Positions">Positions</a></li>
+      <li><a href="/Rovers">Rovers</a></li>
+      <li><a href="/rovers-positions">rovers-positions</a></li>
+    </ul>
+  </li>
 
+  {% if session['login'] %}
+  <li>
+    <a href="/#" class = "primary button">{{ session['login'] }}</a>
 
+    <ul>
+      <li><a href="/profil">Profil</a></li>
+      <li><a href="/logout" id="logout" class="button primary">Se Deconnecter</a></li>
+    </ul>
+  </li>
+  {% else %} 
+  <li><a href="/login" class="button primary">Se Connecter</a></li>
+  {% endif %}
 
-    
-
-    
+ 
   </ul>
 </nav>
 
