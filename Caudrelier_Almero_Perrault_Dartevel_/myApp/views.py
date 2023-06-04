@@ -16,11 +16,6 @@ def index():
     return render_template("index.html",**params)
 
 
-@app.route("/sgbd")
-def membres():
-    return render_template("sgbd.html")
-
-
 @app.route("/elements")
 def elements():
     return render_template("elements.html")
@@ -163,3 +158,14 @@ def connecter():
         session["statut"] = data["statut"]
         session["infoVert"]="Authentification réussie"
         return redirect("/")
+
+@app.route("/delete")
+def delete():
+    idUser = request.args.get("userDel")
+    bdd.del_membreData(idUser)
+    # la suppression a bien fonctionné
+    if "errorDB" not in session:
+        session["infoVert"] = "L'utilisateur a bien été supprimé"
+    else:
+        session["infoRouge"] = "Problème suppression utilisateur"
+    return redirect("/login")
