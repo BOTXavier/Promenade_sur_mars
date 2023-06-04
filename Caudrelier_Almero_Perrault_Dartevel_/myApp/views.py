@@ -167,3 +167,42 @@ def connecter():
         session["statut"] = data["statut"]
         session["infoVert"]="Authentification réussie"
         return redirect("/")
+
+
+#routes pour afficher le contenu des bases de données
+
+@app.route("/Cameras")
+def Cameras():
+    L = []
+    dictionnaires = bdd.get_cameras()
+    for dictionnaire in dictionnaires :
+        L.append([dictionnaire['camera_id'], dictionnaire['name'], dictionnaire['rover_id'], dictionnaire['full_name'], dictionnaire['orientation_hori'], dictionnaire['orientation_verti']])
+    return render_template("Cameras.html", liste_de_listes = L)
+
+@app.route("/Photos")
+def Photos():
+    L = []
+    dictionnaires = bdd.get_photos()
+    for dictionnaire in dictionnaires :
+        L.append([dictionnaire['photo_id'], dictionnaire['sol'], dictionnaire['rover_id'], dictionnaire['camera_id'], dictionnaire['url']])
+    return render_template("Photos.html", liste_de_listes = L)
+
+@app.route("/Positions")
+def Positions():
+    return render_template("Positions.html")
+
+@app.route("/Rovers")
+def Rovers():
+    L = [] 
+    dictionnaires = bdd.get_rovers()
+    for dictionnaire in dictionnaires :
+        L.append([dictionnaire['rover_id'], dictionnaire['name'], dictionnaire['landing_date'], dictionnaire['launch_date'], dictionnaire['status']])
+    return render_template("Rovers.html", liste_de_listes = L)
+
+@app.route("/rovers-positions") #correspond à la table positions
+def rovers_positions():
+    L = [] 
+    dictionnaires = bdd.get_positions()
+    for dictionnaire in dictionnaires :
+        L.append([dictionnaire['posi_id'], dictionnaire['rover_id'], dictionnaire['lat'], dictionnaire['longitude'], dictionnaire['cap']])
+    return render_template("rovers-positions.html", liste_de_listes = L)
