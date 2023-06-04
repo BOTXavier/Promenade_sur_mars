@@ -49,6 +49,7 @@ def admin():
 @app.route("/logout")
 def logout():
     session.clear()
+    session["infoBleu"] = "Vous êtes déconnecté. Merci de votre visite"
     params = function.messageInfo(None)
     return render_template('/index.html', **params)
 
@@ -68,6 +69,11 @@ def HugoA():
 @app.route("/Membres/Louis-Yann")
 def LouisYann():
     return render_template("Louis-Yann.html")
+
+@app.route("/Membres/Xavier")
+def xavier():
+    return render_template("xavier.html")
+
 
 @app.route("/data")
 def data():
