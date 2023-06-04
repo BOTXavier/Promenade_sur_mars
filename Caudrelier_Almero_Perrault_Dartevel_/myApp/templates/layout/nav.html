@@ -33,6 +33,17 @@
 
   </li>
 
+  <li>
+    <a href="#">Bases de données</a>
+    <ul>
+      <li><a href="/Cameras">Cameras</a></li>
+      <li><a href="/Photos">Photos</a></li>
+      <li><a href="/Positions">Positions</a></li>
+      <li><a href="/Rovers">Rovers</a></li>
+      <li><a href="/rovers-positions">rovers-positions</a></li>
+    </ul>
+  </li>
+
   {% if session['login'] %}
   <li>
     <a href="/#" class = "primary button">{{ session['login'] }}</a>
@@ -46,6 +57,7 @@
   <li><a href="/login" class="button primary">Se Connecter</a></li>
   {% endif %}
 
+ 
   </ul>
 </nav>
 
