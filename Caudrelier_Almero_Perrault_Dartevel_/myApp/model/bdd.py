@@ -508,3 +508,65 @@ def ajuster_cams_mats(photo_id,angles_mats,angles_sherlocks):
         session['errorDB'] = "Failed saveDataFromFile data : {}".format(err)
         print(session['errorDB']) #le problème s'affiche dans le terminal
     return 1
+
+#Les fonctions qui suivent servent à l'affichage des bases de données
+
+def get_positions():
+    cnx = connexion() 
+    if cnx is None: return None
+    try:
+        cursor = cnx.cursor(dictionary=True)
+        sql = "SELECT * FROM positions"
+        cursor.execute(sql)
+        positions = cursor.fetchall()
+        close_bd(cursor, cnx)
+    except mysql.connector.Error as err:
+        positions = None
+        session['errorDB'] = "Failed get positions : {}".format(err)
+        print(session['errorDB']) #le problème s'affiche dans le terminal
+    return positions
+
+def get_rovers():
+    cnx = connexion() 
+    if cnx is None: return None
+    try:
+        cursor = cnx.cursor(dictionary=True)
+        sql = "SELECT * FROM rovers"
+        cursor.execute(sql)
+        rovers = cursor.fetchall()
+        close_bd(cursor, cnx)
+    except mysql.connector.Error as err:
+        rovers = None
+        session['errorDB'] = "Failed get rovers : {}".format(err)
+        print(session['errorDB']) #le problème s'affiche dans le terminal
+    return rovers
+
+def get_photos():
+    cnx = connexion() 
+    if cnx is None: return None
+    try:
+        cursor = cnx.cursor(dictionary=True)
+        sql = "SELECT * FROM photos"
+        cursor.execute(sql)
+        photos = cursor.fetchall()
+        close_bd(cursor, cnx)
+    except mysql.connector.Error as err:
+        photos = None
+        session['errorDB'] = "Failed get rovers : {}".format(err)
+        print(session['errorDB']) #le problème s'affiche dans le terminal
+    return photos
+
+def get_cameras():
+    cnx = connexion() 
+    if cnx is None: return None
+    try:
+        cursor = cnx.cursor(dictionary=True)
+        sql = "SELECT * FROM cameras"
+        cursor.execute(sql)
+        cameras = cursor.fetchall()
+        close_bd(cursor, cnx)
+    except mysql.connector.Error as err:
+        cameras = None
+        session['errorDB'] = "Failed get rovers : {}".format(err)
+        print(session['errorDB']) #le problème s'affiche dans le terminal
+    return cameras
