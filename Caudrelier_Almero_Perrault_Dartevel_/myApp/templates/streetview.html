@@ -1,7 +1,4 @@
-<!DOCTYPE HTML>
-
 <html>
-
 <head>
     <title>Streetview de Mars</title>
     <link rel="shortcut icon" href="/static/images/favicon.ico" type="image/x-icon" />
@@ -9,41 +6,133 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
     <link rel="stylesheet" href="/static/css/main.css" />
     <noscript><link rel="stylesheet" href="/static/css/noscript.css" /></noscript>
-</head>
+    <style>
+        .image-container {
+            position: relative;
+            height: -10%;
+            object-fit: cover;
+            display: inline-block;
+            border: 2px solid #333;
+            border-radius: 20px;
+            overflow: hidden;
+        }
 
+        .button-overlay {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            z-index: 1;
+        }
+
+        .button-overlay-left {
+            left: 0;
+        }
+
+        .button-overlay-right {
+            right: 0;
+        }
+
+        .button-overlay-top {
+            top: 0;
+            left: 50%;
+            transform: translate(-50%, 30%);
+        }
+
+        .button-overlay-bottom {
+            bottom: 0;
+            left: 50%;
+            transform: translate(-50%, 75%);
+        }
+
+        .arrow-button {
+            width: 50px;
+            height: 50px;
+            background-color: #ffffff00;
+            border: none;
+            border-radius: 10%;
+            text-align: center;
+            font-size: 24px;
+            line-height: 50px;
+            text-decoration: none;
+            color: #000;
+            display: inline-block;
+        }
+
+
+        h1 {
+            text-align: center;
+            padding: 10px;
+            background-color: #ffffff00;
+            margin: 20px 0;
+            font-size: 32px;
+            font-weight: thin;
+            font-family: "brixton", sans-serif;
+        }
+
+        .pad {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .button.small {
+            width: 100px;
+            height: 40px;
+            margin: 5px;
+            text-align: center;
+            line-height: 40px;
+            font-size: 16px;
+            text-decoration: none;
+            background-color: #ffffff00;
+            border-radius: 5px;
+        }
+
+        .left-right {
+            display: flex;
+            justify-content: space-between;
+            width: 25%;
+        }
+
+        .left-right .button.small {
+            flex: 1;
+        }
+
+
+    </style>
+</head>
 <body class="is-preload">
     <div id="page-wrapper">
-
         <!-- Header -->
         {% include("layout/header.html") %}
-        <!-- Main -->  
-
-        <h3>Streetview de Mars</h3>
-
+        <!-- Main -->
+        <h1 style="text-align: center;">STREETVIEW DE MARS</h1>
+        <div style="text-align: center;">
             {% if parameter %}
-            
-            <img src={{parameter[1]}}>
-
-            <ul class="actions">
-                <li><a href="/data/" class="button small">data parameter</a></li>
-                <li><a href="/photo_droite/{{parameter[0]}}" class="button small">Droite</a></li>
-                <li><a href="/photo_gauche/{{parameter[0]}}" class="button small">Gauche</a></li>
-                <li><a href="/photo_haut/{{parameter[0]}}" class="button small">Haut</a></li>
-                <li><a href="/photo_bas/{{parameter[0]}}" class="button small">Bas</a></li>
-                <li><a href="/photo_devant/{{parameter[0]}}" class="button small">Devant</a></li>
-                <li><a href="/photo_derriere/{{parameter[0]}}" class="button small">Derrière</a></li>
-            </ul>
-
+                <div class="image-container">
+                    <img src={{parameter[1]}} style="max-width: 100%; max-height: 70vh; margin-top: 20px;">
+                    <div class="button-overlay button-overlay-left">
+                        <a href="/photo_derriere/{{parameter[0]}}" class="button small arrow-button">&#8249;</a>
+                    </div>
+                    <div class="button-overlay button-overlay-right">
+                        <a href="/photo_devant/{{parameter[0]}}" class="button small arrow-button">&#8250;</a>
+                    </div>
+                </div>
+                <div class="pad">
+                    <a href="/photo_haut/{{parameter[0]}}" class="button small">&#8593;</a>
+                    <div class="left-right">
+                      <a href="/photo_gauche/{{parameter[0]}}" class="button small">&#8592;</a>
+                      <a href="/data/" class="button small">Data</a>
+                      <a href="/photo_droite/{{parameter[0]}}" class="button small">&#8594;</a>
+                    </div>
+                    <a href="/photo_bas/{{parameter[0]}}" class="button small">&#8595;</a>
+                </div>                  
             {% endif %}
-        
+        </div>
         <!-- Footer -->
         {% include("layout/footer.html") %}
-
     </div>
-
     <!-- Scripts -->
     {% include("layout/scripts.html") %}
-
 </body>
-
 </html>
