@@ -1,0 +1,51 @@
+<html>
+
+<head>
+    <title>Contenu de la table cameras</title>
+    <link rel="shortcut icon" href="/static/images/favicon.ico" type="image/x-icon" />
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+    <link rel="stylesheet" href="/static/css/main.css" />
+    <noscript><link rel="stylesheet" href="/static/css/noscript.css" /></noscript>
+</head>
+
+<body class="is-preload">
+    <div id="page-wrapper">
+
+        <!-- Header -->
+        {% include("layout/header.html") %}
+        <!-- Main --> 
+    
+
+
+<h4 style="margin-top: 1em;">Contenu de la table cameras</h4>
+
+  <table>
+    <tr>
+      <th>camera_id</th>
+      <th>name</th>
+      <th>rover_id</th>
+      <th>full_name</th>
+      <th>orientation_hori</th>
+      <th>orientation_verti</th>
+    </tr>
+    <tr>
+    {% for liste in liste_de_listes %}
+    <tr>
+    {% for element in liste %}
+        <th>{{ element }}</th>
+    {% endfor %}
+    </tr>
+    {% endfor %}
+</tr>
+
+  </table>
+          <!-- Footer -->
+        {% include("layout/footer.html") %}
+
+    </div>
+
+    <!-- Scripts -->
+    {% include("layout/scripts.html") %}
+</body>
+</html>
