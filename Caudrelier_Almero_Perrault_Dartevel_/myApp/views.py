@@ -10,10 +10,16 @@ app.config.from_object('myApp.config')
 app.config['SECRET_KEY'] = config.SECRET_KEY
 app.config['SESSION_TYPE'] = 'filesystem'
 
+# <Routes vers les différentes pages du site> #
 @app.route("/")
 def index():
     params = function.messageInfo(None)
     return render_template("index.html",**params)
+
+
+@app.route("/map")
+def map():
+    return render_template("map.html",parameter=[round(18.444631884771205,8),round(77.45088815689088,8),0])
 
 
 @app.route("/elements")
@@ -36,109 +42,40 @@ def nosidebar():
     return render_template("no-sidebar.html")
 
 
-@app.route("/login")
-def login():
-    params = function.messageInfo(None)
-    return render_template("login.html",**params)
-
-@app.route("/admin")
-def admin():
-    return render_template("admin.html")
-
-
-@app.route("/logout")
-def logout():
-    session.clear()
-    session["infoBleu"] = "Vous êtes déconnecté. Merci de votre visite"
-    params = function.messageInfo(None)
-    return render_template('/index.html', **params)
-
 @app.route("/profil")
 def profil():
     return render_template("profil.html")
+
+
+@app.route("/Membres/HugoA")
+def HugoA():
+    return render_template("HugoA.html")
+
+
+@app.route("/Membres/Louis-Yann")
+def LouisYann():
+    return render_template("Louis-Yann.html")
+
+
+@app.route("/Membres/Xavier")
+def xavier():
+    return render_template("xavier.html")
 
 
 @app.route("/streetview")
 def streetview():
     return render_template("streetview.html", parameter=[811204,'https://mars.nasa.gov/mars2020-raw-images/pub/ods/surface/sol/00001/ids/edr/browse/fcam/FRR_0001_0667035458_958ECM_N0010052AUT_04096_00_2I3J01_1200.jpg'])
 
-@app.route("/Membres/HugoA")
-def HugoA():
-    return render_template("HugoA.html")
 
-@app.route("/Membres/Louis-Yann")
-def LouisYann():
-    return render_template("Louis-Yann.html")
+@app.route("/admin")
+def admin():
+    return render_template("admin.html")
 
-@app.route("/Membres/Xavier")
-def xavier():
-    return render_template("xavier.html")
-
-@app.route("/map")
-def map():
-    return render_template("map.html",parameter=[round(18.444631884771205,8),round(77.45088815689088,8),0])
-
-@app.route("/localisationmap/<id>")
-def locmap(id=None):
-    latlongsol=bdd.latlongsol(int(id))
-    lat,long,sol=latlongsol[0],latlongsol[1],latlongsol[2]
-    return render_template("map.html",parameter=[lat,long,sol])
-
-
-@app.route("/data")
-def data():
-    bdd.order_data()
-    print('succès des données')
-    return render_template("streetview.html")
-
-@app.route("/photo_droite/<id>")
-def photo_droite(id=None):
-    angles_mats=[[0,0,0,0],[0,0,0,0]]
-    angles_sherlocks=[[0,0,0,0],[0,0,0,0]]
-    bdd.ajuster_cams_mats(id,angles_mats,angles_sherlocks) #Trouver comment déterminer les angles des mats mobiles
-    id,url=bdd.bouton_droite(int(id))
-    return render_template("streetview.html", parameter=[id,url])
-
-@app.route("/photo_gauche/<id>")
-def photo_gauche(id=None):
-    angles_mats=[[0,0,0,0],[0,0,0,0]]
-    angles_sherlocks=[[0,0,0,0],[0,0,0,0]]
-    bdd.ajuster_cams_mats(id,angles_mats,angles_sherlocks) #Trouver comment déterminer les angles des mats mobiles
-    id,url=bdd.bouton_gauche(int(id))
-    return render_template("streetview.html", parameter=[id,url])
-
-@app.route("/photo_haut/<id>")
-def photo_haut(id=None):
-    angles_mats=[[0,0,0,0],[0,0,0,0]]
-    angles_sherlocks=[[0,0,0,0],[0,0,0,0]]
-    bdd.ajuster_cams_mats(id,angles_mats,angles_sherlocks) #Trouver comment déterminer les angles des mats mobiles
-    id,url=bdd.bouton_haute(int(id))
-    return render_template("streetview.html", parameter=[id,url])
-
-@app.route("/photo_bas/<id>")
-def photo_bas(id=None):
-    angles_mats=[[0,0,0,0],[0,0,0,0]]
-    angles_sherlocks=[[0,0,0,0],[0,0,0,0]]
-    bdd.ajuster_cams_mats(id,angles_mats,angles_sherlocks) #Trouver comment déterminer les angles des mats mobiles
-    id,url=bdd.bouton_bas(int(id))
-    return render_template("streetview.html", parameter=[id,url])
-
-@app.route("/photo_devant/<id>")
-def photo_devant(id=None):
-    angles_mats=[[0,0,0,0],[0,0,0,0]]
-    angles_sherlocks=[[0,0,0,0],[0,0,0,0]]
-    bdd.ajuster_cams_mats(id,angles_mats,angles_sherlocks) #Trouver comment déterminer les angles des mats mobiles
-    id,url=bdd.bouton_devant(int(id))
-    return render_template("streetview.html", parameter=[id,url])
-
-@app.route("/photo_derriere/<id>")
-def photo_derriere(id=None):
-    angles_mats=[[0,0,0,0],[0,0,0,0]]
-    angles_sherlocks=[[0,0,0,0],[0,0,0,0]]
-    bdd.ajuster_cams_mats(id,angles_mats,angles_sherlocks) #Trouver comment déterminer les angles des mats mobiles
-    id,url=bdd.bouton_derriere(int(id))
-    return render_template("streetview.html", parameter=[id,url])
-
+# <Routes des différents outils utiles à la gestion de compte> #
+@app.route("/login")
+def login():
+    params = function.messageInfo(None)
+    return render_template("login.html",**params)
 
 # ajout d'un membre
 @app.route("/addMembre", methods=['POST'])
@@ -160,16 +97,17 @@ def addMembre():
 
 @app.route('/connecter', methods=['POST'])
 def connecter():
+    """
+    vérifie si les informations des champs sont cohérentes avec la bdd, et connecte l'utilisateur, le cas échéant
+    """
     login = request.form['login']
     motPasse = request.form['mdp']
     user = bdd.verifAuthData(login,motPasse)
     if user == None:
-        print("Les informations ne correspondent pas à notre base de donnée")
         session["infoRouge"]="Authentification refusée"
         return redirect("/login")
         
     else:
-        print("Bienvenue, jeune utilisateur")
         data = bdd.get_membreData(login,motPasse)[0]
         session["login"] = data["login"]
         session["nom"] = data["nom"]
@@ -181,44 +119,19 @@ def connecter():
         return redirect("/")
 
 
-#routes pour afficher le contenu des bases de données
-
-@app.route("/Cameras")
-def Cameras():
-    L = []
-    dictionnaires = bdd.get_cameras()
-    for dictionnaire in dictionnaires :
-        L.append([dictionnaire['camera_id'], dictionnaire['name'], dictionnaire['rover_id'], dictionnaire['full_name'], dictionnaire['orientation_hori'], dictionnaire['orientation_verti']])
-    return render_template("Cameras.html", liste_de_listes = L)
-
-@app.route("/Photos")
-def Photos():
-    L = []
-    dictionnaires = bdd.get_photos()
-    for dictionnaire in dictionnaires :
-        L.append([dictionnaire['photo_id'], dictionnaire['sol'], dictionnaire['rover_id'], dictionnaire['camera_id'], dictionnaire['url']])
-    return render_template("Photos.html", liste_de_listes = L[0:10])
-
-
-@app.route("/Rovers")
-def Rovers():
-    L = [] 
-    dictionnaires = bdd.get_rovers()
-    for dictionnaire in dictionnaires :
-        L.append([dictionnaire['rover_id'], dictionnaire['name'], dictionnaire['landing_date'], dictionnaire['launch_date'], dictionnaire['status']])
-    return render_template("Rovers.html", liste_de_listes = L)
-
-@app.route("/rovers-positions") #correspond à la table positions
-def rovers_positions():
-    L = [] 
-    dictionnaires = bdd.get_positions()
-    for dictionnaire in dictionnaires :
-        L.append([dictionnaire['posi_id'], dictionnaire['rover_id'], dictionnaire['lat'], dictionnaire['longitude'], dictionnaire['cap']])
-    return render_template("rovers-positions.html", liste_de_listes = L)
+@app.route("/logout")
+def logout():
+    session.clear()
+    session["infoBleu"] = "Vous êtes déconnecté. Merci de votre visite"
+    params = function.messageInfo(None)
+    return render_template('/index.html', **params)
 
 
 @app.route("/delete")
 def delete():
+    """
+    Supprime un utilisateur de la base de donnée
+    """
     idUser = session["idUser"]
     bdd.del_membreData(idUser)
     print(idUser)
@@ -229,6 +142,7 @@ def delete():
     else:
         session["infoRouge"] = "Problème suppression utilisateur"
     return redirect("/login")
+
 
 @app.route('/updatepassword', methods=['POST'])
 def update_password():
@@ -258,4 +172,112 @@ def update_password():
     params = function.messageInfo(None)
     
     return render_template("profil.html",**params)
-    
+
+
+# <Routes des différents outils utiles à la gestion des photos et de la carte> #  
+
+@app.route("/localisationmap/<id>")
+def locmap(id=None):
+    latlongsol=bdd.latlongsol(int(id))
+    lat,long,sol=latlongsol[0],latlongsol[1],latlongsol[2]
+    return render_template("map.html",parameter=[lat,long,sol])
+
+
+@app.route("/data")
+def data():
+    bdd.order_data()
+    print('succès des données')
+    return render_template("streetview.html")
+
+
+@app.route("/photo_droite/<id>")
+def photo_droite(id=None):
+    angles_mats=[[0,0,0,0],[0,0,0,0]]
+    angles_sherlocks=[[0,0,0,0],[0,0,0,0]]
+    bdd.ajuster_cams_mats(id,angles_mats,angles_sherlocks) #Trouver comment déterminer les angles des mats mobiles
+    id,url=bdd.bouton_droite(int(id))
+    return render_template("streetview.html", parameter=[id,url])
+
+
+@app.route("/photo_gauche/<id>")
+def photo_gauche(id=None):
+    angles_mats=[[0,0,0,0],[0,0,0,0]]
+    angles_sherlocks=[[0,0,0,0],[0,0,0,0]]
+    bdd.ajuster_cams_mats(id,angles_mats,angles_sherlocks) #Trouver comment déterminer les angles des mats mobiles
+    id,url=bdd.bouton_gauche(int(id))
+    return render_template("streetview.html", parameter=[id,url])
+
+
+@app.route("/photo_haut/<id>")
+def photo_haut(id=None):
+    angles_mats=[[0,0,0,0],[0,0,0,0]]
+    angles_sherlocks=[[0,0,0,0],[0,0,0,0]]
+    bdd.ajuster_cams_mats(id,angles_mats,angles_sherlocks) #Trouver comment déterminer les angles des mats mobiles
+    id,url=bdd.bouton_haute(int(id))
+    return render_template("streetview.html", parameter=[id,url])
+
+
+@app.route("/photo_bas/<id>")
+def photo_bas(id=None):
+    angles_mats=[[0,0,0,0],[0,0,0,0]]
+    angles_sherlocks=[[0,0,0,0],[0,0,0,0]]
+    bdd.ajuster_cams_mats(id,angles_mats,angles_sherlocks) #Trouver comment déterminer les angles des mats mobiles
+    id,url=bdd.bouton_bas(int(id))
+    return render_template("streetview.html", parameter=[id,url])
+
+
+@app.route("/photo_devant/<id>")
+def photo_devant(id=None):
+    angles_mats=[[0,0,0,0],[0,0,0,0]]
+    angles_sherlocks=[[0,0,0,0],[0,0,0,0]]
+    bdd.ajuster_cams_mats(id,angles_mats,angles_sherlocks) #Trouver comment déterminer les angles des mats mobiles
+    id,url=bdd.bouton_devant(int(id))
+    return render_template("streetview.html", parameter=[id,url])
+
+
+@app.route("/photo_derriere/<id>")
+def photo_derriere(id=None):
+    angles_mats=[[0,0,0,0],[0,0,0,0]]
+    angles_sherlocks=[[0,0,0,0],[0,0,0,0]]
+    bdd.ajuster_cams_mats(id,angles_mats,angles_sherlocks) #Trouver comment déterminer les angles des mats mobiles
+    id,url=bdd.bouton_derriere(int(id))
+    return render_template("streetview.html", parameter=[id,url])
+
+
+
+# <Routes pour afficher le contenu des bases de données> #
+
+@app.route("/Cameras")
+def Cameras():
+    L = []
+    dictionnaires = bdd.get_cameras()
+    for dictionnaire in dictionnaires :
+        L.append([dictionnaire['camera_id'], dictionnaire['name'], dictionnaire['rover_id'], dictionnaire['full_name'], dictionnaire['orientation_hori'], dictionnaire['orientation_verti']])
+    return render_template("Cameras.html", liste_de_listes = L)
+
+
+@app.route("/Photos")
+def Photos():
+    L = []
+    dictionnaires = bdd.get_photos()
+    for dictionnaire in dictionnaires :
+        L.append([dictionnaire['photo_id'], dictionnaire['sol'], dictionnaire['rover_id'], dictionnaire['camera_id'], dictionnaire['url']])
+    return render_template("Photos.html", liste_de_listes = L[0:10])
+
+
+@app.route("/Rovers")
+def Rovers():
+    L = [] 
+    dictionnaires = bdd.get_rovers()
+    for dictionnaire in dictionnaires :
+        L.append([dictionnaire['rover_id'], dictionnaire['name'], dictionnaire['landing_date'], dictionnaire['launch_date'], dictionnaire['status']])
+    return render_template("Rovers.html", liste_de_listes = L)
+
+
+@app.route("/rovers-positions") #correspond à la table positions
+def rovers_positions():
+    L = [] 
+    dictionnaires = bdd.get_positions()
+    for dictionnaire in dictionnaires :
+        L.append([dictionnaire['posi_id'], dictionnaire['rover_id'], dictionnaire['lat'], dictionnaire['longitude'], dictionnaire['cap']])
+    return render_template("rovers-positions.html", liste_de_listes = L)
