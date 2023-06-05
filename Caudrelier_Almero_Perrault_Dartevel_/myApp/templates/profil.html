@@ -21,16 +21,34 @@
         {% include("layout/header.html") %}
         <!-- Main -->
         
-
+        {% include("layout/info.html") %}
+        
         <section>
+            
             <form action="/updatepassword" method="post" role="form">
-                <h4 class="w-100 text-center"><i class="fas fa-user-circle fa-2x"></i>New Password</h4>
+
+                <h4 class="w-100 text-center"></i>Changer de mot de passe</h4>
+                <div class="row mt-3">
+                    <div class="col-lg-6 form-group">
+                        <label for="mdp"></label>
+                        <input type="text" name="mdp" class="form-control" id="mdp" placeholder="Votre mot de passe" required>
+                    </div>
+                </div>
+
                 <div class="row mt-3">
                     <div class="col-lg-6 form-group">
                         <label for="newmdp"></label>
-                        <input type="text" name="newpassword" class="form-control" id="newmdp" placeholder="New Password" required>
+                        <input type="text" name="newmdp" class="form-control" id="newmdp" placeholder="New Password" required>
                     </div>
                 </div>
+                
+                <div class="row mt-3">
+                    <div class="col-lg-6 form-group">
+                        <label for="newmdpconfirm"></label>
+                        <input type="text" name="newmdpconfirm" class="form-control" id="newmdpconfirm" placeholder="Confirm Password" required>
+                    </div>
+                </div>
+
 
                 <div class="w-100 text-center mt-4"><button type="submit">Enregistrer</button></div>
             </form>

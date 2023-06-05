@@ -46,7 +46,7 @@
 
   {% if session['login'] %}
   <li>
-    <a href="/#" class = "primary button">{{ session['login'] }}</a>
+    <a href="/#" class = "primary button">{{ session['prenom']  + ' ' + session['nom']}}</a>
 
     <ul>
       <li><a href="/profil">Profil</a></li>

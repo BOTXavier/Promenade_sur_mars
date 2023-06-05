@@ -176,6 +176,7 @@ def connecter():
         session["prenom"]= data["prenom"]
         session["idUser"] = data["idUser"]
         session["statut"] = data["statut"]
+        session['mdp'] = motPasse
         session["infoVert"]="Authentification réussie"
         return redirect("/")
 
@@ -229,8 +230,32 @@ def delete():
         session["infoRouge"] = "Problème suppression utilisateur"
     return redirect("/login")
 
-@app.route("/updatepassword")
-def updatepassword():
-    motPasse = request.form['newmdp']
-    user = bdd.update_membreData(motPasse,session["idUser"],motPasse)
-    return redirect("/")
+@app.route('/updatepassword', methods=['POST'])
+def update_password():
+    idUser = session['idUser']  # ID de l'utilisateur
+    ancienmdp = request.form.get('mdp')
+    if ancienmdp == session['mdp']:
+
+        newvalue = request.form.get('newmdp')  # Nouvelle valeur du champ
+        newvalueConfirm = request.form.get('newmdpconfirm')  # Nouvelle valeur du champ
+
+        if newvalue == newvalueConfirm:
+            # Appel de la fonction pour mettre à jour la base de données
+            result = bdd.update_membreData("motPasse", idUser, newvalue)
+            
+            if result:
+                # La mise à jour a réussi
+                session["infoVert"] = 'Mot de passe mis à jour avec succès.'
+            else:
+                # La mise à jour a échoué
+                session["infoRouge"] =  'Échec de la mise à jour du mot de passe.'
+        else : 
+            session["infoRouge"] =  'Les mots de passe de sont pas identiques'
+    
+    else:
+        session["infoRouge"] =  'Mot de passe incorrect'
+    
+    params = function.messageInfo(None)
+    
+    return render_template("profil.html",**params)
+    
