@@ -188,6 +188,15 @@ def Photos():
         L.append([dictionnaire['photo_id'], dictionnaire['sol'], dictionnaire['rover_id'], dictionnaire['camera_id'], dictionnaire['url']])
     return render_template("Photos.html", liste_de_listes = L[0:10])
 
+@app.route("/Photos_range", methods=['GET'])
+def Photos_range():
+    start = int(request.args.get('start'))
+    end = int(request.args.get('end'))
+    L = []
+    dictionnaires = bdd.get_photos()
+    for dictionnaire in dictionnaires :
+        L.append([dictionnaire['photo_id'], dictionnaire['sol'], dictionnaire['rover_id'], dictionnaire['camera_id'], dictionnaire['url']])
+    return render_template("Photos.html", liste_de_listes = L[start:end])
 
 @app.route("/Rovers")
 def Rovers():
