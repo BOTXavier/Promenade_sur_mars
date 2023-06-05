@@ -115,10 +115,12 @@ def update_membreData(champ, idUser, newvalue):
         cnx.commit()
         close_bd(cursor, cnx)
         #session['successDB'] = "OK update_membreData"
+        return True
     except mysql.connector.Error as err:
-        session['errorDB'] = "Failed update membres data : {}".format(err)
+        #session['errorDB'] = "Failed update membres data : {}".format(err)
         print(session['errorDB']) #le problème s'affiche dans le terminal
-    return 1
+        return False
+    
 
 #################################################################################
 #authentification des utilisateurs
@@ -205,14 +207,15 @@ def saveDatafromNASA(dico_photos,dico_rovers,dico_cameras,dico_posi):
             cnx.commit()
         for camera_id in dico_cameras:
             camera=dico_cameras[camera_id]
-            sql = "INSERT INTO Cameras (camera_id,name,rover_id,full_name,orientation) VALUES  (%s, %s, %s, %s, %s);"
-            param=(camera_id,camera['name'],camera['rover_id'],camera['full_name'], camera['orientation'])
+            sql = "INSERT INTO Cameras (camera_id,name,rover_id,full_name,orientation_hori,orientation_verti) VALUES  (%s, %s, %s, %s, %s,%s);"
+            param=(camera_id,camera['name'],camera['rover_id'],camera['full_name'], camera['orient_hori'], camera['orient_verti'])
             cursor.execute(sql,param)
             cnx.commit()
         for position_id in dico_posi:
             posi=dico_posi[position_id]
-            sql = "INSERT INTO Positions (posi_id,rover_id,lat,long,cap) VALUES  (%s, %s, %s, %s, %s);"
-            param=(position_id,posi['rover_id'],posi['lat'],posi['long'],posi['cap'])
+            print(posi)
+            sql = "INSERT INTO Positions (posi_id,rover_id,lat,longitude,cap,sol) VALUES  (%s, %s, %s, %s, %s,%s);"
+            param=(position_id,posi['rover_id'],posi['lat'],posi['long'],posi['cap'],posi['sol'])
             cursor.execute(sql,param)
             cnx.commit()
         close_bd(cursor,cnx)
@@ -223,6 +226,7 @@ def saveDatafromNASA(dico_photos,dico_rovers,dico_cameras,dico_posi):
 
 def order_data():
     dico_photos,dico_rovers,dico_cameras,dico_posi=bup.créer_dicos()
+    print(dico_cameras)
     saveDatafromNASA(dico_photos,dico_rovers,dico_cameras,dico_posi)
 
 ##########################################################################
@@ -234,7 +238,6 @@ def bouton_droite(id):
         return None
     try:
         cursor = cnx.cursor(dictionary=True)
-
         sql="SELECT sol,rover_id,camera_id FROM Photos WHERE photo_id=%s"
         param=([id])
         cursor.execute(sql,param)
@@ -262,7 +265,7 @@ def bouton_droite(id):
 
         close_bd(cursor, cnx)
     except mysql.connector.Error as err:
-        session['errorDB'] = "Failed saveDataFromFile data : {}".format(err)
+        session['errorDB'] = "Failed bouton_droite data : {}".format(err)
         print(session['errorDB']) #le problème s'affiche dans le terminal
     return id_droite, url_droite
 
@@ -570,3 +573,28 @@ def get_cameras():
         session['errorDB'] = "Failed get rovers : {}".format(err)
         print(session['errorDB']) #le problème s'affiche dans le terminal
     return cameras
+
+def latlongsol(photo_id):
+    cnx = connexion() 
+    if cnx is None: return None
+    try:
+        cursor = cnx.cursor(dictionary=True)
+
+        sql = "SELECT rover_id,sol FROM photos WHERE photo_id=%s"
+        params=[photo_id]
+        cursor.execute(sql)
+        data = cursor.fetchall()[0]
+        rover_id,sol=data['rover_id'],data['sol']
+        
+        sql = "SELECT lat,longitude,sol FROM positions WHERE rover_id=%s AND sol=%s"
+        params=[rover_id,sol]
+        cursor.execute(sql)
+        data = cursor.fetchall()[0]
+        lat,longitude,sol=data['lat'],data['longitude'],data['sol']
+
+        close_bd(cursor, cnx)
+    except mysql.connector.Error as err:
+        cameras = None
+        session['errorDB'] = "Failed get rovers : {}".format(err)
+        print(session['errorDB']) #le problème s'affiche dans le terminal
+    return lat,longitude,sol

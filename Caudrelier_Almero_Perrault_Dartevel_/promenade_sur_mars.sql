@@ -76,6 +76,15 @@ INSERT INTO `rovers` (`rover_id`, `name`, `landing_date`, `launch_date`, `status
 --
 -- Index pour les tables déchargées
 --
+CREATE TABLE `identification` (
+  `idUser` int(11) NOT NULL,
+  `nom` varchar(50) NOT NULL,
+  `prenom` varchar(50) NOT NULL,
+  `mail` varchar(100) NOT NULL,
+  `login` varchar(100) NOT NULL,
+  `motPasse` varchar(100) NOT NULL,
+  `statut` int(11) NOT NULL DEFAULT 1
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 
 --
 -- Index pour la table `identification`
@@ -154,15 +163,6 @@ INSERT INTO `cameras` (`camera_id`, `name`, `rover_id`, `full_name`, `orientatio
 -- Structure de la table `identification`
 --
 
-CREATE TABLE `identification` (
-  `idUser` int(11) NOT NULL,
-  `nom` varchar(50) NOT NULL,
-  `prenom` varchar(50) NOT NULL,
-  `mail` varchar(100) NOT NULL,
-  `login` varchar(100) NOT NULL,
-  `motPasse` varchar(100) NOT NULL,
-  `statut` int(11) NOT NULL DEFAULT 1
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 
 -- --------------------------------------------------------
 

@@ -1,6 +1,6 @@
 <html>
 <head>
-    <title>Streetview de Mars</title>
+    <title>StreetView - MarsViewing</title>
     <link rel="shortcut icon" href="/static/images/favicon.ico" type="image/x-icon" />
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
@@ -88,16 +88,6 @@
             border-radius: 5px;
         }
 
-        .left-right {
-            display: flex;
-            justify-content: space-between;
-            width: 25%;
-        }
-
-        .left-right .button.small {
-            flex: 1;
-        }
-
 
     </style>
 </head>
@@ -122,13 +112,16 @@
                     <a href="/photo_haut/{{parameter[0]}}" class="button small">&#8593;</a>
                     <div class="left-right">
                       <a href="/photo_gauche/{{parameter[0]}}" class="button small">&#8592;</a>
-                      <a href="/data/" class="button small">Data</a>
+                      <a href="/data" class="button small">Data</a>
                       <a href="/photo_droite/{{parameter[0]}}" class="button small">&#8594;</a>
                     </div>
                     <a href="/photo_bas/{{parameter[0]}}" class="button small">&#8595;</a>
                 </div>                  
             {% endif %}
         </div>
+
+        <a href="/map/{{parameter[0]}}" class="button small"></a>
+
         <!-- Footer -->
         {% include("layout/footer.html") %}
     </div>

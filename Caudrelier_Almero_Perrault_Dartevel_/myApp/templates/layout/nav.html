@@ -3,6 +3,7 @@
     <li><a href="/">Accueil</a></li>
    
     <li><a href="/streetview">StreetView de Mars</a></li>
+    <li><a href="/map">Carte de Mars</a></li>
   
   
 
@@ -45,7 +46,7 @@
 
   {% if session['login'] %}
   <li>
-    <a href="/#" class = "primary button">{{ session['login'] }}</a>
+    <a href="/#" class = "primary button">{{ session['prenom']  + ' ' + session['nom']}}</a>
 
     <ul>
       <li><a href="/profil">Profil</a></li>
@@ -65,7 +66,7 @@
   document.getElementById('logout').addEventListener('click', function(e) {
       e.preventDefault();
       if (confirm('Voulez-vous vous déconnecter ?')) {
-          window.location.href = '/logout'; // Mettez l'URL de déconnexion ici
+          window.location.href = '/logout';
       }
   });
 </script>

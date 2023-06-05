@@ -4116,3 +4116,14 @@ input, select, textarea {
 	width: 88%;
 	height: 88%;
 }
+
+.containerinfo {
+    text-align: center;
+    margin-top: 50px; /* Ajustez la marge supérieure selon vos besoins */
+  }
+
+
+.alert span {
+display: inline-block; /* Pour que la largeur de la div s'adapte au contenu */
+padding: 5px 10px; /* Espacement interne des alertes */
+}
