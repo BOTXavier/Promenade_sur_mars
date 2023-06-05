@@ -218,3 +218,9 @@ def delete():
     else:
         session["infoRouge"] = "Problème suppression utilisateur"
     return redirect("/login")
+
+@app.route("/updatepassword")
+def updatepassword():
+    motPasse = request.form['newmdp']
+    user = bdd.update_membreData(motPasse,session["idUser"],motPasse)
+    return redirect("/")
