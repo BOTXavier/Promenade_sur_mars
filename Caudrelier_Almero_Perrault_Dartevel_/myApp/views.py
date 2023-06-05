@@ -74,6 +74,16 @@ def LouisYann():
 def xavier():
     return render_template("xavier.html")
 
+@app.route("/map")
+def map():
+    return render_template("map.html",parameter=[round(18.444631884771205,8),round(77.45088815689088,8),0])
+
+@app.route("/localisationmap/<id>")
+def locmap(id=None):
+    latlongsol=bdd.latlongsol(int(id))
+    lat,long,sol=latlongsol[0],latlongsol[1],latlongsol[2]
+    return render_template("map.html",parameter=[lat,long,sol])
+
 
 @app.route("/data")
 def data():

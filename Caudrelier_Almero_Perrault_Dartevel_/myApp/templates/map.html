@@ -1,0 +1,65 @@
+<html>
+    <head>
+        
+    </head>
+
+    <body>
+        
+       
+
+
+    </body>
+</html>
+
+<!DOCTYPE HTML>
+
+<html>
+
+<head>
+    <title>Test Mars</title>
+    <link rel="shortcut icon" href="/static/images/favicon.ico" type="image/x-icon" />
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+    <link rel="stylesheet" href="/static/css/main.css" />
+    <noscript><link rel="stylesheet" href="/static/css/noscript.css" /></noscript>
+
+    
+        
+        <script>
+            function switchWayPoint(wpLat, wpLong){
+                document.getElementById("marsMap").src=`https://mars.nasa.gov/maps/location/?mission=M20&mapLon=${wpLong}&mapLat=${wpLat}&mapZoom=17&selected=Rover%20Waypoints,${wpLat},${wpLong}`;
+            }
+        </script>
+</head>
+
+<body class="is-preload">
+    <div id="page-wrapper">
+
+        <!-- Header -->
+        {% include("layout/header.html") %}
+        <!-- Main -->  
+
+        <h3>Louis-Yann CAUDRELIER</h3>
+
+        <button onclick='switchWayPoint("{{parameter[0]}}","{{parameter[1]}}")'>Oueston</button>
+
+        <button onclick="switchWayPoint(18.48291228,77.36900367)">Sol775</button>
+        <button onclick="switchWayPoint(18.47393096,77.37704962)">Sol762</button>
+        <button onclick="switchWayPoint(18.47368229,77.37988874)">Sol759</button>
+        <button onclick="switchWayPoint(18.47135516,77.37760618)">Sol755</button>
+        <button onclick="switchWayPoint(18.46167105,77.40293428)">Sol709</button>     
+        <iframe id="marsMap" src='https://mars.nasa.gov/maps/location/?mission=M20&site=NOW&mapLon=77.3694133758545&mapLat=18.479955026560873&mapZoom=16&globeLon=77.42958068847659&globeLat=18.463327291058505&globeZoom=11&globeCamera=0,-9765.625,0,0,1,0&panePercents=0,100,0&on=Rover Position$1.00,Rover Waypoints$1.00,Rover Drive Path$1.00,Sampling Locations$1.00,Surface View$1.00,Helicopter Position$1.00,Flight Test Zone$1.00,Labels$1.00,Color Basemap$1.00,Grayscale Basemap$1.00,Northeast Syrtis Base Map$1.00&selected=Rover Waypoints,18.47906148,77.36950725&viewerImg=0&viewerLoc=0.10000,0.00000,0.00000,75' id="toto" width='800' height='400' scrolling='no' frameborder='0' allowfullscreen></iframe>
+        
+        <a href="/map/{{parameter[0]}}" class="button small"></a>
+
+        <!-- Footer -->
+        {% include("layout/footer.html") %}
+
+    </div>
+
+    <!-- Scripts -->
+    {% include("layout/scripts.html") %}
+
+</body>
+
+</html>

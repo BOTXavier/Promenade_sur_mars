@@ -212,8 +212,8 @@ def saveDatafromNASA(dico_photos,dico_rovers,dico_cameras,dico_posi):
         for position_id in dico_posi:
             posi=dico_posi[position_id]
             print(posi)
-            sql = "INSERT INTO Positions (posi_id,rover_id,lat,longitude,cap) VALUES  (%s, %s, %s, %s, %s);"
-            param=(position_id,posi['rover_id'],posi['lat'],posi['long'],posi['cap'])
+            sql = "INSERT INTO Positions (posi_id,rover_id,lat,longitude,cap,sol) VALUES  (%s, %s, %s, %s, %s,%s);"
+            param=(position_id,posi['rover_id'],posi['lat'],posi['long'],posi['cap'],posi['sol'])
             cursor.execute(sql,param)
             cnx.commit()
         close_bd(cursor,cnx)
@@ -236,7 +236,6 @@ def bouton_droite(id):
         return None
     try:
         cursor = cnx.cursor(dictionary=True)
-
         sql="SELECT sol,rover_id,camera_id FROM Photos WHERE photo_id=%s"
         param=([id])
         cursor.execute(sql,param)
@@ -264,7 +263,7 @@ def bouton_droite(id):
 
         close_bd(cursor, cnx)
     except mysql.connector.Error as err:
-        session['errorDB'] = "Failed saveDataFromFile data : {}".format(err)
+        session['errorDB'] = "Failed bouton_droite data : {}".format(err)
         print(session['errorDB']) #le problème s'affiche dans le terminal
     return id_droite, url_droite
 
@@ -572,3 +571,28 @@ def get_cameras():
         session['errorDB'] = "Failed get rovers : {}".format(err)
         print(session['errorDB']) #le problème s'affiche dans le terminal
     return cameras
+
+def latlongsol(photo_id):
+    cnx = connexion() 
+    if cnx is None: return None
+    try:
+        cursor = cnx.cursor(dictionary=True)
+
+        sql = "SELECT rover_id,sol FROM photos WHERE photo_id=%s"
+        params=[photo_id]
+        cursor.execute(sql)
+        data = cursor.fetchall()[0]
+        rover_id,sol=data['rover_id'],data['sol']
+        
+        sql = "SELECT lat,longitude,sol FROM positions WHERE rover_id=%s AND sol=%s"
+        params=[rover_id,sol]
+        cursor.execute(sql)
+        data = cursor.fetchall()[0]
+        lat,longitude,sol=data['lat'],data['longitude'],data['sol']
+
+        close_bd(cursor, cnx)
+    except mysql.connector.Error as err:
+        cameras = None
+        session['errorDB'] = "Failed get rovers : {}".format(err)
+        print(session['errorDB']) #le problème s'affiche dans le terminal
+    return lat,longitude,sol
