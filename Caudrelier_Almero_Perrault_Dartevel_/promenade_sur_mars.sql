@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 5.1.4deb1
+-- version 5.2.1
 -- https://www.phpmyadmin.net/
 --
--- Host: localhost:3306
--- Generation Time: May 16, 2023 at 11:47 AM
--- Server version: 8.0.33-0ubuntu0.22.10.1
--- PHP Version: 8.1.7-1ubuntu3.3
+-- Hôte : 127.0.0.1
+-- Généré le : lun. 05 juin 2023 à 10:21
+-- Version du serveur : 10.4.28-MariaDB
+-- Version de PHP : 8.2.4
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -18,31 +18,29 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8mb4 */;
 
 --
--- Database: `promenade_sur_mars`
+-- Base de données : `promenade_sur_mars`
 --
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `Cameras`
+-- Structure de la table `cameras`
 --
 
-CREATE TABLE `Cameras` (
-  'camera_id' int NOT NULL,
+CREATE TABLE `cameras` (
+  `camera_id` int(11) NOT NULL,
   `name` text NOT NULL,
-  `rover_id` int NOT NULL,
+  `rover_id` int(11) NOT NULL,
   `full_name` text NOT NULL,
   `orientation_hori` float NOT NULL,
-  `orientation_verti` float NOT NULL,
-  PRIMARY KEY ('camera_id'),
-  FOREIGN KEY ('rover_id') REFERENCES Rovers('rover_id')
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+  `orientation_verti` float NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 
 --
--- Dumping data for table `Cameras`
+-- Déchargement des données de la table `cameras`
 --
 
-INSERT INTO `Cameras` (`camera_id`, `name`, `rover_id`, `full_name`, `orientation_hori`, `orientation_verti`) VALUES
+INSERT INTO `cameras` (`camera_id`, `name`, `rover_id`, `full_name`, `orientation_hori`, `orientation_verti`) VALUES
 (35, 'EDL_DDCAM', 8, 'Descent Stage Down-Look Camera', 0, 0),
 (42, 'FRONT_HAZCAM_LEFT_A', 8, 'Front Hazard Avoidance Camera - Left', 0, 0),
 (43, 'FRONT_HAZCAM_RIGHT_A', 8, 'Front Hazard Avoidance Camera - Right', 0, 0),
@@ -80,41 +78,38 @@ INSERT INTO `Cameras` (`camera_id`, `name`, `rover_id`, `full_name`, `orientatio
 -- --------------------------------------------------------
 
 --
--- Table structure for table `identification`
+-- Structure de la table `identification`
 --
 
 CREATE TABLE `identification` (
-  `idUser` int NOT NULL,
+  `idUser` int(11) NOT NULL,
   `nom` varchar(50) NOT NULL,
   `prenom` varchar(50) NOT NULL,
   `mail` varchar(100) NOT NULL,
   `login` varchar(100) NOT NULL,
   `motPasse` varchar(100) NOT NULL,
-  `statut` int NOT NULL DEFAULT '1'
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+  `statut` int(11) NOT NULL DEFAULT 1
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 
 -- --------------------------------------------------------
 
 --
--- Table structure for table `Photos`
+-- Structure de la table `photos`
 --
 
-CREATE TABLE `Photos` (
-  `photo_id` int NOT NULL,
-  `sol` int NOT NULL,
-  `rover_id` int NOT NULL,
-  `camera_id` int NOT NULL,
-  `url` text NOT NULL,
-  PRIMARY KEY ('photo_id'),
-  FOREIGN KEY ('rover_id') REFERENCES Rovers('rover_id'),
-  FOREIGN KEY ('camera_id') REFERENCES Cameras('camera_id')
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+CREATE TABLE `photos` (
+  `photo_id` int(11) NOT NULL,
+  `sol` int(11) NOT NULL,
+  `rover_id` int(11) NOT NULL,
+  `camera_id` int(11) NOT NULL,
+  `url` text NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 
 --
--- Dumping data for table `Photos`
+-- Déchargement des données de la table `photos`
 --
 
-INSERT INTO `Photos` (`photo_id`, `sol`, `rover_id`, `camera_id`, `url`) VALUES
+INSERT INTO `photos` (`photo_id`, `sol`, `rover_id`, `camera_id`, `url`) VALUES
 (810974, 0, 8, 35, 'https://mars.nasa.gov/mars2020-raw-images/pub/ods/surface/sol/00000/ids/edr/browse/edl/ESF_0000_0666965708_609ECM_N0010052EDLC00000_0000LUJ01_1200.jpg'),
 (810975, 0, 8, 35, 'https://mars.nasa.gov/mars2020-raw-images/pub/ods/surface/sol/00000/ids/edr/browse/edl/ESF_0000_0666965708_609ECM_N0010052EDLC00000_0000LUJ02_1200.jpg'),
 (810960, 0, 8, 42, 'https://mars.nasa.gov/mars2020-raw-images/pub/ods/surface/sol/00000/ids/edr/browse/fcam/FLB_0000_0666952990_226ECM_N0010044AUT_04096_00_2I3J01_1200.jpg'),
@@ -419,7 +414,7 @@ INSERT INTO `Photos` (`photo_id`, `sol`, `rover_id`, `camera_id`, `url`) VALUES
 (62224, 0, 5, 25, 'http://mars.jpl.nasa.gov/msl-raw-images/msss/00000/mrdi/0000MD9999001477E1_DXXX.jpg'),
 (62225, 0, 5, 25, 'http://mars.jpl.nasa.gov/msl-raw-images/msss/00000/mrdi/0000MD9999001476E1_DXXX.jpg'),
 (62226, 0, 5, 25, 'http://mars.jpl.nasa.gov/msl-raw-images/msss/00000/mrdi/0000MD9999001478E1_DXXX.jpg');
-INSERT INTO `Photos` (`photo_id`, `sol`, `rover_id`, `camera_id`, `url`) VALUES
+INSERT INTO `photos` (`photo_id`, `sol`, `rover_id`, `camera_id`, `url`) VALUES
 (62227, 0, 5, 25, 'http://mars.jpl.nasa.gov/msl-raw-images/msss/00000/mrdi/0000MD9999001474E1_DXXX.jpg'),
 (62228, 0, 5, 25, 'http://mars.jpl.nasa.gov/msl-raw-images/msss/00000/mrdi/0000MD9999001475E1_DXXX.jpg'),
 (62229, 0, 5, 25, 'http://mars.jpl.nasa.gov/msl-raw-images/msss/00000/mrdi/0000MD9999001473E1_DXXX.jpg'),
@@ -900,7 +895,7 @@ INSERT INTO `Photos` (`photo_id`, `sol`, `rover_id`, `camera_id`, `url`) VALUES
 (62704, 0, 5, 25, 'http://mars.jpl.nasa.gov/msl-raw-images/msss/00000/mrdi/0000MD9999000998E1_DXXX.jpg'),
 (62705, 0, 5, 25, 'http://mars.jpl.nasa.gov/msl-raw-images/msss/00000/mrdi/0000MD9999000997E1_DXXX.jpg'),
 (62706, 0, 5, 25, 'http://mars.jpl.nasa.gov/msl-raw-images/msss/00000/mrdi/0000MD9999000996E1_DXXX.jpg');
-INSERT INTO `Photos` (`photo_id`, `sol`, `rover_id`, `camera_id`, `url`) VALUES
+INSERT INTO `photos` (`photo_id`, `sol`, `rover_id`, `camera_id`, `url`) VALUES
 (62707, 0, 5, 25, 'http://mars.jpl.nasa.gov/msl-raw-images/msss/00000/mrdi/0000MD9999000995E1_DXXX.jpg'),
 (62708, 0, 5, 25, 'http://mars.jpl.nasa.gov/msl-raw-images/msss/00000/mrdi/0000MD9999000994E1_DXXX.jpg'),
 (62709, 0, 5, 25, 'http://mars.jpl.nasa.gov/msl-raw-images/msss/00000/mrdi/0000MD9999000993E1_DXXX.jpg'),
@@ -1381,7 +1376,7 @@ INSERT INTO `Photos` (`photo_id`, `sol`, `rover_id`, `camera_id`, `url`) VALUES
 (63184, 0, 5, 25, 'http://mars.jpl.nasa.gov/msl-raw-images/msss/00000/mrdi/0000MD9999000610C0_DXXX.jpg'),
 (63185, 0, 5, 25, 'http://mars.jpl.nasa.gov/msl-raw-images/msss/00000/mrdi/0000MD9999000609E1_DXXX.jpg'),
 (63186, 0, 5, 25, 'http://mars.jpl.nasa.gov/msl-raw-images/msss/00000/mrdi/0000MD9999000608C0_DXXX.jpg');
-INSERT INTO `Photos` (`photo_id`, `sol`, `rover_id`, `camera_id`, `url`) VALUES
+INSERT INTO `photos` (`photo_id`, `sol`, `rover_id`, `camera_id`, `url`) VALUES
 (63187, 0, 5, 25, 'http://mars.jpl.nasa.gov/msl-raw-images/msss/00000/mrdi/0000MD9999000607C0_DXXX.jpg'),
 (63188, 0, 5, 25, 'http://mars.jpl.nasa.gov/msl-raw-images/msss/00000/mrdi/0000MD9999000607E1_DXXX.jpg'),
 (63189, 0, 5, 25, 'http://mars.jpl.nasa.gov/msl-raw-images/msss/00000/mrdi/0000MD9999000609C0_DXXX.jpg'),
@@ -1862,7 +1857,7 @@ INSERT INTO `Photos` (`photo_id`, `sol`, `rover_id`, `camera_id`, `url`) VALUES
 (63664, 0, 5, 25, 'http://mars.jpl.nasa.gov/msl-raw-images/msss/00000/mrdi/0000MD9999000371C0_DXXX.jpg'),
 (63665, 0, 5, 25, 'http://mars.jpl.nasa.gov/msl-raw-images/msss/00000/mrdi/0000MD9999000371E1_DXXX.jpg'),
 (63666, 0, 5, 25, 'http://mars.jpl.nasa.gov/msl-raw-images/msss/00000/mrdi/0000MD9999000370C0_DXXX.jpg');
-INSERT INTO `Photos` (`photo_id`, `sol`, `rover_id`, `camera_id`, `url`) VALUES
+INSERT INTO `photos` (`photo_id`, `sol`, `rover_id`, `camera_id`, `url`) VALUES
 (63667, 0, 5, 25, 'http://mars.jpl.nasa.gov/msl-raw-images/msss/00000/mrdi/0000MD9999000368E1_DXXX.jpg'),
 (63668, 0, 5, 25, 'http://mars.jpl.nasa.gov/msl-raw-images/msss/00000/mrdi/0000MD9999000367E2_DXXX.jpg'),
 (63669, 0, 5, 25, 'http://mars.jpl.nasa.gov/msl-raw-images/msss/00000/mrdi/0000MD9999000365E1_DXXX.jpg'),
@@ -2343,7 +2338,7 @@ INSERT INTO `Photos` (`photo_id`, `sol`, `rover_id`, `camera_id`, `url`) VALUES
 (64144, 0, 5, 25, 'http://mars.jpl.nasa.gov/msl-raw-images/msss/00000/mrdi/0000MD9999000129C0_DXXX.jpg'),
 (64145, 0, 5, 25, 'http://mars.jpl.nasa.gov/msl-raw-images/msss/00000/mrdi/0000MD9999000131E1_DXXX.jpg'),
 (64146, 0, 5, 25, 'http://mars.jpl.nasa.gov/msl-raw-images/msss/00000/mrdi/0000MD9999000132C0_DXXX.jpg');
-INSERT INTO `Photos` (`photo_id`, `sol`, `rover_id`, `camera_id`, `url`) VALUES
+INSERT INTO `photos` (`photo_id`, `sol`, `rover_id`, `camera_id`, `url`) VALUES
 (64147, 0, 5, 25, 'http://mars.jpl.nasa.gov/msl-raw-images/msss/00000/mrdi/0000MD9999000128C0_DXXX.jpg'),
 (64148, 0, 5, 25, 'http://mars.jpl.nasa.gov/msl-raw-images/msss/00000/mrdi/0000MD9999000125C0_DXXX.jpg'),
 (64149, 0, 5, 25, 'http://mars.jpl.nasa.gov/msl-raw-images/msss/00000/mrdi/0000MD9999000125E1_DXXX.jpg'),
@@ -2824,7 +2819,7 @@ INSERT INTO `Photos` (`photo_id`, `sol`, `rover_id`, `camera_id`, `url`) VALUES
 (64624, 0, 5, 25, 'http://mars.jpl.nasa.gov/msl-raw-images/msss/00000/mrdi/0000MD9999001255I1_DXXX.jpg'),
 (64625, 0, 5, 25, 'http://mars.jpl.nasa.gov/msl-raw-images/msss/00000/mrdi/0000MD9999001257I1_DXXX.jpg'),
 (64626, 0, 5, 25, 'http://mars.jpl.nasa.gov/msl-raw-images/msss/00000/mrdi/0000MD9999001256I1_DXXX.jpg');
-INSERT INTO `Photos` (`photo_id`, `sol`, `rover_id`, `camera_id`, `url`) VALUES
+INSERT INTO `photos` (`photo_id`, `sol`, `rover_id`, `camera_id`, `url`) VALUES
 (64627, 0, 5, 25, 'http://mars.jpl.nasa.gov/msl-raw-images/msss/00000/mrdi/0000MD9999001254I1_DXXX.jpg'),
 (64628, 0, 5, 25, 'http://mars.jpl.nasa.gov/msl-raw-images/msss/00000/mrdi/0000MD9999001250I1_DXXX.jpg'),
 (64629, 0, 5, 25, 'http://mars.jpl.nasa.gov/msl-raw-images/msss/00000/mrdi/0000MD9999001252I1_DXXX.jpg'),
@@ -3305,7 +3300,7 @@ INSERT INTO `Photos` (`photo_id`, `sol`, `rover_id`, `camera_id`, `url`) VALUES
 (65104, 0, 5, 25, 'http://mars.jpl.nasa.gov/msl-raw-images/msss/00000/mrdi/0000MD9999000777I1_DXXX.jpg'),
 (65105, 0, 5, 25, 'http://mars.jpl.nasa.gov/msl-raw-images/msss/00000/mrdi/0000MD9999000776I1_DXXX.jpg'),
 (65106, 0, 5, 25, 'http://mars.jpl.nasa.gov/msl-raw-images/msss/00000/mrdi/0000MD9999000775I1_DXXX.jpg');
-INSERT INTO `Photos` (`photo_id`, `sol`, `rover_id`, `camera_id`, `url`) VALUES
+INSERT INTO `photos` (`photo_id`, `sol`, `rover_id`, `camera_id`, `url`) VALUES
 (65107, 0, 5, 25, 'http://mars.jpl.nasa.gov/msl-raw-images/msss/00000/mrdi/0000MD9999000774I1_DXXX.jpg'),
 (65108, 0, 5, 25, 'http://mars.jpl.nasa.gov/msl-raw-images/msss/00000/mrdi/0000MD9999000771I1_DXXX.jpg'),
 (65109, 0, 5, 25, 'http://mars.jpl.nasa.gov/msl-raw-images/msss/00000/mrdi/0000MD9999000772I1_DXXX.jpg'),
@@ -3786,7 +3781,7 @@ INSERT INTO `Photos` (`photo_id`, `sol`, `rover_id`, `camera_id`, `url`) VALUES
 (65584, 0, 5, 25, 'http://mars.jpl.nasa.gov/msl-raw-images/msss/00000/mrdi/0000MD9999000297I1_DXXX.jpg'),
 (65585, 0, 5, 25, 'http://mars.jpl.nasa.gov/msl-raw-images/msss/00000/mrdi/0000MD9999000296I1_DXXX.jpg'),
 (65586, 0, 5, 25, 'http://mars.jpl.nasa.gov/msl-raw-images/msss/00000/mrdi/0000MD9999000295I1_DXXX.jpg');
-INSERT INTO `Photos` (`photo_id`, `sol`, `rover_id`, `camera_id`, `url`) VALUES
+INSERT INTO `photos` (`photo_id`, `sol`, `rover_id`, `camera_id`, `url`) VALUES
 (65587, 0, 5, 25, 'http://mars.jpl.nasa.gov/msl-raw-images/msss/00000/mrdi/0000MD9999000294I1_DXXX.jpg'),
 (65588, 0, 5, 25, 'http://mars.jpl.nasa.gov/msl-raw-images/msss/00000/mrdi/0000MD9999000290I1_DXXX.jpg'),
 (65589, 0, 5, 25, 'http://mars.jpl.nasa.gov/msl-raw-images/msss/00000/mrdi/0000MD9999000291I1_DXXX.jpg'),
@@ -4269,7 +4264,7 @@ INSERT INTO `Photos` (`photo_id`, `sol`, `rover_id`, `camera_id`, `url`) VALUES
 (108889, 1, 6, 19, 'http://mars.nasa.gov/mer/gallery/all/1/e/001/1E128278509EDN0000F0006N0M1-BR.JPG'),
 (108890, 1, 6, 19, 'http://mars.nasa.gov/mer/gallery/all/1/e/001/1E128278513EDN0000F0006N0M1-BR.JPG'),
 (811374, 2, 8, 34, 'https://mars.nasa.gov/mars2020-raw-images/pub/ods/surface/sol/00002/ids/edr/browse/edl/EDF_0002_0667110736_364ECV_N0010052EDLC00002_0010LUJ01_1200.jpg');
-INSERT INTO `Photos` (`photo_id`, `sol`, `rover_id`, `camera_id`, `url`) VALUES
+INSERT INTO `photos` (`photo_id`, `sol`, `rover_id`, `camera_id`, `url`) VALUES
 (811375, 2, 8, 34, 'https://mars.nasa.gov/mars2020-raw-images/pub/ods/surface/sol/00002/ids/edr/browse/edl/EDF_0002_0667110740_696ECV_N0010052EDLC00002_0010LUJ01_1200.jpg'),
 (811376, 2, 8, 34, 'https://mars.nasa.gov/mars2020-raw-images/pub/ods/surface/sol/00002/ids/edr/browse/edl/EDF_0002_0667110744_362ECV_N0010052EDLC00002_0010LUJ01_1200.jpg'),
 (811377, 2, 8, 34, 'https://mars.nasa.gov/mars2020-raw-images/pub/ods/surface/sol/00002/ids/edr/browse/edl/EDF_0002_0667110747_695ECV_N0010052EDLC00002_0010LUJ01_1200.jpg'),
@@ -4560,7 +4555,7 @@ INSERT INTO `Photos` (`photo_id`, `sol`, `rover_id`, `camera_id`, `url`) VALUES
 (811664, 2, 8, 34, 'https://mars.nasa.gov/mars2020-raw-images/pub/ods/surface/sol/00002/ids/edr/browse/edl/EDF_0002_0667110745_362ECV_N0010052EDLC00002_0010LUJ01_1200.jpg'),
 (811665, 2, 8, 34, 'https://mars.nasa.gov/mars2020-raw-images/pub/ods/surface/sol/00002/ids/edr/browse/edl/EDF_0002_0667110745_695ECV_N0010052EDLC00002_0010LUJ01_1200.jpg'),
 (811666, 2, 8, 34, 'https://mars.nasa.gov/mars2020-raw-images/pub/ods/surface/sol/00002/ids/edr/browse/edl/EDF_0002_0667110746_029ECV_N0010052EDLC00002_0010LUJ01_1200.jpg');
-INSERT INTO `Photos` (`photo_id`, `sol`, `rover_id`, `camera_id`, `url`) VALUES
+INSERT INTO `photos` (`photo_id`, `sol`, `rover_id`, `camera_id`, `url`) VALUES
 (811667, 2, 8, 34, 'https://mars.nasa.gov/mars2020-raw-images/pub/ods/surface/sol/00002/ids/edr/browse/edl/EDF_0002_0667110746_362ECV_N0010052EDLC00002_0010LUJ01_1200.jpg'),
 (811668, 2, 8, 34, 'https://mars.nasa.gov/mars2020-raw-images/pub/ods/surface/sol/00002/ids/edr/browse/edl/EDF_0002_0667110746_695ECV_N0010052EDLC00002_0010LUJ01_1200.jpg'),
 (811669, 2, 8, 34, 'https://mars.nasa.gov/mars2020-raw-images/pub/ods/surface/sol/00002/ids/edr/browse/edl/EDF_0002_0667110747_029ECV_N0010052EDLC00002_0010LUJ01_1200.jpg'),
@@ -4851,7 +4846,7 @@ INSERT INTO `Photos` (`photo_id`, `sol`, `rover_id`, `camera_id`, `url`) VALUES
 (811326, 2, 8, 36, 'https://mars.nasa.gov/mars2020-raw-images/pub/ods/surface/sol/00002/ids/edr/browse/edl/EAF_0002_0667110413_774ECV_N0010052EDLC00002_0010LUJ01_1200.jpg'),
 (811327, 2, 8, 36, 'https://mars.nasa.gov/mars2020-raw-images/pub/ods/surface/sol/00002/ids/edr/browse/edl/EAF_0002_0667110413_908ECV_N0010052EDLC00002_0010LUJ01_1200.jpg'),
 (811328, 2, 8, 36, 'https://mars.nasa.gov/mars2020-raw-images/pub/ods/surface/sol/00002/ids/edr/browse/edl/EAF_0002_0667110414_041ECV_N0010052EDLC00002_0010LUJ01_1200.jpg');
-INSERT INTO `Photos` (`photo_id`, `sol`, `rover_id`, `camera_id`, `url`) VALUES
+INSERT INTO `photos` (`photo_id`, `sol`, `rover_id`, `camera_id`, `url`) VALUES
 (811329, 2, 8, 36, 'https://mars.nasa.gov/mars2020-raw-images/pub/ods/surface/sol/00002/ids/edr/browse/edl/EAF_0002_0667110414_174ECV_N0010052EDLC00002_0010LUJ01_1200.jpg'),
 (811330, 2, 8, 36, 'https://mars.nasa.gov/mars2020-raw-images/pub/ods/surface/sol/00002/ids/edr/browse/edl/EAF_0002_0667110414_307ECV_N0010052EDLC00002_0010LUJ01_1200.jpg'),
 (811331, 2, 8, 36, 'https://mars.nasa.gov/mars2020-raw-images/pub/ods/surface/sol/00002/ids/edr/browse/edl/EAF_0002_0667110414_441ECV_N0010052EDLC00002_0010LUJ01_1200.jpg'),
@@ -5141,7 +5136,7 @@ INSERT INTO `Photos` (`photo_id`, `sol`, `rover_id`, `camera_id`, `url`) VALUES
 (811226, 2, 8, 40, 'https://mars.nasa.gov/mars2020-raw-images/pub/ods/surface/sol/00002/ids/fdr/browse/zcam/ZR4_0002_0667131599_423FDR_N0010052ZCAM00012_0630LUJ02_1200.jpg'),
 (811227, 2, 8, 40, 'https://mars.nasa.gov/mars2020-raw-images/pub/ods/surface/sol/00002/ids/fdr/browse/zcam/ZR5_0002_0667131617_423FDR_N0010052ZCAM00012_0630LUJ02_1200.jpg'),
 (811228, 2, 8, 40, 'https://mars.nasa.gov/mars2020-raw-images/pub/ods/surface/sol/00002/ids/fdr/browse/zcam/ZR6_0002_0667131636_423FDR_N0010052ZCAM00012_0630LUJ02_1200.jpg');
-INSERT INTO `Photos` (`photo_id`, `sol`, `rover_id`, `camera_id`, `url`) VALUES
+INSERT INTO `photos` (`photo_id`, `sol`, `rover_id`, `camera_id`, `url`) VALUES
 (811229, 2, 8, 40, 'https://mars.nasa.gov/mars2020-raw-images/pub/ods/surface/sol/00002/ids/fdr/browse/zcam/ZR7_0002_0667131655_423FDR_N0010052ZCAM00012_0630LUJ02_1200.jpg'),
 (811230, 2, 8, 40, 'https://mars.nasa.gov/mars2020-raw-images/pub/ods/surface/sol/00002/ids/fdr/browse/zcam/ZRF_0002_0667131779_423FDR_N0010052ZCAM00012_1100LUJ01_1200.jpg'),
 (811231, 2, 8, 40, 'https://mars.nasa.gov/mars2020-raw-images/pub/ods/surface/sol/00002/ids/fdr/browse/zcam/ZRF_0002_0667131841_000FDR_N0010052AUT_04096_1100LUJ02_1200.jpg'),
@@ -5430,7 +5425,7 @@ INSERT INTO `Photos` (`photo_id`, `sol`, `rover_id`, `camera_id`, `url`) VALUES
 (812262, 3, 8, 41, 'https://mars.nasa.gov/mars2020-raw-images/pub/ods/surface/sol/00003/ids/fdr/browse/zcam/ZLF_0003_0667221260_000FDR_N0010052AUT_04096_034085J01_1200.jpg'),
 (812263, 3, 8, 41, 'https://mars.nasa.gov/mars2020-raw-images/pub/ods/surface/sol/00003/ids/fdr/browse/zcam/ZLF_0003_0667221284_000FDR_N0010052AUT_04096_034085J01_1200.jpg'),
 (812264, 3, 8, 41, 'https://mars.nasa.gov/mars2020-raw-images/pub/ods/surface/sol/00003/ids/fdr/browse/zcam/ZLF_0003_0667221397_000FDR_N0010052AUT_04096_034085J01_1200.jpg');
-INSERT INTO `Photos` (`photo_id`, `sol`, `rover_id`, `camera_id`, `url`) VALUES
+INSERT INTO `photos` (`photo_id`, `sol`, `rover_id`, `camera_id`, `url`) VALUES
 (812265, 3, 8, 41, 'https://mars.nasa.gov/mars2020-raw-images/pub/ods/surface/sol/00003/ids/fdr/browse/zcam/ZLF_0003_0667221426_000FDR_N0010052AUT_04096_034085J01_1200.jpg'),
 (812266, 3, 8, 41, 'https://mars.nasa.gov/mars2020-raw-images/pub/ods/surface/sol/00003/ids/fdr/browse/zcam/ZLF_0003_0667221456_000FDR_N0010052AUT_04096_034085J01_1200.jpg'),
 (812267, 3, 8, 41, 'https://mars.nasa.gov/mars2020-raw-images/pub/ods/surface/sol/00003/ids/fdr/browse/zcam/ZLF_0003_0667221486_000FDR_N0010052AUT_04096_034085J01_1200.jpg'),
@@ -5855,7 +5850,7 @@ INSERT INTO `Photos` (`photo_id`, `sol`, `rover_id`, `camera_id`, `url`) VALUES
 (509215, 3, 5, 22, 'http://mars.jpl.nasa.gov/msl-raw-images/msss/00003/mcam/0003ML0000149000I1_DXXX.jpg'),
 (509216, 3, 5, 22, 'http://mars.jpl.nasa.gov/msl-raw-images/msss/00003/mcam/0003MR0000018000I1_DXXX.jpg'),
 (509217, 3, 5, 22, 'http://mars.jpl.nasa.gov/msl-raw-images/msss/00003/mcam/0003ML0000148000I1_DXXX.jpg');
-INSERT INTO `Photos` (`photo_id`, `sol`, `rover_id`, `camera_id`, `url`) VALUES
+INSERT INTO `photos` (`photo_id`, `sol`, `rover_id`, `camera_id`, `url`) VALUES
 (509218, 3, 5, 22, 'http://mars.jpl.nasa.gov/msl-raw-images/msss/00003/mcam/0003ML0000147000I1_DXXX.jpg'),
 (509219, 3, 5, 22, 'http://mars.jpl.nasa.gov/msl-raw-images/msss/00003/mcam/0003MR0000017000I1_DXXX.jpg'),
 (509220, 3, 5, 22, 'http://mars.jpl.nasa.gov/msl-raw-images/msss/00003/mcam/0003MR0000016000I1_DXXX.jpg'),
@@ -6349,7 +6344,7 @@ INSERT INTO `Photos` (`photo_id`, `sol`, `rover_id`, `camera_id`, `url`) VALUES
 (267947, 2, 6, 17, 'http://mars.nasa.gov/mer/gallery/all/1/p/002/1P128365399ESF0100P2110L1M1-BR.JPG'),
 (267948, 2, 6, 17, 'http://mars.nasa.gov/mer/gallery/all/1/p/002/1P128365430ESF0100P2110L3M1-BR.JPG'),
 (267949, 2, 6, 17, 'http://mars.nasa.gov/mer/gallery/all/1/p/002/1P128365462ESF0100P2110L4M1-BR.JPG');
-INSERT INTO `Photos` (`photo_id`, `sol`, `rover_id`, `camera_id`, `url`) VALUES
+INSERT INTO `photos` (`photo_id`, `sol`, `rover_id`, `camera_id`, `url`) VALUES
 (267950, 2, 6, 17, 'http://mars.nasa.gov/mer/gallery/all/1/p/002/1P128365493ESF0100P2110L7M1-BR.JPG'),
 (267951, 2, 6, 17, 'http://mars.nasa.gov/mer/gallery/all/1/p/002/1P128365551ESF0100P2110R2M1-BR.JPG'),
 (267952, 2, 6, 17, 'http://mars.nasa.gov/mer/gallery/all/1/p/002/1P128365584ESF0100P2110R1M1-BR.JPG'),
@@ -6727,24 +6722,22 @@ INSERT INTO `Photos` (`photo_id`, `sol`, `rover_id`, `camera_id`, `url`) VALUES
 -- --------------------------------------------------------
 
 --
--- Table structure for table `Positions`
+-- Structure de la table `positions`
 --
 
-CREATE TABLE `Positions` (
-  `posi_id` int NOT NULL,
-  `rover_id` int NOT NULL,
+CREATE TABLE `positions` (
+  `posi_id` int(11) NOT NULL,
+  `rover_id` int(11) NOT NULL,
   `lat` float NOT NULL,
   `longitude` float NOT NULL,
-  `cap` float NOT NULL,
-  PRIMARY KEY ('posi_id'),
-  FOREIGN KEY ('rover_id') REFERENCES Rovers('rover_id')
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+  `cap` float NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 
 --
--- Dumping data for table `Positions`
+-- Déchargement des données de la table `positions`
 --
 
-INSERT INTO `Positions` (`posi_id`, `rover_id`, `lat`, `longitude`, `cap`) VALUES
+INSERT INTO `positions` (`posi_id`, `rover_id`, `lat`, `longitude`, `cap`) VALUES
 (0, 8, 18.4446, 77.4509, 130.882),
 (1, 8, 18.4445, 77.4509, -15.1121),
 (2, 8, 18.4451, 77.451, 88.565),
@@ -6755,63 +6748,48 @@ INSERT INTO `Positions` (`posi_id`, `rover_id`, `lat`, `longitude`, `cap`) VALUE
 -- --------------------------------------------------------
 
 --
--- Table structure for table `Rovers`
+-- Structure de la table `rovers`
 --
 
-CREATE TABLE `Rovers` (
-  `rover_id` int NOT NULL,
+CREATE TABLE `rovers` (
+  `rover_id` int(11) NOT NULL,
   `name` text NOT NULL,
   `landing_date` date NOT NULL,
   `launch_date` date NOT NULL,
-  `status` text NOT NULL,
-  PRIMARY KEY ('rover_id')
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+  `status` text NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 
 --
--- Dumping data for table `Rovers`
+-- Déchargement des données de la table `rovers`
 --
 
-INSERT INTO `Rovers` (`rover_id`, `name`, `landing_date`, `launch_date`, `status`) VALUES
+INSERT INTO `rovers` (`rover_id`, `name`, `landing_date`, `launch_date`, `status`) VALUES
 (8, 'Perseverance', '2021-02-18', '2020-07-30', 'active'),
 (5, 'Curiosity', '2012-08-06', '2011-11-26', 'active'),
 (7, 'Spirit', '2004-01-04', '2003-06-10', 'complete'),
 (6, 'Opportunity', '2004-01-25', '2003-07-07', 'complete');
 
 --
--- Indexes for dumped tables
+-- Index pour les tables déchargées
 --
 
 --
--- Indexes for table `identification`
+-- Index pour la table `identification`
 --
 ALTER TABLE `identification`
   ADD PRIMARY KEY (`idUser`);
 
 --
--- AUTO_INCREMENT for dumped tables
+-- AUTO_INCREMENT pour les tables déchargées
 --
 
 --
--- AUTO_INCREMENT for table `identification`
+-- AUTO_INCREMENT pour la table `identification`
 --
 ALTER TABLE `identification`
-  MODIFY `idUser` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=23;
+  MODIFY `idUser` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=23;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
-
---
--- Table structure for table `Rovers` -- table d'association positions & rovers
---
-
-CREATE TABLE `rovers-positions` (
-  `posi_id` int NOT NULL,
-  'rover_id' int NOT NULL,
-  `sol` text NOT NULL,
-  PRIMARY KEY ('posi_id'),
-  PRIMARY KEY ('rover_id'),
-  FOREIGN KEY 'posi_id' REFERENCES Position('posi_id'),
-  FOREIGN KEY 'rover_id' REFERENCES Rovers('rover_id')
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;

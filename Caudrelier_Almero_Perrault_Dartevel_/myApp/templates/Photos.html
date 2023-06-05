@@ -25,11 +25,7 @@
       <th>photo_id</th>
       <th>sol</th>
       <th>rover_id</th>
-      <th>camera_id</th>
-
-      <img src=url style="max-width: 100%; max-height: 70vh; margin-top: 20px;">
-
-      
+      <th>camera_id</th>      
     </tr>
     <tr>
     {% for liste in liste_de_listes %}
@@ -37,6 +33,7 @@
     {% for element in liste %}
         <th>{{ element }}</th>
     {% endfor %}
+    <img src=url style="max-width: 100%; max-height: 70vh; margin-top: 20px;">
     </tr>
     {% endfor %}
 </tr>
