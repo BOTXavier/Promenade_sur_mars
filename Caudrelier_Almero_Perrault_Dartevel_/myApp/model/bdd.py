@@ -114,7 +114,7 @@ def update_membreData(champ, idUser, newvalue):
         cursor.execute(sql, param)
         cnx.commit()
         close_bd(cursor, cnx)
-        #session['successDB'] = "OK update_membreData"
+        session['successDB'] = "OK update_membreData"
     except mysql.connector.Error as err:
         session['errorDB'] = "Failed update membres data : {}".format(err)
         print(session['errorDB']) #le problème s'affiche dans le terminal
