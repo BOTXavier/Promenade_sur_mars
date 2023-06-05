@@ -188,9 +188,6 @@ def Photos():
         L.append([dictionnaire['photo_id'], dictionnaire['sol'], dictionnaire['rover_id'], dictionnaire['camera_id'], dictionnaire['url']])
     return render_template("Photos.html", liste_de_listes = L)
 
-@app.route("/Positions")
-def Positions():
-    return render_template("Positions.html")
 
 @app.route("/Rovers")
 def Rovers():
