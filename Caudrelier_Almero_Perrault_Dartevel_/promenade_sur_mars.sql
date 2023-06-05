@@ -26,6 +26,79 @@ SET time_zone = "+00:00";
 --
 -- Structure de la table `cameras`
 --
+-- Structure de la table `positions`
+--
+
+CREATE TABLE `positions` (
+  `posi_id` int(11) NOT NULL,
+  `rover_id` int(11) NOT NULL,
+  `lat` float NOT NULL,
+  `longitude` float NOT NULL,
+  `cap` float NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+
+--
+-- Déchargement des données de la table `positions`
+--
+
+INSERT INTO `positions` (`posi_id`, `rover_id`, `lat`, `longitude`, `cap`) VALUES
+(0, 8, 18.4446, 77.4509, 130.882),
+(1, 8, 18.4445, 77.4509, -15.1121),
+(2, 8, 18.4451, 77.451, 88.565),
+(1000000, 5, -4.58947, 137.442, 111.52),
+(1000001, 5, -4.58947, 137.442, -132.02),
+(1000002, 5, -4.5894, 137.442, -164.69);
+
+-- --------------------------------------------------------
+
+--
+-- Structure de la table `rovers`
+--
+
+CREATE TABLE `rovers` (
+  `rover_id` int(11) NOT NULL,
+  `name` text NOT NULL,
+  `landing_date` date NOT NULL,
+  `launch_date` date NOT NULL,
+  `status` text NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+
+--
+-- Déchargement des données de la table `rovers`
+--
+
+INSERT INTO `rovers` (`rover_id`, `name`, `landing_date`, `launch_date`, `status`) VALUES
+(8, 'Perseverance', '2021-02-18', '2020-07-30', 'active'),
+(5, 'Curiosity', '2012-08-06', '2011-11-26', 'active'),
+(7, 'Spirit', '2004-01-04', '2003-06-10', 'complete'),
+(6, 'Opportunity', '2004-01-25', '2003-07-07', 'complete');
+
+--
+-- Index pour les tables déchargées
+--
+
+--
+-- Index pour la table `identification`
+--
+ALTER TABLE `identification`
+  ADD PRIMARY KEY (`idUser`);
+
+--
+-- AUTO_INCREMENT pour les tables déchargées
+--
+
+--
+-- AUTO_INCREMENT pour la table `identification`
+--
+ALTER TABLE `identification`
+  MODIFY `idUser` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=23;
+COMMIT;
+
+/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
+/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
+/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
+
+
 
 CREATE TABLE `cameras` (
   `camera_id` int(11) NOT NULL,
@@ -6722,74 +6795,4 @@ INSERT INTO `photos` (`photo_id`, `sol`, `rover_id`, `camera_id`, `url`) VALUES
 -- --------------------------------------------------------
 
 --
--- Structure de la table `positions`
---
 
-CREATE TABLE `positions` (
-  `posi_id` int(11) NOT NULL,
-  `rover_id` int(11) NOT NULL,
-  `lat` float NOT NULL,
-  `longitude` float NOT NULL,
-  `cap` float NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
-
---
--- Déchargement des données de la table `positions`
---
-
-INSERT INTO `positions` (`posi_id`, `rover_id`, `lat`, `longitude`, `cap`) VALUES
-(0, 8, 18.4446, 77.4509, 130.882),
-(1, 8, 18.4445, 77.4509, -15.1121),
-(2, 8, 18.4451, 77.451, 88.565),
-(1000000, 5, -4.58947, 137.442, 111.52),
-(1000001, 5, -4.58947, 137.442, -132.02),
-(1000002, 5, -4.5894, 137.442, -164.69);
-
--- --------------------------------------------------------
-
---
--- Structure de la table `rovers`
---
-
-CREATE TABLE `rovers` (
-  `rover_id` int(11) NOT NULL,
-  `name` text NOT NULL,
-  `landing_date` date NOT NULL,
-  `launch_date` date NOT NULL,
-  `status` text NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
-
---
--- Déchargement des données de la table `rovers`
---
-
-INSERT INTO `rovers` (`rover_id`, `name`, `landing_date`, `launch_date`, `status`) VALUES
-(8, 'Perseverance', '2021-02-18', '2020-07-30', 'active'),
-(5, 'Curiosity', '2012-08-06', '2011-11-26', 'active'),
-(7, 'Spirit', '2004-01-04', '2003-06-10', 'complete'),
-(6, 'Opportunity', '2004-01-25', '2003-07-07', 'complete');
-
---
--- Index pour les tables déchargées
---
-
---
--- Index pour la table `identification`
---
-ALTER TABLE `identification`
-  ADD PRIMARY KEY (`idUser`);
-
---
--- AUTO_INCREMENT pour les tables déchargées
---
-
---
--- AUTO_INCREMENT pour la table `identification`
---
-ALTER TABLE `identification`
-  MODIFY `idUser` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=23;
-COMMIT;
-
-/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
-/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
-/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;

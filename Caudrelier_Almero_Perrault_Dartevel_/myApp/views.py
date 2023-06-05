@@ -186,11 +186,8 @@ def Photos():
     dictionnaires = bdd.get_photos()
     for dictionnaire in dictionnaires :
         L.append([dictionnaire['photo_id'], dictionnaire['sol'], dictionnaire['rover_id'], dictionnaire['camera_id'], dictionnaire['url']])
-    return render_template("Photos.html", liste_de_listes = L)
+    return render_template("Photos.html", liste_de_listes = L[0:10])
 
-@app.route("/Positions")
-def Positions():
-    return render_template("Positions.html")
 
 @app.route("/Rovers")
 def Rovers():
@@ -211,11 +208,19 @@ def rovers_positions():
 
 @app.route("/delete")
 def delete():
-    idUser = request.args.get("userDel")
+    idUser = session["idUser"]
     bdd.del_membreData(idUser)
+    print(idUser)
     # la suppression a bien fonctionné
     if "errorDB" not in session:
         session["infoVert"] = "L'utilisateur a bien été supprimé"
+        session.clear()
     else:
         session["infoRouge"] = "Problème suppression utilisateur"
     return redirect("/login")
+
+@app.route("/updatepassword")
+def updatepassword():
+    motPasse = request.form['newmdp']
+    user = bdd.update_membreData(motPasse,session["idUser"],motPasse)
+    return redirect("/")

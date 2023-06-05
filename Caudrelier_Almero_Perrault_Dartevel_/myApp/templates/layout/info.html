@@ -12,20 +12,22 @@
 </div>
 {% endif %}
 
-{% if infoRouge  %}
-<div class="alert alert-danger text-center">
-    {{ infoRouge }}
-</div>
-{% endif %}
+<div class="containerinfo">
+    {% if infoRouge  %}
+    <div class="alert alert-danger text-center">
+        <span style="color: red;">{{ infoRouge }}</span>
+    </div>
+    {% endif %}
 
-{% if infoVert %}
-<div class="alert alert-success text-center">
-    {{ infoVert }}
-</div>
-{% endif %}
+    {% if infoVert %}
+    <div class="alert alert-success text-center">
+        <span style="color: green;">{{ infoVert }}</span>
+    </div>
+    {% endif %}
 
-{% if infoBleu %}
-<div class="alert alert-primary text-center">
-    {{ infoBleu }}
+    {% if infoBleu %}
+    <div class="alert alert-primary text-center">
+        <span style="color: blue;">{{ infoBleu }}</span>
+    </div>
+    {% endif %}
 </div>
-{% endif %}

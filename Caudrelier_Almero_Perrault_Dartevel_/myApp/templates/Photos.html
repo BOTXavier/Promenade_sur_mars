@@ -30,10 +30,11 @@
     <tr>
     {% for liste in liste_de_listes %}
     <tr>
-    {% for element in liste %}
-        <th>{{ element }}</th>
-    {% endfor %}
-    <img src=url style="max-width: 100%; max-height: 70vh; margin-top: 20px;">
+      <th>{{liste[0]}}</th>
+      <th>{{liste[1]}}</th>
+      <th>{{liste[2]}}</th>
+      <th>{{liste[3]}}</th>
+      <th><img src={{liste[4]}} style="max-width: 100%; max-height: 70vh; margin-top: 20px;"> </th>
     </tr>
     {% endfor %}
 </tr>
