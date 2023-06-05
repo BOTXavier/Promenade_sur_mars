@@ -76,68 +76,101 @@ def xavier():
 
 @app.route("/map")
 def map():
-    return render_template("map.html",parameter=[round(18.444631884771205,8),round(77.45088815689088,8),0])
+    return render_template("map.html",parameter=[round(18.444631884771205,8),round(77.45088815689088,8)])
 
 @app.route("/localisationmap/<id>")
 def locmap(id=None):
     latlongsol=bdd.latlongsol(int(id))
     lat,long,sol=latlongsol[0],latlongsol[1],latlongsol[2]
-    return render_template("map.html",parameter=[lat,long,sol])
+    print(lat,long,sol)
+    return render_template("map.html",parameter=[lat,long])
+
+@app.route("/localisationstreet/<lat>,<long>")
+def locstreet(lat=None,long=None):
+    data=bdd.recupphotoproche(lat,long)
+    url,id=data[0],data[1]
+    if url==0 and id==0:
+        return render_template("map.html",parameter=[lat,long])
+    return render_template("streetview.html",parameter=[id,url])
 
 
 @app.route("/data")
 def data():
     bdd.order_data()
     print('succès des données')
-    return render_template("streetview.html")
+    return render_template("streetview.html",parameter=[811204,'https://mars.nasa.gov/mars2020-raw-images/pub/ods/surface/sol/00001/ids/edr/browse/fcam/FRR_0001_0667035458_958ECM_N0010052AUT_04096_00_2I3J01_1200.jpg'])
 
 @app.route("/photo_droite/<id>")
 def photo_droite(id=None):
     angles_mats=[[0,0,0,0],[0,0,0,0]]
     angles_sherlocks=[[0,0,0,0],[0,0,0,0]]
+    url=bdd.url_photoid(id)
     bdd.ajuster_cams_mats(id,angles_mats,angles_sherlocks) #Trouver comment déterminer les angles des mats mobiles
-    id,url=bdd.bouton_droite(int(id))
-    return render_template("streetview.html", parameter=[id,url])
+    id_n,url_n=bdd.bouton_droite(int(id))
+    if id_n==0 and url_n==0:
+        print('capassapas')
+        return render_template("streetview.html", parameter=[id,url])
+    return render_template("streetview.html", parameter=[id_n,url_n])
 
 @app.route("/photo_gauche/<id>")
 def photo_gauche(id=None):
     angles_mats=[[0,0,0,0],[0,0,0,0]]
     angles_sherlocks=[[0,0,0,0],[0,0,0,0]]
+    url=bdd.url_photoid(id)
     bdd.ajuster_cams_mats(id,angles_mats,angles_sherlocks) #Trouver comment déterminer les angles des mats mobiles
-    id,url=bdd.bouton_gauche(int(id))
-    return render_template("streetview.html", parameter=[id,url])
+    id_n,url_n=bdd.bouton_gauche(int(id))
+    if id_n==0 and url_n==0:
+        print('capassapas')
+        return render_template("streetview.html", parameter=[id,url])
+    return render_template("streetview.html", parameter=[id_n,url_n])
 
 @app.route("/photo_haut/<id>")
 def photo_haut(id=None):
     angles_mats=[[0,0,0,0],[0,0,0,0]]
     angles_sherlocks=[[0,0,0,0],[0,0,0,0]]
+    url=bdd.url_photoid(id)
     bdd.ajuster_cams_mats(id,angles_mats,angles_sherlocks) #Trouver comment déterminer les angles des mats mobiles
-    id,url=bdd.bouton_haute(int(id))
-    return render_template("streetview.html", parameter=[id,url])
+    id_n,url_n=bdd.bouton_haut(int(id))
+    if id_n==0 and url_n==0:
+        print('capassapas')
+        return render_template("streetview.html", parameter=[id,url])
+    return render_template("streetview.html", parameter=[id_n,url_n])
 
 @app.route("/photo_bas/<id>")
 def photo_bas(id=None):
     angles_mats=[[0,0,0,0],[0,0,0,0]]
     angles_sherlocks=[[0,0,0,0],[0,0,0,0]]
+    url=bdd.url_photoid(id)
     bdd.ajuster_cams_mats(id,angles_mats,angles_sherlocks) #Trouver comment déterminer les angles des mats mobiles
-    id,url=bdd.bouton_bas(int(id))
-    return render_template("streetview.html", parameter=[id,url])
+    id_n,url_n=bdd.bouton_bas(int(id))
+    if id_n==0 and url_n==0:
+        print('capassapas')
+        return render_template("streetview.html", parameter=[id,url])
+    return render_template("streetview.html", parameter=[id_n,url_n])
 
 @app.route("/photo_devant/<id>")
 def photo_devant(id=None):
     angles_mats=[[0,0,0,0],[0,0,0,0]]
     angles_sherlocks=[[0,0,0,0],[0,0,0,0]]
+    url=bdd.url_photoid(id)
     bdd.ajuster_cams_mats(id,angles_mats,angles_sherlocks) #Trouver comment déterminer les angles des mats mobiles
-    id,url=bdd.bouton_devant(int(id))
-    return render_template("streetview.html", parameter=[id,url])
+    id_n,url_n=bdd.bouton_apres(int(id))
+    if id_n==0 and url_n==0:
+        print('capassapas')
+        return render_template("streetview.html", parameter=[id,url])
+    return render_template("streetview.html", parameter=[id_n,url_n])
 
 @app.route("/photo_derriere/<id>")
 def photo_derriere(id=None):
     angles_mats=[[0,0,0,0],[0,0,0,0]]
     angles_sherlocks=[[0,0,0,0],[0,0,0,0]]
+    url=bdd.url_photoid(id)
     bdd.ajuster_cams_mats(id,angles_mats,angles_sherlocks) #Trouver comment déterminer les angles des mats mobiles
-    id,url=bdd.bouton_derriere(int(id))
-    return render_template("streetview.html", parameter=[id,url])
+    id_n,url_n=bdd.bouton_avant(int(id))
+    if id_n==0 and url_n==0:
+        print('capassapas')
+        return render_template("streetview.html", parameter=[id,url])
+    return render_template("streetview.html", parameter=[id_n,url_n])
 
 
 # ajout d'un membre

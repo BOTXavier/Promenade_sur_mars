@@ -211,7 +211,6 @@ def saveDatafromNASA(dico_photos,dico_rovers,dico_cameras,dico_posi):
             cnx.commit()
         for position_id in dico_posi:
             posi=dico_posi[position_id]
-            print(posi)
             sql = "INSERT INTO Positions (posi_id,rover_id,lat,longitude,cap,sol) VALUES  (%s, %s, %s, %s, %s,%s);"
             param=(position_id,posi['rover_id'],posi['lat'],posi['long'],posi['cap'],posi['sol'])
             cursor.execute(sql,param)
@@ -224,7 +223,6 @@ def saveDatafromNASA(dico_photos,dico_rovers,dico_cameras,dico_posi):
 
 def order_data():
     dico_photos,dico_rovers,dico_cameras,dico_posi=bup.créer_dicos()
-    print(dico_cameras)
     saveDatafromNASA(dico_photos,dico_rovers,dico_cameras,dico_posi)
 
 ##########################################################################
@@ -262,9 +260,10 @@ def bouton_droite(id):
         id_droite,url_droite=req[0]['photo_id'],req[0]['url']
 
         close_bd(cursor, cnx)
-    except mysql.connector.Error as err:
-        session['errorDB'] = "Failed bouton_droite data : {}".format(err)
+    except:
+        session['errorDB'] = "Failed bouton_droite data"
         print(session['errorDB']) #le problème s'affiche dans le terminal
+        return 0,0
     return id_droite, url_droite
 
 def bouton_gauche(id):
@@ -300,9 +299,10 @@ def bouton_gauche(id):
         id_gauche,url_gauche=req[0]['photo_id'],req[0]['url']
         
         close_bd(cursor, cnx)
-    except mysql.connector.Error as err:
-        session['errorDB'] = "Failed saveDataFromFile data : {}".format(err)
+    except:
+        session['errorDB'] = "Failed bouton_droite data"
         print(session['errorDB']) #le problème s'affiche dans le terminal
+        return 0,0
     return id_gauche, url_gauche
 
 def bouton_haut(id):
@@ -338,9 +338,10 @@ def bouton_haut(id):
         id_haut,url_haut=req[0]['photo_id'],req[0]['url']
         
         close_bd(cursor, cnx)
-    except mysql.connector.Error as err:
-        session['errorDB'] = "Failed saveDataFromFile data : {}".format(err)
+    except:
+        session['errorDB'] = "Failed bouton_droite data"
         print(session['errorDB']) #le problème s'affiche dans le terminal
+        return 0,0
     return id_haut, url_haut
 
 def bouton_bas(id):
@@ -376,9 +377,10 @@ def bouton_bas(id):
         id_bas,url_bas=req[0]['photo_id'],req[0]['url']
         
         close_bd(cursor, cnx)
-    except mysql.connector.Error as err:
-        session['errorDB'] = "Failed saveDataFromFile data : {}".format(err)
+    except:
+        session['errorDB'] = "Failed bouton_droite data"
         print(session['errorDB']) #le problème s'affiche dans le terminal
+        return 0,0
     return id_bas, url_bas
 
 def bouton_avant(id):
@@ -415,9 +417,10 @@ def bouton_avant(id):
         id_avant,url_avant = req[0]['photo_id'], req[1]['url']
         
         close_bd(cursor, cnx)
-    except mysql.connector.Error as err:
-        session['errorDB'] = "Failed saveDataFromFile data : {}".format(err)
+    except:
+        session['errorDB'] = "Failed bouton_droite data"
         print(session['errorDB']) #le problème s'affiche dans le terminal
+        return 0,0
     return id_avant, url_avant
 
 def bouton_apres(id):
@@ -454,9 +457,10 @@ def bouton_apres(id):
         id_apres,url_apres = req[0]['photo_id'], req[1]['url']
         
         close_bd(cursor, cnx)
-    except mysql.connector.Error as err:
-        session['errorDB'] = "Failed saveDataFromFile data : {}".format(err)
+    except:
+        session['errorDB'] = "Failed bouton_droite data"
         print(session['errorDB']) #le problème s'affiche dans le terminal
+        return 0,0
     return id_apres, url_apres
 
 
@@ -577,18 +581,19 @@ def latlongsol(photo_id):
     if cnx is None: return None
     try:
         cursor = cnx.cursor(dictionary=True)
-
+        
         sql = "SELECT rover_id,sol FROM photos WHERE photo_id=%s"
         params=[photo_id]
-        cursor.execute(sql)
+        cursor.execute(sql,params)
         data = cursor.fetchall()[0]
         rover_id,sol=data['rover_id'],data['sol']
         
         sql = "SELECT lat,longitude,sol FROM positions WHERE rover_id=%s AND sol=%s"
         params=[rover_id,sol]
-        cursor.execute(sql)
+        cursor.execute(sql,params)
         data = cursor.fetchall()[0]
         lat,longitude,sol=data['lat'],data['longitude'],data['sol']
+        print(3,lat,longitude,sol)
 
         close_bd(cursor, cnx)
     except mysql.connector.Error as err:
@@ -596,3 +601,48 @@ def latlongsol(photo_id):
         session['errorDB'] = "Failed get rovers : {}".format(err)
         print(session['errorDB']) #le problème s'affiche dans le terminal
     return lat,longitude,sol
+
+def url_photoid(photo_id):
+    cnx = connexion() 
+    if cnx is None: return None
+    try:
+        cursor = cnx.cursor(dictionary=True)
+        
+        sql = "SELECT url FROM photos WHERE photo_id=%s"
+        params=[photo_id]
+        cursor.execute(sql,params)
+        datas = cursor.fetchall()[0]
+        url=datas['url']
+
+        close_bd(cursor, cnx)
+    except mysql.connector.Error as err:
+        cameras = None
+        session['errorDB'] = "Failed get rovers : {}".format(err)
+        print(session['errorDB']) #le problème s'affiche dans le terminal
+    return url
+
+def recupphotoproche(lat,long):
+    cnx = connexion() 
+    if cnx is None: return None
+    try:
+        cursor = cnx.cursor(dictionary=True)
+        
+        sql = "SELECT sol,rover_id FROM positions WHERE lat-0.0001<=%s<=lat+0.0001 and longitude-0.0001<=%s<=longitude+0.0001"
+        params=[lat,long]
+        cursor.execute(sql,params)
+        datas = cursor.fetchall()[0]
+        sol,rover_id=datas['sol'],datas['rover_id']
+
+        sql="SELECT url,photo_id FROM photos WHERE sol=%s AND rover_id=%s"
+        params=[sol,rover_id]
+        datas = cursor.fetchall()[0]
+        url,id=datas['url'],datas['photo_id']
+
+        close_bd(cursor, cnx)
+    except:
+        cameras = None
+        session['errorDB'] = "Failed get rovers"
+        print(session['errorDB']) #le problème s'affiche dans le terminal
+        print('pasdephotosdanslecoin')
+        return 0,0
+    return url,id

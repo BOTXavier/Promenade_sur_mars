@@ -519,8 +519,8 @@ def réordonnencement_posi(fichier,rover_id,dernier_sol,dico_photos,dico_rovers,
             posi=posi_rover[posi_id]
 
             dico_posi[num_rover*(10**6)+posi_id]=posi
-
-            dico_posi['sol']=posi_id
+            dico_posi[num_rover*(10**6)+posi_id]['sol']=posi_id
+            
 
     return dico_posi
 
@@ -537,5 +537,4 @@ def check_posi(dernier_sol,dico_photos,dico_rovers,dico_cameras,dico_posi):
             dico_posi=réordonnencement_posi(fichier_posi,deter_rover_id_id(rover_id,dico_rovers),dernier_sol,dico_photos,dico_rovers,dico_cameras,dico_posi)
 
         rover_id+=1
-
     return dico_posi
