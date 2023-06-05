@@ -205,13 +205,14 @@ def saveDatafromNASA(dico_photos,dico_rovers,dico_cameras,dico_posi):
             cnx.commit()
         for camera_id in dico_cameras:
             camera=dico_cameras[camera_id]
-            sql = "INSERT INTO Cameras (camera_id,name,rover_id,full_name,orientation) VALUES  (%s, %s, %s, %s, %s);"
-            param=(camera_id,camera['name'],camera['rover_id'],camera['full_name'], camera['orientation'])
+            sql = "INSERT INTO Cameras (camera_id,name,rover_id,full_name,orientation_hori,orientation_verti) VALUES  (%s, %s, %s, %s, %s,%s);"
+            param=(camera_id,camera['name'],camera['rover_id'],camera['full_name'], camera['orient_hori'], camera['orient_verti'])
             cursor.execute(sql,param)
             cnx.commit()
         for position_id in dico_posi:
             posi=dico_posi[position_id]
-            sql = "INSERT INTO Positions (posi_id,rover_id,lat,long,cap) VALUES  (%s, %s, %s, %s, %s);"
+            print(posi)
+            sql = "INSERT INTO Positions (posi_id,rover_id,lat,longitude,cap) VALUES  (%s, %s, %s, %s, %s);"
             param=(position_id,posi['rover_id'],posi['lat'],posi['long'],posi['cap'])
             cursor.execute(sql,param)
             cnx.commit()
@@ -223,6 +224,7 @@ def saveDatafromNASA(dico_photos,dico_rovers,dico_cameras,dico_posi):
 
 def order_data():
     dico_photos,dico_rovers,dico_cameras,dico_posi=bup.créer_dicos()
+    print(dico_cameras)
     saveDatafromNASA(dico_photos,dico_rovers,dico_cameras,dico_posi)
 
 ##########################################################################
