@@ -208,11 +208,13 @@ def rovers_positions():
 
 @app.route("/delete")
 def delete():
-    idUser = request.args.get("userDel")
+    idUser = session["idUser"]
     bdd.del_membreData(idUser)
+    print(idUser)
     # la suppression a bien fonctionné
     if "errorDB" not in session:
         session["infoVert"] = "L'utilisateur a bien été supprimé"
+        session.clear()
     else:
         session["infoRouge"] = "Problème suppression utilisateur"
     return redirect("/login")
