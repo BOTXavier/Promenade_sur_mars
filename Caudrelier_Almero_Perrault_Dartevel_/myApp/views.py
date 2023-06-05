@@ -186,7 +186,7 @@ def Photos():
     dictionnaires = bdd.get_photos()
     for dictionnaire in dictionnaires :
         L.append([dictionnaire['photo_id'], dictionnaire['sol'], dictionnaire['rover_id'], dictionnaire['camera_id'], dictionnaire['url']])
-    return render_template("Photos.html", liste_de_listes = L)
+    return render_template("Photos.html", liste_de_listes = L[0:10])
 
 @app.route("/Positions")
 def Positions():
