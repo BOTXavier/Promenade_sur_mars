@@ -38,7 +38,7 @@ import time
 
 ROVER=['perseverance','curiosity','spirit','opportunity']
 
-API_KEY=['uFPg2xAvVYtXreHwgx9swNodGOnuqRCsqRX426T6','09r9lOKEqz9yGsPK6iiKDFFKRBLEvl7ZQKXyNaoS']
+API_KEY=['09r9lOKEqz9yGsPK6iiKDFFKRBLEvl7ZQKXyNaoS', 'uFPg2xAvVYtXreHwgx9swNodGOnuqRCsqRX426T6']
 
 LIENS_POSI=['https://mars.nasa.gov/mmgis-maps/M20/Layers/json/M20_waypoints.json','https://mars.nasa.gov/mmgis-maps/MSL/Layers/json/MSL_waypoints.json'] # A ordonner dans le même ordre que ROVER
 

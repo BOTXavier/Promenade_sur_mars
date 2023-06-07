@@ -68,7 +68,7 @@ def HugoP():
 
 @app.route("/streetview")
 def streetview():
-    return render_template("streetview.html", parameter=[811204,'https://mars.nasa.gov/mars2020-raw-images/pub/ods/surface/sol/00001/ids/edr/browse/fcam/FRR_0001_0667035458_958ECM_N0010052AUT_04096_00_2I3J01_1200.jpg'])
+    return render_template("streetview.html", parameter=[812589,'https://mars.nasa.gov/mars2020-raw-images/pub/ods/surface/sol/00004/ids/fdr/browse/zcam/ZRF_0004_0667303396_000FDR_N0010052AUT_04096_110085J01_1200.jpg'])
 
 @app.route("/localisationmap/<id>")
 def locmap(id=None):
@@ -324,3 +324,8 @@ def rovers_positions():
     for dictionnaire in dictionnaires :
         L.append([dictionnaire['posi_id'], dictionnaire['rover_id'], dictionnaire['lat'], dictionnaire['longitude'], dictionnaire['cap']])
     return render_template("rovers-positions.html", liste_de_listes = L)
+
+
+@app.route("/visubdd") 
+def visu():
+    return render_template("VisuBDD.html")
