@@ -407,7 +407,7 @@ def bouton_avant(id):
         num_rover=bini.ROVER.index(rover_name.lower())
         posi_id=num_rover*(10**6)+sol
 
-        sql="SELECT lat,lon,cap FROM Positions WHERE posi_id=%s"
+        sql="SELECT lat,longitude,cap FROM Positions WHERE posi_id=%s"
         param=([posi_id])
         cursor.execute(sql,param)
         data=cursor.fetchall()[0]
@@ -447,7 +447,7 @@ def bouton_apres(id):
         num_rover=bini.ROVER.index(rover_name.lower())
         posi_id=num_rover*(10**6)+sol
 
-        sql="SELECT lat,lon,cap FROM Positions WHERE posi_id=%s"
+        sql="SELECT lat,longitude,cap FROM Positions WHERE posi_id=%s"
         param=([posi_id])
         cursor.execute(sql,param)
         data=cursor.fetchall()[0]
