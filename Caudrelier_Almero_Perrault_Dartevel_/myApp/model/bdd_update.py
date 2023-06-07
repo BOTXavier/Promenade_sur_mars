@@ -6,7 +6,7 @@ Created on Thu May 11 11:28:03 2023
 @author: louis-yann
 """
 
-import myApp.model.bdd_initiate as ini
+import bdd_initiate as ini
 
 ##################################################################################
 
@@ -33,11 +33,20 @@ def créer_dicos(deb,fin):
     dicos123=ini.data_base(N,[deb,deb,deb,deb],{},{},{})
     dico_photos,dico_rovers,dico_cameras=dicos123[0],dicos123[1],dicos123[2]
 
+    dico123=ini.data(deb,fin)
+
     DERNIER_SOL=deter_dernier_sol(dico_photos,dico_rovers)
     print(DERNIER_SOL)
     ini.data_base(N,DERNIER_SOL,dico_photos,dico_rovers,dico_cameras)
 
     dico_posi=ini.check_posi([deb,deb,deb,deb],dico_photos,dico_rovers,dico_cameras,{})
+    return (dico_photos,dico_rovers,dico_cameras,dico_posi)
+
+def créer_dicos_2(deb,fin):
+    dicos123=ini.data(deb,fin)
+    dico_photos,dico_rovers,dico_cameras=dicos123[0],dicos123[1],dicos123[2]
+
+    dico_posi=ini.construire_posi(deb,fin,dico_rovers)
     return (dico_photos,dico_rovers,dico_cameras,dico_posi)
 
 #dico_photos,dico_rovers,dico_cameras,dico_posi=créer_dicos()
