@@ -34,8 +34,8 @@ CREATE TABLE `cameras` (
   `full_name` text NOT NULL,
   `orientation_hori` float NOT NULL,
   `orientation_verti` float NOT NULL,
-  PRIMARY KEY ('camera_id'),
-  FOREIGN KEY ('rover_id') REFERENCES rovers('rover_id')
+  PRIMARY KEY (camera_id),
+  FOREIGN KEY (rover_id) REFERENCES rovers(rover_id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 
 --
@@ -113,7 +113,7 @@ CREATE TABLE `photos` (
   `camera_id` int(11) NOT NULL,
   `url` text NOT NULL,
   PRIMARY KEY ('photo_id'),
-  FOREIGN KEY ()'rover_id') REFERENCES rovers('rover_id'),
+  FOREIGN KEY ('rover_id') REFERENCES rovers('rover_id'),
   FOREIGN KEY ('camera_id') REFERENCES cameras('camera_id')
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 
