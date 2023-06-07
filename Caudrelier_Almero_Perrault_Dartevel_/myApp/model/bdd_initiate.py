@@ -592,4 +592,3 @@ def construire_posi(deb,fin,dico_rovers):
         for posi_id in dico_posi_interm:
             dico_posi[posi_id]=dico_posi_interm[posi_id]
     return dico_posi
-print(construire_posi(0,2,{8: {'name': 'Perseverance', 'landing_date': '2021-02-18', 'launch_date': '2020-07-30', 'status': 'active'}, 5: {'name': 'Curiosity', 'landing_date': '2012-08-06', 'launch_date': '2011-11-26', 'status': 'active'}, 7: {'name': 'Spirit', 'landing_date': '2004-01-04', 'launch_date': '2003-06-10', 'status': 'complete'}, 6: {'name': 'Opportunity', 'landing_date': '2004-01-25', 'launch_date': '2003-07-07', 'status': 'complete'}}))
