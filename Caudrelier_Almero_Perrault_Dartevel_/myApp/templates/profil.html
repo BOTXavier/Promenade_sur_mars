@@ -12,8 +12,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
     <link rel="stylesheet" href="/static/css/main.css" />
     <noscript><link rel="stylesheet" href="/static/css/noscript.css" /></noscript>
-
-    
 </head>
 
 <body class="is-preload">
@@ -23,33 +21,21 @@
         {% include("layout/header.html") %}
         <!-- Main -->
 
-        <div class="row">
+        <div class="container">
             <div class="col-6 col-12-xsmall">
 
-                <h2 class="label">Contact</h2>
-                    <ul class="personal-info">
-                        <li>
-                            <span class="info-label">Prénom:</span>
-                            <span class="info-value">{{ session['prenom'] }}</span>
-                        </li>
-                        <li>
-                            <span class="info-label">Nom:</span>
-                            <span>{{ session['nom'] }}</span>
-                        </li>
-                        <li>
-                            <span class="info-label">Adresse Mail:</span>
-                            <span>{{ session['mail'] }}</span>
-                        </li>
-                        <li>
-                            <span class="info-label">Login:</span>
-                            <span>{{ session['login'] }}</span>
-                        </li>
-
-                        <li>
-                            ---------------------------------------------------------------------------------------------------
-                        </li>
-                    </ul>
-
+                <h3 style="margin-top: 30px;">Contact</h3>
+                <ul>
+                    <li class="label">Prénom: {{ session['prenom']  }}</li>
+                    <li class="label">Nom: {{ session['nom']  }}</li>
+                    <li class="label">Mail: {{ session['mail']  }}</li>
+                    <li class="label">Login: {{ session['login']  }}</li>
+                    {% if session['statut'] == 0 %}
+                    <li class="label">Statut: Administrateur</li>
+                    {% else %}
+                    <li class="label">Statut: Utilisateur</li>
+                    {% endif %}
+                </ul>
         
         {% include("layout/info.html") %}
 
@@ -87,6 +73,9 @@
                 <div class="w-100 text-center mt-4"><button type="submit">Enregistrer</button></div>
             </form>
         </section>
+
+            </div>
+        </div>
 
         <!-- Footer -->
         {% include("layout/footer.html") %}

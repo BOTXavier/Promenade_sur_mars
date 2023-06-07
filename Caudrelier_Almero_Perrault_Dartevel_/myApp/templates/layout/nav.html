@@ -13,7 +13,7 @@
         <li><a href="/Membres/HugoA">Almero Hugo</a></li>
         <li><a href="/Membres/Louis-Yann">Caudrelier Louis-Yann</a></li>
         <li><a href="/Membres/Xavier">Dartevel Xavier</a></li>
-        <li><a href="/#">Perrault Hugo</a></li>
+        <li><a href="/Membres/HugoP">Perrault Hugo</a></li>
       </ul>
     </li> 
 
@@ -37,7 +37,7 @@
 
   {% if session['login'] %}
   <li>
-    <a href="/#" class = "primary button">{{ session['prenom']  + ' ' + session['nom']}}</a>
+    <a href="/profil" class = "primary button">{{ session['prenom']  + ' ' + session['nom']}}</a>
 
     <ul>
       <li><a href="/profil">Profil</a></li>

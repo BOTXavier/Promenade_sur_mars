@@ -32,16 +32,10 @@
             right: 0;
         }
 
-        .button-overlay-top {
-            top: 0;
-            left: 50%;
-            transform: translate(-50%, 30%);
-        }
-
         .button-overlay-bottom {
             bottom: 0;
             left: 50%;
-            transform: translate(-50%, 75%);
+            transform: translate(-200%, 85%);
         }
 
         .arrow-button {
@@ -107,20 +101,21 @@
                     <div class="button-overlay button-overlay-right">
                         <a href="/photo_devant/{{parameter[0]}}" class="button small arrow-button">&#8250;</a>
                     </div>
+            
+                    <div class="button-overlay button-overlay-bottom">
+                        <a href="/localisationmap/{{parameter[0]}}" class="button">Voir sur la carte</a>
+                    </div>
                 </div>
                 <div class="pad">
                     <a href="/photo_haut/{{parameter[0]}}" class="button small">&#8593;</a>
                     <div class="left-right">
                       <a href="/photo_gauche/{{parameter[0]}}" class="button small">&#8592;</a>
-                      <a href="/data" class="button small">Data</a>
                       <a href="/photo_droite/{{parameter[0]}}" class="button small">&#8594;</a>
                     </div>
                     <a href="/photo_bas/{{parameter[0]}}" class="button small">&#8595;</a>
                 </div>                  
             {% endif %}
         </div>
-
-        <a href="/localisationmap/{{parameter[0]}}" class="button small">posi</a>
 
         <!-- Footer -->
         {% include("layout/footer.html") %}

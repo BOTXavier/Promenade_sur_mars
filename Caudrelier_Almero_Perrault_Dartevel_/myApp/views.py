@@ -61,6 +61,10 @@ def LouisYann():
 def xavier():
     return render_template("xavier.html")
 
+@app.route("/Membres/HugoP")
+def HugoP():
+    return render_template("HugoP.html")
+
 
 @app.route("/streetview")
 def streetview():
