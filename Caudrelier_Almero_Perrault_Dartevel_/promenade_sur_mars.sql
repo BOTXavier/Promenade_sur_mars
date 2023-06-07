@@ -33,7 +33,9 @@ CREATE TABLE `cameras` (
   `rover_id` int(11) NOT NULL,
   `full_name` text NOT NULL,
   `orientation_hori` float NOT NULL,
-  `orientation_verti` float NOT NULL
+  `orientation_verti` float NOT NULL,
+  PRIMARY KEY 'camera_id',
+  FOREIGN KEY 'rover_id' REFERENCES rovers('rover_id')
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 
 --
@@ -109,7 +111,10 @@ CREATE TABLE `photos` (
   `sol` int(11) NOT NULL,
   `rover_id` int(11) NOT NULL,
   `camera_id` int(11) NOT NULL,
-  `url` text NOT NULL
+  `url` text NOT NULL,
+  PRIMARY KEY 'photo_id',
+  FOREIGN KEY 'rover_id' REFERENCES rovers('rover_id'),
+  FOREIGN KEY 'camera_id' REFERENCES cameras('camera_id')
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 
 --
@@ -5666,7 +5671,9 @@ CREATE TABLE `positions` (
   `lat` float NOT NULL,
   `longitude` float NOT NULL,
   `cap` float NOT NULL,
-  `sol` int(11) NOT NULL
+  `sol` int(11) NOT NULL,
+  PRIMARY KEY 'posi_id',
+  FOREIGN KEY 'rover_id' REFERENCES rovers('rover_id')
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 
 --
@@ -5694,7 +5701,8 @@ CREATE TABLE `rovers` (
   `name` text NOT NULL,
   `landing_date` date NOT NULL,
   `launch_date` date NOT NULL,
-  `status` text NOT NULL
+  `status` text NOT NULL,
+  PRIMARY KEY 'rover_id'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 
 --
