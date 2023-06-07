@@ -4,6 +4,7 @@ from ..config import DB_SERVER
 
 import myApp.model.bdd_update as bup
 import myApp.model.bdd_initiate as bini
+import random as rdm
 
 ###################################################################################
 # connexion au serveur de la base de données
@@ -250,7 +251,7 @@ def bouton_droite(id):
         req=cursor.fetchall()[0]
         orient_hori,orient_verti=req['orientation_hori'],req['orientation_verti']
 
-        sql="SELECT camera_id, orientation_hori FROM Cameras  WHERE orientation_hori<%s AND rover_id = %s"
+        sql="SELECT camera_id, orientation_hori FROM Cameras  WHERE orientation_hori%180<%s AND rover_id = %s"
         param=([orient_hori%180, rover_id])
         cursor.execute(sql,param)
         cameras_droite=cursor.fetchall()
@@ -288,7 +289,7 @@ def bouton_gauche(id):
         req=cursor.fetchall()[0]
         orient_hori,orient_verti=req['orientation_hori'],req['orientation_verti']
 
-        sql="SELECT camera_id, orientation_hori FROM Cameras  WHERE orientation_hori>%s AND rover_id = %s"
+        sql="SELECT camera_id, orientation_hori FROM Cameras  WHERE orientation_hori%180>%s AND rover_id = %s"
         param=([orient_hori%180, rover_id])
         cursor.execute(sql,param)
         cameras_droite=cursor.fetchall()
@@ -327,7 +328,7 @@ def bouton_haut(id):
         req=cursor.fetchall()[0]
         orient_hori,orient_verti=req['orientation_hori'],req['orientation_verti']
 
-        sql="SELECT camera_id, orientation_hori FROM Cameras  WHERE orientation_verti>%s AND rover_id = %s"
+        sql="SELECT camera_id, orientation_hori FROM Cameras  WHERE orientation_verti%180>%s AND rover_id = %s"
         param=([orient_verti%180, rover_id])
         cursor.execute(sql,param)
         cameras_droite=cursor.fetchall()
@@ -346,6 +347,36 @@ def bouton_haut(id):
         print(session['errorDB']) #le problème s'affiche dans le terminal
         return 0,0
     return id_haut, url_haut
+
+
+
+def bouton_suiv(id):
+    cnx = connexion() 
+    if cnx is None: 
+        return None
+    try:
+        cursor = cnx.cursor(dictionary=True)
+
+        sql="SELECT sol,rover_id,camera_id FROM Photos WHERE photo_id=%s"
+        param=([id])
+        cursor.execute(sql,param)
+        data=cursor.fetchall()
+        sol,rover_id,camera_id=data[0]['sol'],data[0]['rover_id'], data[0]['camera_id'] #récuparation des données de la photo affichée
+
+        sql = "SELECT photo_id,url FROM Photos WHERE sol=%s AND camera_id=%s AND photo_id!=%s"
+        param=([sol,camera_id,id])
+        cursor.execute(sql,param)
+        req = cursor.fetchall()
+        print(req)
+        id_droite,url_droite=req[rdm.randint(0,len(req))]['photo_id'],req[rdm.randint(0,len(req))]['url']
+
+        close_bd(cursor, cnx)
+    except:
+        session['errorDB'] = "Failed bouton_droite data"
+        print(session['errorDB']) #le problème s'affiche dans le terminal
+        return 0,0
+    return id_droite, url_droite
+
 
 def bouton_bas(id):
     cnx = connexion() 
@@ -366,7 +397,7 @@ def bouton_bas(id):
         req=cursor.fetchall()[0]
         orient_hori,orient_verti=req['orientation_hori'],req['orientation_verti']
 
-        sql="SELECT camera_id, orientation_hori FROM Cameras  WHERE orientation_verti<%s AND rover_id = %s"
+        sql="SELECT camera_id, orientation_hori FROM Cameras  WHERE orientation_verti%180<%s AND rover_id = %s"
         param=([orient_verti%180, rover_id])
         cursor.execute(sql,param)
         cameras_droite=cursor.fetchall()
@@ -586,12 +617,16 @@ def latlongsol(photo_id):
     if cnx is None: return None
     try:
         cursor = cnx.cursor(dictionary=True)
+
+        print("aaaaaaaaaaaaaaaaaaa", photo_id)
         
         sql = "SELECT rover_id,sol FROM photos WHERE photo_id=%s"
         params=[photo_id]
         cursor.execute(sql,params)
         data = cursor.fetchall()[0]
         rover_id,sol=data['rover_id'],data['sol']
+
+        print(rover_id, sol)
         
         sql = "SELECT lat,longitude,sol FROM positions WHERE rover_id=%s AND sol=%s"
         params=[rover_id,sol]

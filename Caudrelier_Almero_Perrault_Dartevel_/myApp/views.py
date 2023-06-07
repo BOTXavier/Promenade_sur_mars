@@ -145,6 +145,18 @@ def photo_bas(id=None):
         return render_template("streetview.html", parameter=[id,url])
     return render_template("streetview.html", parameter=[id_n,url_n])
 
+@app.route("/photo_autre/<id>")
+def photo_autre(id=None):
+    angles_mats=[[0,0,0,0],[0,0,0,0]]
+    angles_sherlocks=[[0,0,0,0],[0,0,0,0]]
+    url=bdd.url_photoid(id)
+    bdd.ajuster_cams_mats(id,angles_mats,angles_sherlocks) #Trouver comment déterminer les angles des mats mobiles
+    id_n,url_n=bdd.bouton_suiv(int(id))
+    if id_n==0 and url_n==0:
+        print('capassapas')
+        return render_template("streetview.html", parameter=[id,url])
+    return render_template("streetview.html", parameter=[id_n,url_n])
+
 @app.route("/photo_devant/<id>")
 def photo_devant(id=None):
     angles_mats=[[0,0,0,0],[0,0,0,0]]
