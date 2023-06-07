@@ -12,6 +12,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
     <link rel="stylesheet" href="/static/css/main.css" />
     <noscript><link rel="stylesheet" href="/static/css/noscript.css" /></noscript>
+
+    
 </head>
 
 <body class="is-preload">
@@ -24,53 +26,67 @@
         <div class="row">
             <div class="col-6 col-12-xsmall">
 
-                <h4>Contact</h4>
-                <ol>
-                    <h5 style="line-height: 0.7; color: lightgray;">2 Impasse Marie-Curie</h5>
-                    <h5 style="line-height: 0.7; color: lightgray;">31200 Toulouse</h5>
-                    <h5 style="line-height: 0.7; color: lightgray;">06 67 10 34 31</h5>
-                    <h5 style="line-height: 0.7; color: lightgray;">hugoalmero@gmail.com</h5>
-                </ol>
+                <h2 class="label">Contact</h2>
+                    <ul class="personal-info">
+                        <li>
+                            <span class="info-label">Prénom:</span>
+                            <span class="info-value">{{ session['prenom'] }}</span>
+                        </li>
+                        <li>
+                            <span class="info-label">Nom:</span>
+                            <span>{{ session['nom'] }}</span>
+                        </li>
+                        <li>
+                            <span class="info-label">Adresse Mail:</span>
+                            <span>{{ session['mail'] }}</span>
+                        </li>
+                        <li>
+                            <span class="info-label">Login:</span>
+                            <span>{{ session['login'] }}</span>
+                        </li>
+
+                        <li>
+                            ---------------------------------------------------------------------------------------------------
+                        </li>
+                    </ul>
+
         
         {% include("layout/info.html") %}
+
+        <ul class="actions">
+            <li><a href="/delete" id="delete" class="button">Supprimer le compte</a></li>
+            <li id="password-toggle-li"><a href="#" id="password-toggle" class="button">Changer le mot de passe</a></li>
+        </ul>
         
-        <section>
-            
+        <section id="password-section" style="display: none;">
             <form action="/updatepassword" method="post" role="form">
 
-                <h4 class="w-100 text-center"></i>Changer de mot de passe</h4>
+                <h3 class="w-100 text-center">Changer le mot de passe</h3>
                 <div class="row mt-3">
                     <div class="col-lg-6 form-group">
-                        <label for="mdp"></label>
-                        <input type="text" name="mdp" class="form-control" id="mdp" placeholder="Votre mot de passe" required>
+                        <label for="old-password"></label>
+                        <input type="password" name="old-password" class="form-control" id="old-password" placeholder="Ancien mot de passe" required>
                     </div>
                 </div>
 
                 <div class="row mt-3">
                     <div class="col-lg-6 form-group">
-                        <label for="newmdp"></label>
-                        <input type="text" name="newmdp" class="form-control" id="newmdp" placeholder="New Password" required>
+                        <label for="new-password"></label>
+                        <input type="password" name="new-password" class="form-control" id="new-password" placeholder="Nouveau mot de passe" required>
                     </div>
                 </div>
                 
                 <div class="row mt-3">
                     <div class="col-lg-6 form-group">
-                        <label for="newmdpconfirm"></label>
-                        <input type="text" name="newmdpconfirm" class="form-control" id="newmdpconfirm" placeholder="Confirm Password" required>
+                        <label for="confirm-password"></label>
+                        <input type="password" name="confirm-password" class="form-control" id="confirm-password" placeholder="Confirmer votre mot de passe" required>
                     </div>
                 </div>
 
 
                 <div class="w-100 text-center mt-4"><button type="submit">Enregistrer</button></div>
             </form>
-    
         </section>
-
-
-
-        <ul class="actions">
-            <li><a href="/delete" id="delete" class="button">Delete Account</a></li>
-        </ul>
 
         <!-- Footer -->
         {% include("layout/footer.html") %}
@@ -80,14 +96,28 @@
     <!-- Scripts -->
     {% include("layout/scripts.html") %}
 
-<script>
-    document.getElementById('delete').addEventListener('click', function(e) {
-        e.preventDefault();
-        if (confirm('Voulez-vous supprimer votre compte ? Cette action est irréversible.')) {
-            window.location.href = '/delete';
-        }
-    });
-</script>
+    <script>
+        document.getElementById('delete').addEventListener('click', function(e) {
+            e.preventDefault();
+            if (confirm('Voulez-vous supprimer votre compte ? Cette action est irréversible.')) {
+                window.location.href = '/delete';
+            }
+        });
+
+        document.getElementById('password-toggle').addEventListener('click', function(e) {
+            e.preventDefault();
+            var passwordSection = document.getElementById('password-section');
+            var passwordToggleLi = document.getElementById('password-toggle-li');
+
+            if (passwordSection.style.display === 'none') {
+                passwordSection.style.display = 'block';
+                passwordToggleLi.classList.add('active');
+            } else {
+                passwordSection.style.display = 'none';
+                passwordToggleLi.classList.remove('active');
+            }
+        });
+    </script>
 </body>
 
 </html>
