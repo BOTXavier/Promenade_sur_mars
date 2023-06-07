@@ -324,3 +324,8 @@ def rovers_positions():
     for dictionnaire in dictionnaires :
         L.append([dictionnaire['posi_id'], dictionnaire['rover_id'], dictionnaire['lat'], dictionnaire['longitude'], dictionnaire['cap']])
     return render_template("rovers-positions.html", liste_de_listes = L)
+
+
+@app.route("/visubdd") 
+def visu():
+    return render_template("VisuBDD.html")
