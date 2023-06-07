@@ -366,19 +366,22 @@ def bouton_bas(id):
         cursor.execute(sql,param)
         req=cursor.fetchall()[0]
         orient_hori,orient_verti=req['orientation_hori'],req['orientation_verti']
+        print(orient_verti)
 
-        sql="SELECT camera_id, orientation_hori FROM Cameras  WHERE orientation_verti>%s"
-        param=([orient_verti])
+        sql="SELECT camera_id, orientation_hori FROM Cameras  WHERE orientation_verti<%s AND rover_id = %s"
+        param=([orient_verti%180, rover_id])
         cursor.execute(sql,param)
         cameras_droite=cursor.fetchall()
         cameras_droite.sort(key = lambda cam: cam['orientation_hori'])
         camera_droite_id=cameras_droite[0]['camera_id']
+        print(camera_droite_id, sol, rover_id)
 
-        sql = "SELECT photo_id,url FROM Photos WHERE sol=%s AND rover_id=%s AND camera_id=%s"
-        param=([sol,rover_id,camera_droite_id])
+        sql = "SELECT photo_id,url FROM Photos WHERE sol=%s AND camera_id=%s"
+        param=([sol,camera_droite_id])
         cursor.execute(sql,param)
         req = cursor.fetchall()
         id_bas,url_bas=req[0]['photo_id'],req[0]['url']
+        print(id_bas, url_bas)
         
         close_bd(cursor, cnx)
     except:
