@@ -303,7 +303,7 @@ def bouton_gauche(id):
         
         close_bd(cursor, cnx)
     except:
-        session['errorDB'] = "Failed bouton_droite data"
+        session['errorDB'] = "Failed bouton_gauche data"
         print(session['errorDB']) #le problème s'affiche dans le terminal
         return 0,0
     return id_gauche, url_gauche
@@ -342,7 +342,7 @@ def bouton_haut(id):
         
         close_bd(cursor, cnx)
     except:
-        session['errorDB'] = "Failed bouton_droite data"
+        session['errorDB'] = "Failed bouton_haut data"
         print(session['errorDB']) #le problème s'affiche dans le terminal
         return 0,0
     return id_haut, url_haut
@@ -359,6 +359,7 @@ def bouton_bas(id):
         cursor.execute(sql,param)
         data=cursor.fetchall()
         sol,rover_id,camera_id=data[0]['sol'],data[0]['rover_id'], data[0]['camera_id'] #récuparation des données de la photo affichée
+        print(sol,rover_id,camera_id)
 
         sql="SELECT orientation_hori,orientation_verti FROM Cameras WHERE camera_id=%s"
         param=([camera_id])
@@ -381,7 +382,7 @@ def bouton_bas(id):
         
         close_bd(cursor, cnx)
     except:
-        session['errorDB'] = "Failed bouton_droite data"
+        session['errorDB'] = "Failed bouton_bas data"
         print(session['errorDB']) #le problème s'affiche dans le terminal
         return 0,0
     return id_bas, url_bas
@@ -398,6 +399,7 @@ def bouton_avant(id):
         cursor.execute(sql,param)
         data=cursor.fetchall()
         sol,rover_id,camera_id=data[0]['sol'],data[0]['rover_id'], data[0]['camera_id'] #récuparation des données de la photo affichée
+        print(sol,rover_id,camera_id)
 
         sql="SELECT name FROM Rovers WHERE rover_id=%s"
         param=([rover_id])
@@ -407,7 +409,7 @@ def bouton_avant(id):
         num_rover=bini.ROVER.index(rover_name.lower())
         posi_id=num_rover*(10**6)+sol
 
-        sql="SELECT lat,lon,cap FROM Positions WHERE posi_id=%s"
+        sql="SELECT lat,longitude,cap FROM Positions WHERE posi_id=%s"
         param=([posi_id])
         cursor.execute(sql,param)
         data=cursor.fetchall()[0]
@@ -421,7 +423,7 @@ def bouton_avant(id):
         
         close_bd(cursor, cnx)
     except:
-        session['errorDB'] = "Failed bouton_droite data"
+        session['errorDB'] = "Failed bouton_avant data"
         print(session['errorDB']) #le problème s'affiche dans le terminal
         return 0,0
     return id_avant, url_avant
@@ -438,6 +440,7 @@ def bouton_apres(id):
         cursor.execute(sql,param)
         data=cursor.fetchall()
         sol,rover_id,camera_id=data[0]['sol'],data[0]['rover_id'], data[0]['camera_id'] #récuparation des données de la photo affichée
+        print(sol,rover_id,camera_id)
 
         sql="SELECT name FROM Rovers WHERE rover_id=%s"
         param=([rover_id])
@@ -447,7 +450,7 @@ def bouton_apres(id):
         num_rover=bini.ROVER.index(rover_name.lower())
         posi_id=num_rover*(10**6)+sol
 
-        sql="SELECT lat,lon,cap FROM Positions WHERE posi_id=%s"
+        sql="SELECT lat,longitude,cap FROM Positions WHERE posi_id=%s"
         param=([posi_id])
         cursor.execute(sql,param)
         data=cursor.fetchall()[0]
@@ -461,7 +464,7 @@ def bouton_apres(id):
         
         close_bd(cursor, cnx)
     except:
-        session['errorDB'] = "Failed bouton_droite data"
+        session['errorDB'] = "Failed bouton_arriere data"
         print(session['errorDB']) #le problème s'affiche dans le terminal
         return 0,0
     return id_apres, url_apres
