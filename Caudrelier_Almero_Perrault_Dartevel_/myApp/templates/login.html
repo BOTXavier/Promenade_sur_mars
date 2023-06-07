@@ -61,6 +61,11 @@
             background-color: #0056b3;
             border-color: #0056b3;
         }
+
+        /* Hide the code_admin field by default */
+        #code-admin-field {
+            display: none;
+        }
     </style>
 </head>
 
@@ -72,10 +77,10 @@
 
         <!-- Main -->
         <section id="connecter" class="contact">
-            
+
             <div class="container">
                 {% include("layout/info.html") %}
-                
+
 
                 <div class="row no-gutters">
 
@@ -134,19 +139,27 @@
                             </div>
                         </div>
 
-
                         <div class="row my-5">
-                          <div class="form-group">
-                            -------------------------------------------------------------------------------------------------
-                              <div class="form-check">
-                                  <input type="radio" id="utilisateur" name="statut" class="form-check-input" value="1" checked>
-                                  <label class="form-check-label" for="utilisateur">Utilisateur</label>
-                              </div>
-                              <div class="form-check">
-                                  <input type="radio" id="administrateur" name="statut" class="form-check-input" value="0">
-                                  <label class="form-check-label" for="administrateur">Administrateur</label>
-                              </div>
-                          </div>
+                            <div class="form-group">
+                                <div class="form-check">
+                                    <input type="radio" id="utilisateur" name="statut" class="form-check-input" value="1" checked>
+                                    <label class="form-check-label" for="utilisateur">Utilisateur</label>
+                                </div>
+                                <div class="form-check">
+                                    <input type="radio" id="administrateur" name="statut" class="form-check-input" value="0">
+                                    <label class="form-check-label" for="administrateur">Administrateur</label>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Code admin field -->
+                        <div id="code-admin-field">
+                            <div class="row my-3">
+                                <div class="form-group">
+                                    <label for="code_admin">Code administrateur :</label>
+                                    <input type="password" class="form-control" id="code_admin" name="code_admin" placeholder="Code administrateur">
+                                </div>
+                            </div>
                         </div>
 
                         <div class="w-100 text-center mt-4"><button type="submit">S'enregistrer</button></div>
@@ -164,6 +177,19 @@
     <!-- Scripts -->
     {% include("layout/scripts.html") %}
 
+    <script>
+        // Show/hide the code_admin field based on the selected radio button
+        const administrateurRadioButton = document.getElementById("administrateur");
+        const codeAdminField = document.getElementById("code-admin-field");
+
+        administrateurRadioButton.addEventListener("change", function() {
+            if (this.checked) {
+                codeAdminField.style.display = "block";
+            } else {
+                codeAdminField.style.display = "none";
+            }
+        });
+    </script>
 </body>
 
 </html>
