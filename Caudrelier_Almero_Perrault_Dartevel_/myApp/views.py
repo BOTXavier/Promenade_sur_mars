@@ -10,10 +10,16 @@ app.config.from_object('myApp.config')
 app.config['SECRET_KEY'] = config.SECRET_KEY
 app.config['SESSION_TYPE'] = 'filesystem'
 
+# <Routes vers les différentes pages du site> #
 @app.route("/")
 def index():
     params = function.messageInfo(None)
     return render_template("index.html",**params)
+
+
+@app.route("/map")
+def map():
+    return render_template("map.html",parameter=[round(18.444631884771205,8),round(77.45088815689088,8),0])
 
 
 @app.route("/elements")
@@ -36,35 +42,30 @@ def nosidebar():
     return render_template("no-sidebar.html")
 
 
-@app.route("/login")
-def login():
-    params = function.messageInfo(None)
-    return render_template("login.html",**params)
-
-@app.route("/admin")
-def admin():
-    return render_template("admin.html")
-
-
-@app.route("/logout")
-def logout():
-    session.clear()
-    session["infoBleu"] = "Vous êtes déconnecté. Merci de votre visite"
-    params = function.messageInfo(None)
-    return render_template('/index.html', **params)
-
 @app.route("/profil")
 def profil():
     return render_template("profil.html")
+
+
+@app.route("/Membres/HugoA")
+def HugoA():
+    return render_template("HugoA.html")
+
+
+@app.route("/Membres/Louis-Yann")
+def LouisYann():
+    return render_template("Louis-Yann.html")
+
+
+@app.route("/Membres/Xavier")
+def xavier():
+    return render_template("xavier.html")
 
 
 @app.route("/streetview")
 def streetview():
     return render_template("streetview.html", parameter=[811204,'https://mars.nasa.gov/mars2020-raw-images/pub/ods/surface/sol/00001/ids/edr/browse/fcam/FRR_0001_0667035458_958ECM_N0010052AUT_04096_00_2I3J01_1200.jpg'])
 
-@app.route("/Membres/HugoA")
-def HugoA():
-    return render_template("HugoA.html")
 
 @app.route("/Membres/Louis-Yann")
 def LouisYann():
@@ -172,6 +173,11 @@ def photo_derriere(id=None):
         return render_template("streetview.html", parameter=[id,url])
     return render_template("streetview.html", parameter=[id_n,url_n])
 
+# <Routes des différents outils utiles à la gestion de compte> #
+@app.route("/login")
+def login():
+    params = function.messageInfo(None)
+    return render_template("login.html",**params)
 
 # ajout d'un membre
 @app.route("/addMembre", methods=['POST'])
@@ -193,27 +199,106 @@ def addMembre():
 
 @app.route('/connecter', methods=['POST'])
 def connecter():
+    """
+    vérifie si les informations des champs sont cohérentes avec la bdd, et connecte l'utilisateur, le cas échéant
+    """
     login = request.form['login']
     motPasse = request.form['mdp']
     user = bdd.verifAuthData(login,motPasse)
     if user == None:
-        print("Les informations ne correspondent pas à notre base de donnée")
         session["infoRouge"]="Authentification refusée"
         return redirect("/login")
         
     else:
-        print("Bienvenue, jeune utilisateur")
         data = bdd.get_membreData(login,motPasse)[0]
         session["login"] = data["login"]
         session["nom"] = data["nom"]
         session["prenom"]= data["prenom"]
         session["idUser"] = data["idUser"]
         session["statut"] = data["statut"]
+        session['mdp'] = motPasse
         session["infoVert"]="Authentification réussie"
         return redirect("/")
 
 
+@app.route("/logout")
+def logout():
+    session.clear()
+    session["infoBleu"] = "Vous êtes déconnecté, merci de votre visite"
+    params = function.messageInfo(None)
+    return render_template("index.html",**params)
+
 #routes pour afficher le contenu des bases de données
+
+
+@app.route("/Photos_range", methods=['GET'])
+def Photos_range():
+    start = int(request.args.get('start'))
+    end = int(request.args.get('end'))
+    L = []
+    dictionnaires = bdd.get_photos()
+    for dictionnaire in dictionnaires :
+        L.append([dictionnaire['photo_id'], dictionnaire['sol'], dictionnaire['rover_id'], dictionnaire['camera_id'], dictionnaire['url']])
+    return render_template("Photos.html", liste_de_listes = L[start:end])
+
+
+
+@app.route("/delete")
+def delete():
+    """
+    Supprime un utilisateur de la base de donnée
+    """
+    idUser = session["idUser"]
+    bdd.del_membreData(idUser)
+    print(idUser)
+    # la suppression a bien fonctionné
+    if "errorDB" not in session:
+        session["infoVert"] = "L'utilisateur a bien été supprimé"
+        session.clear()
+    else:
+        session["infoRouge"] = "Problème suppression utilisateur"
+    return redirect("/login")
+
+
+@app.route('/updatepassword', methods=['POST'])
+def update_password():
+    idUser = session['idUser']  # ID de l'utilisateur
+    ancienmdp = request.form.get('mdp')
+    if ancienmdp == session['mdp']:
+
+        newvalue = request.form.get('newmdp')  # Nouvelle valeur du champ
+        newvalueConfirm = request.form.get('newmdpconfirm')  # Nouvelle valeur du champ
+
+        if newvalue == newvalueConfirm:
+            # Appel de la fonction pour mettre à jour la base de données
+            result = bdd.update_membreData("motPasse", idUser, newvalue)
+            
+            if result:
+                # La mise à jour a réussi
+                session["infoVert"] = 'Mot de passe mis à jour avec succès.'
+            else:
+                # La mise à jour a échoué
+                session["infoRouge"] =  'Échec de la mise à jour du mot de passe.'
+        else : 
+            session["infoRouge"] =  'Les mots de passe de sont pas identiques'
+    
+    else:
+        session["infoRouge"] =  'Mot de passe incorrect'
+    
+    params = function.messageInfo(None)
+    
+    return render_template("profil.html",**params)
+
+
+# <Routes des différents outils utiles à la gestion des photos et de la carte> #  
+
+@app.route("/localisationmap/<id>")
+def locmap(id=None):
+    latlongsol=bdd.latlongsol(int(id))
+    lat,long,sol=latlongsol[0],latlongsol[1],latlongsol[2]
+    return render_template("map.html",parameter=[lat,long,sol])
+
+# <Routes pour afficher le contenu des bases de données> #
 
 @app.route("/Cameras")
 def Cameras():
@@ -222,6 +307,7 @@ def Cameras():
     for dictionnaire in dictionnaires :
         L.append([dictionnaire['camera_id'], dictionnaire['name'], dictionnaire['rover_id'], dictionnaire['full_name'], dictionnaire['orientation_hori'], dictionnaire['orientation_verti']])
     return render_template("Cameras.html", liste_de_listes = L)
+
 
 @app.route("/Photos")
 def Photos():
@@ -240,6 +326,7 @@ def Rovers():
         L.append([dictionnaire['rover_id'], dictionnaire['name'], dictionnaire['landing_date'], dictionnaire['launch_date'], dictionnaire['status']])
     return render_template("Rovers.html", liste_de_listes = L)
 
+
 @app.route("/rovers-positions") #correspond à la table positions
 def rovers_positions():
     L = [] 
@@ -247,23 +334,3 @@ def rovers_positions():
     for dictionnaire in dictionnaires :
         L.append([dictionnaire['posi_id'], dictionnaire['rover_id'], dictionnaire['lat'], dictionnaire['longitude'], dictionnaire['cap']])
     return render_template("rovers-positions.html", liste_de_listes = L)
-
-
-@app.route("/delete")
-def delete():
-    idUser = session["idUser"]
-    bdd.del_membreData(idUser)
-    print(idUser)
-    # la suppression a bien fonctionné
-    if "errorDB" not in session:
-        session["infoVert"] = "L'utilisateur a bien été supprimé"
-        session.clear()
-    else:
-        session["infoRouge"] = "Problème suppression utilisateur"
-    return redirect("/login")
-
-@app.route("/updatepassword")
-def updatepassword():
-    motPasse = request.form['newmdp']
-    user = bdd.update_membreData(motPasse,session["idUser"],motPasse)
-    return redirect("/")

@@ -7,7 +7,7 @@
 <html>
 
 <head>
-    <title>No Sidebar - Landed by HTML5 UP</title>
+    <title>Profil - MarsViewing</title>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
     <link rel="stylesheet" href="/static/css/main.css" />
@@ -20,17 +20,46 @@
         <!-- Header -->
         {% include("layout/header.html") %}
         <!-- Main -->
-        
 
+        <div class="row">
+            <div class="col-6 col-12-xsmall">
+
+                <h4>Contact</h4>
+                <ol>
+                    <h5 style="line-height: 0.7; color: lightgray;">2 Impasse Marie-Curie</h5>
+                    <h5 style="line-height: 0.7; color: lightgray;">31200 Toulouse</h5>
+                    <h5 style="line-height: 0.7; color: lightgray;">06 67 10 34 31</h5>
+                    <h5 style="line-height: 0.7; color: lightgray;">hugoalmero@gmail.com</h5>
+                </ol>
+        
+        {% include("layout/info.html") %}
+        
         <section>
+            
             <form action="/updatepassword" method="post" role="form">
-                <h4 class="w-100 text-center"><i class="fas fa-user-circle fa-2x"></i>New Password</h4>
+
+                <h4 class="w-100 text-center"></i>Changer de mot de passe</h4>
+                <div class="row mt-3">
+                    <div class="col-lg-6 form-group">
+                        <label for="mdp"></label>
+                        <input type="text" name="mdp" class="form-control" id="mdp" placeholder="Votre mot de passe" required>
+                    </div>
+                </div>
+
                 <div class="row mt-3">
                     <div class="col-lg-6 form-group">
                         <label for="newmdp"></label>
-                        <input type="text" name="newpassword" class="form-control" id="newmdp" placeholder="New Password" required>
+                        <input type="text" name="newmdp" class="form-control" id="newmdp" placeholder="New Password" required>
                     </div>
                 </div>
+                
+                <div class="row mt-3">
+                    <div class="col-lg-6 form-group">
+                        <label for="newmdpconfirm"></label>
+                        <input type="text" name="newmdpconfirm" class="form-control" id="newmdpconfirm" placeholder="Confirm Password" required>
+                    </div>
+                </div>
+
 
                 <div class="w-100 text-center mt-4"><button type="submit">Enregistrer</button></div>
             </form>

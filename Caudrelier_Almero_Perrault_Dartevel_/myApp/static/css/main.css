@@ -4127,3 +4127,9 @@ input, select, textarea {
 display: inline-block; /* Pour que la largeur de la div s'adapte au contenu */
 padding: 5px 10px; /* Espacement interne des alertes */
 }
+
+.photo_xavier {
+	max-width: 40%;
+	height: auto;
+    object-fit: contain;
+  }
