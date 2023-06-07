@@ -224,7 +224,7 @@ def saveDatafromNASA(dico_photos,dico_rovers,dico_cameras,dico_posi):
     return 1
 
 def order_data(deb,fin):
-    dico_photos,dico_rovers,dico_cameras,dico_posi=bup.créer_dicos(deb,fin)
+    dico_photos,dico_rovers,dico_cameras,dico_posi=bup.créer_dicos_2(deb,fin)
     saveDatafromNASA(dico_photos,dico_rovers,dico_cameras,dico_posi)
 
 ##########################################################################
@@ -246,7 +246,7 @@ def bouton_droite(id):
         param=([camera_id])
         cursor.execute(sql,param)
         req=cursor.fetchall()[0]
-        orient_hori,orient_verti=req['orientation_hori'],req['orientation_verti']
+        orient_hori,orient_verti=req['orientation_hori'],req['orientation_verti'] #orientation de la caméra de la photo affichée
 
         sql="SELECT camera_id, orientation_hori FROM Cameras WHERE %s>orientation_hori"
         param=([orient_hori])

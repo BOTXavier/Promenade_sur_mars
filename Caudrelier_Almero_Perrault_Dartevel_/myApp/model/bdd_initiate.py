@@ -150,7 +150,34 @@ def data_base(n,dernier_sol,dico_photos,dico_rovers,dico_cameras):
 
     return [dico_photos,dico_rovers,dico_cameras]
 
-
+def data(deb,fin):
+    print('start')
+    dernier_sol=[deb,deb,deb,deb]
+    dico_photos,dico_rovers,dico_cameras={},{},{}
+    data={"photos":[0]}
+    compt_api_key=0
+    compt_req=0 # compteur pour limiter le nombre de requêtes à 1000 par heures
+    n=fin-deb
+    for rover in ROVER:
+        compt_rover=ROVER.index(rover)
+        sol=dernier_sol[compt_rover]-1
+        while len(data["photos"])!=0:
+            sol+=1
+            if sol==n+dernier_sol[compt_rover]:
+                break
+            print(sol)
+            if compt_req==1000 and compt_api_key<len(API_KEY)-1: # Si on a atteint le nombre de requête maximale pour la clé, on passe à la suivante
+                compt_api_key+=1
+                compt_req=0
+            elif compt_req==1000: # Si on a atteint le nombre maximal de requête pour toutes les clés, on attend 1h
+                time.sleep(86400)
+                compt_req=check_NASA(compt_req, rover, sol,compt_api_key,dico_photos,dico_rovers,dico_cameras)
+            else:
+                compt_req=check_NASA(compt_req, rover, sol,compt_api_key,dico_photos,dico_rovers,dico_cameras)
+    angles_mats=[[0,0,0,0],[0,0,0,0]] # On suppose les bras initialement orienté vers l'avant
+    angles_sherlocks=[[0,0,0,0],[0,0,0,0]]
+    orient_cams(dico_cameras,angles_mats,angles_sherlocks)
+    return [dico_photos,dico_rovers,dico_cameras]
 
 ##################################################################################
 
@@ -521,7 +548,6 @@ def réordonnencement_posi(fichier,rover_id,dernier_sol,dico_photos,dico_rovers,
             dico_posi[num_rover*(10**6)+posi_id]=posi
             dico_posi[num_rover*(10**6)+posi_id]['sol']=posi_id
             
-
     return dico_posi
 
 
@@ -538,3 +564,32 @@ def check_posi(dernier_sol,dico_photos,dico_rovers,dico_cameras,dico_posi):
 
         rover_id+=1
     return dico_posi
+
+def construire_posi(deb,fin,dico_rovers):
+    dico_posi={}
+    for lien in LIENS_POSI:
+        dico_posi_interm={}
+        with urllib.request.urlopen(lien) as fichier_posi:
+            data=json.load(fichier_posi)['features']
+        rover_id=deter_rover_id_id(LIENS_POSI.index(lien),dico_rovers)
+        for s in range(deb,fin+1):
+            posi_id=LIENS_POSI.index(lien)*(10**6)+s
+            dico_posi_interm[posi_id]={'rover_id':rover_id,'lat':0,'long':0,'cap':0,'sol':s}
+
+        for posi_id in dico_posi_interm:
+
+            sol=dico_posi_interm[posi_id]['sol']
+            compt=-1
+            sol_data=-1
+            while sol_data<sol:
+                compt+=1
+                sol_data=data[compt]['properties']['sol']
+            info_posi_id=data[compt]['properties']
+            #print(info_posi_id['lat'],info_posi_id['lon'],info_posi_id['yaw'])
+            dico_posi_interm[posi_id]['lat']=info_posi_id['lat']
+            dico_posi_interm[posi_id]['long']=info_posi_id['lon']
+            dico_posi_interm[posi_id]['cap']=info_posi_id['yaw']
+        for posi_id in dico_posi_interm:
+            dico_posi[posi_id]=dico_posi_interm[posi_id]
+    return dico_posi
+print(construire_posi(0,2,{8: {'name': 'Perseverance', 'landing_date': '2021-02-18', 'launch_date': '2020-07-30', 'status': 'active'}, 5: {'name': 'Curiosity', 'landing_date': '2012-08-06', 'launch_date': '2011-11-26', 'status': 'active'}, 7: {'name': 'Spirit', 'landing_date': '2004-01-04', 'launch_date': '2003-06-10', 'status': 'complete'}, 6: {'name': 'Opportunity', 'landing_date': '2004-01-25', 'launch_date': '2003-07-07', 'status': 'complete'}}))
