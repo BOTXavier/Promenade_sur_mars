@@ -196,7 +196,8 @@ def addMembre():
     login = request.form['login']
     motPasse = request.form['mdp']
     statut = request.form['statut']
-    lastId = bdd.add_membreData(nom, prenom, mail, login, motPasse, statut)
+    code_admin = request.form['code_admin']
+    lastId = bdd.add_membreData(nom, prenom, mail, login, motPasse, statut, code_admin)
     print(lastId)  # dernier id créé par la BDD
     if "errorDB" not in session:    
         session["infoVert"] = "Nouveau membre inséré"

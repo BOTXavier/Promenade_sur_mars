@@ -83,24 +83,32 @@ def del_membreData(idUser):
 
 #################################################################################
 #ajout d'un membre
-def add_membreData(nom, prenom, mail, login, motPasse, statut):
+def add_membreData(nom, prenom, mail, login, motPasse, statut, code_admin):
     cnx = connexion() 
     if cnx is None: 
         return None
     try:
         cursor = cnx.cursor()
+        
+        if statut == "0" and code_admin != "admin":
+            raise ValueError("Vous ne pouvez pas être administrateur")
+        
         sql = "INSERT INTO identification (nom, prenom, mail, login, motPasse, statut) VALUES (%s, %s, %s, %s, %s, %s);"
         param = (nom, prenom, mail, login, motPasse, statut)
         cursor.execute(sql, param)
         lastId = cursor.lastrowid  # récupère le dernier idUser, généré par le serveur sql
         cnx.commit()
         close_bd(cursor, cnx)
-        #session['successDB'] = "OK add_membreData"
     except mysql.connector.Error as err:
         lastId = None
-        session['errorDB'] = "Failed add membres data : {}".format(err)
-        print(session['errorDB']) #le problème s'affiche dans le terminal
+        session['errorDB'] = "Failed add membres data: {}".format(err)
+        print(session['errorDB']) # le problème s'affiche dans le terminal
+    except ValueError as e:
+        lastId = None
+        session['errorDB'] = str(e)
+        print(session['errorDB']) # le problème s'affiche dans le terminal
     return lastId
+
 
 #################################################################################
 #modification d'une donnée dans la table identification

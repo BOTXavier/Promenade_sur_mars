@@ -142,7 +142,8 @@ CREATE TABLE `identification` (
   `mail` varchar(100) NOT NULL,
   `login` varchar(100) NOT NULL,
   `motPasse` varchar(100) NOT NULL,
-  `statut` int(11) NOT NULL DEFAULT 1
+  `statut` int(11) NOT NULL DEFAULT 1,
+  'code_admin' varchar(50) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 
 --
