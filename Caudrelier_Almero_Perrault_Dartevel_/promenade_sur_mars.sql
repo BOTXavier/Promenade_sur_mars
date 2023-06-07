@@ -24,6 +24,19 @@ SET time_zone = "+00:00";
 -- --------------------------------------------------------
 
 --
+-- Structure de la table `rovers`
+--
+
+CREATE TABLE `rovers` (
+  `rover_id` int(11) NOT NULL,
+  `name` text NOT NULL,
+  `landing_date` date NOT NULL,
+  `launch_date` date NOT NULL,
+  `status` text NOT NULL,
+  PRIMARY KEY ('rover_id')
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+
+--
 -- Structure de la table `cameras`
 --
 
@@ -37,6 +50,36 @@ CREATE TABLE `cameras` (
   PRIMARY KEY (camera_id),
   FOREIGN KEY (rover_id) REFERENCES rovers(rover_id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+
+--
+-- Structure de la table `photos`
+--
+
+CREATE TABLE `photos` (
+  `photo_id` int(11) NOT NULL,
+  `sol` int(11) NOT NULL,
+  `rover_id` int(11) NOT NULL,
+  `camera_id` int(11) NOT NULL,
+  `url` text NOT NULL,
+  PRIMARY KEY ('photo_id'),
+  FOREIGN KEY ('rover_id') REFERENCES rovers('rover_id'),
+  FOREIGN KEY ('camera_id') REFERENCES cameras('camera_id')
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+
+-- Structure de la table `positions`
+--
+
+CREATE TABLE `positions` (
+  `posi_id` int(11) NOT NULL,
+  `rover_id` int(11) NOT NULL,
+  `lat` float NOT NULL,
+  `longitude` float NOT NULL,
+  `cap` float NOT NULL,
+  `sol` int(11) NOT NULL,
+  PRIMARY KEY ('posi_id'),
+  FOREIGN KEY ('rover_id') REFERENCES rovers('rover_id')
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
+
 
 --
 -- Déchargement des données de la table `cameras`
@@ -102,20 +145,6 @@ INSERT INTO `identification` (`idUser`, `nom`, `prenom`, `mail`, `login`, `motPa
 
 -- --------------------------------------------------------
 
---
--- Structure de la table `photos`
---
-
-CREATE TABLE `photos` (
-  `photo_id` int(11) NOT NULL,
-  `sol` int(11) NOT NULL,
-  `rover_id` int(11) NOT NULL,
-  `camera_id` int(11) NOT NULL,
-  `url` text NOT NULL,
-  PRIMARY KEY ('photo_id'),
-  FOREIGN KEY ('rover_id') REFERENCES rovers('rover_id'),
-  FOREIGN KEY ('camera_id') REFERENCES cameras('camera_id')
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 
 --
 -- Déchargement des données de la table `photos`
@@ -5662,19 +5691,7 @@ INSERT INTO `photos` (`photo_id`, `sol`, `rover_id`, `camera_id`, `url`) VALUES
 -- --------------------------------------------------------
 
 --
--- Structure de la table `positions`
---
 
-CREATE TABLE `positions` (
-  `posi_id` int(11) NOT NULL,
-  `rover_id` int(11) NOT NULL,
-  `lat` float NOT NULL,
-  `longitude` float NOT NULL,
-  `cap` float NOT NULL,
-  `sol` int(11) NOT NULL,
-  PRIMARY KEY ('posi_id'),
-  FOREIGN KEY ('rover_id') REFERENCES rovers('rover_id')
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 
 --
 -- Déchargement des données de la table `positions`
@@ -5692,18 +5709,7 @@ INSERT INTO `positions` (`posi_id`, `rover_id`, `lat`, `longitude`, `cap`, `sol`
 
 -- --------------------------------------------------------
 
---
--- Structure de la table `rovers`
---
 
-CREATE TABLE `rovers` (
-  `rover_id` int(11) NOT NULL,
-  `name` text NOT NULL,
-  `landing_date` date NOT NULL,
-  `launch_date` date NOT NULL,
-  `status` text NOT NULL,
-  PRIMARY KEY ('rover_id')
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 
 --
 -- Déchargement des données de la table `rovers`
