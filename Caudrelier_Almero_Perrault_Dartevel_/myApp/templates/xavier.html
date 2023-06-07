@@ -9,6 +9,23 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
     <link rel="stylesheet" href="/static/css/main.css" />
     <noscript><link rel="stylesheet" href="/static/css/noscript.css" /></noscript>
+    <style>
+        .container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+        }
+
+        .photo_xavier {
+            width: 200px;
+            margin: 0 auto;
+        }
+
+        .cv-container {
+            margin-top: 50px;
+        }
+    </style>
 </head>
 
 <body class="is-preload">
@@ -16,18 +33,19 @@
 
         <!-- Header -->
         {% include("layout/header.html") %}
-        <!-- Main -->  
+        <!-- Main -->
 
-        <h3>Xavier Dartevel</h3>
-        <div><iframe src="/static/CV/CV_DRT.pdf" height="500" width="800"></iframe></div>
-        
+        <div class="container">
+            <div class="photo_xavier">
+                Le webmaster en question :
+                <img src="/static/images/webmaster_xavier.jpg" class="photo_xavier">
+            </div>
+            <div class="cv-container">
+                <iframe src="/static/CV/CV_DRT.pdf" height="500" width="800"></iframe>
+                <div><a class="small button" href="/static/CV/CV_DRT.pdf">Ouvrez le document</a></div>
+            </div>
+        </div>
 
-        <div><a href="/static/CV/CV_DRT.pdf">Ouvrez le document</a></div>
-
-    <div class="photo_xavier">
-            Le webmaster en question :
-            <img src="/static/images/webmaster_xavier.jpg" class = "photo_xavier">
-    </div>
         <!-- Footer -->
         {% include("layout/footer.html") %}
 

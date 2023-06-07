@@ -1,5 +1,4 @@
 <!DOCTYPE HTML>
-
 <html>
 
 <head>
@@ -9,6 +8,20 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
     <link rel="stylesheet" href="/static/css/main.css" />
     <noscript><link rel="stylesheet" href="/static/css/noscript.css" /></noscript>
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+        .cv-container {
+            text-align: center;
+        }
+        .cv-container iframe {
+            margin-bottom: 20px;
+        }
+    </style>
 </head>
 
 <body class="is-preload">
@@ -16,13 +29,12 @@
 
         <!-- Header -->
         {% include("layout/header.html") %}
-        <!-- Main -->  
-
-        <h3>Louis-Yann CAUDRELIER</h3>
-        <div><iframe src="/static/CV/LYCV.pdf" height="500" width="800"></iframe></div>
         
-
-        <div><a href="/static/CV/LYCV.pdf">Ouvrez le document</a></div>
+        <!-- Main -->
+        <div class="cv-container">
+            <iframe src="/static/CV/LYCV.pdf" height="500" width="800"></iframe>
+            <div><a class="small button" href="/static/CV/LYCV.pdf">Ouvrez le document</a></div>
+        </div>
         
         <!-- Footer -->
         {% include("layout/footer.html") %}

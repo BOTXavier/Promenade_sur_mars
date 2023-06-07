@@ -66,19 +66,6 @@ def xavier():
 def streetview():
     return render_template("streetview.html", parameter=[811204,'https://mars.nasa.gov/mars2020-raw-images/pub/ods/surface/sol/00001/ids/edr/browse/fcam/FRR_0001_0667035458_958ECM_N0010052AUT_04096_00_2I3J01_1200.jpg'])
 
-
-@app.route("/Membres/Louis-Yann")
-def LouisYann():
-    return render_template("Louis-Yann.html")
-
-@app.route("/Membres/Xavier")
-def xavier():
-    return render_template("xavier.html")
-
-@app.route("/map")
-def map():
-    return render_template("map.html",parameter=[round(18.444631884771205,8),round(77.45088815689088,8)])
-
 @app.route("/localisationmap/<id>")
 def locmap(id=None):
     latlongsol=bdd.latlongsol(int(id))
@@ -94,10 +81,15 @@ def locstreet(lat=None,long=None):
         return render_template("map.html",parameter=[lat,long])
     return render_template("streetview.html",parameter=[id,url])
 
+@app.route("/admin")
+def admin():
+    return render_template("admin.html")
 
-@app.route("/data")
+@app.route("/data", methods=['GET'])
 def data():
-    bdd.order_data()
+    deb = int(request.args.get('deb'))
+    fin = int(request.args.get('fin'))
+    bdd.order_data(deb,fin)
     print('succès des données')
     return render_template("streetview.html",parameter=[811204,'https://mars.nasa.gov/mars2020-raw-images/pub/ods/surface/sol/00001/ids/edr/browse/fcam/FRR_0001_0667035458_958ECM_N0010052AUT_04096_00_2I3J01_1200.jpg'])
 
@@ -291,12 +283,6 @@ def update_password():
 
 
 # <Routes des différents outils utiles à la gestion des photos et de la carte> #  
-
-@app.route("/localisationmap/<id>")
-def locmap(id=None):
-    latlongsol=bdd.latlongsol(int(id))
-    lat,long,sol=latlongsol[0],latlongsol[1],latlongsol[2]
-    return render_template("map.html",parameter=[lat,long,sol])
 
 # <Routes pour afficher le contenu des bases de données> #
 

@@ -223,8 +223,8 @@ def saveDatafromNASA(dico_photos,dico_rovers,dico_cameras,dico_posi):
         print(session['errorDB']) #le problème s'affiche dans le terminal
     return 1
 
-def order_data():
-    dico_photos,dico_rovers,dico_cameras,dico_posi=bup.créer_dicos()
+def order_data(deb,fin):
+    dico_photos,dico_rovers,dico_cameras,dico_posi=bup.créer_dicos(deb,fin)
     saveDatafromNASA(dico_photos,dico_rovers,dico_cameras,dico_posi)
 
 ##########################################################################
@@ -248,8 +248,8 @@ def bouton_droite(id):
         req=cursor.fetchall()[0]
         orient_hori,orient_verti=req['orientation_hori'],req['orientation_verti']
 
-        sql="SELECT camera_id, orientation_hori FROM Cameras WHERE %s>orientation_hori>(%s-180)%360 AND %s+10>orientation_verti>%s-10"
-        param=([orient_hori,orient_hori,orient_verti,orient_verti])
+        sql="SELECT camera_id, orientation_hori FROM Cameras WHERE %s>orientation_hori"
+        param=([orient_hori])
         cursor.execute(sql,param)
         cameras_droite=cursor.fetchall()
         cameras_droite.sort(key = lambda cam: cam['orientation_hori'])
@@ -287,8 +287,8 @@ def bouton_gauche(id):
         req=cursor.fetchall()[0]
         orient_hori,orient_verti=req['orientation_hori'],req['orientation_verti']
 
-        sql="SELECT camera_id, orientation_hori FROM Cameras WHERE %s<orientation_hori<(%s-180)%360 AND %s+10>orientation_verti>%s-10"
-        param=([orient_hori,orient_hori,orient_verti,orient_verti])
+        sql="SELECT camera_id, orientation_hori FROM Cameras WHERE %s<orientation_hori"
+        param=([orient_hori])
         cursor.execute(sql,param)
         cameras_droite=cursor.fetchall()
         cameras_droite.sort(key = lambda cam: cam['orientation_hori'])
@@ -326,8 +326,8 @@ def bouton_haut(id):
         req=cursor.fetchall()[0]
         orient_hori,orient_verti=req['orientation_hori'],req['orientation_verti']
 
-        sql="SELECT camera_id, orientation_hori FROM Cameras WHERE (%s-180)%360>orientation_verti>%s AND %s+10>orientation_hori>%s-10"
-        param=([orient_verti,orient_verti,orient_hori,orient_hori])
+        sql="SELECT camera_id, orientation_hori FROM Cameras WHERE orientation_verti<%s"
+        param=([orient_verti])
         cursor.execute(sql,param)
         cameras_droite=cursor.fetchall()
         cameras_droite.sort(key = lambda cam: cam['orientation_hori'])
@@ -365,8 +365,8 @@ def bouton_bas(id):
         req=cursor.fetchall()[0]
         orient_hori,orient_verti=req['orientation_hori'],req['orientation_verti']
 
-        sql="SELECT camera_id, orientation_hori FROM Cameras  WHERE (%s-180)%360<orientation_verti<%s AND %s+10>orientation_hori>%s-10"
-        param=([orient_verti,orient_verti,orient_hori,orient_hori])
+        sql="SELECT camera_id, orientation_hori FROM Cameras  WHERE orientation_verti>%s"
+        param=([orient_verti])
         cursor.execute(sql,param)
         cameras_droite=cursor.fetchall()
         cameras_droite.sort(key = lambda cam: cam['orientation_hori'])
@@ -412,8 +412,8 @@ def bouton_avant(id):
         data=cursor.fetchall()[0]
         lat,long,cap=data['lat'], data['long'], data['cap']
 
-        sql = "SELECT photo_id,url FROM Photos WHERE rover_id=%s AND camera_id=%s AND posi_id<%s AND (lat!=%s OR long!=%s OR cap!=%s)"
-        param=([rover_id,camera_id,posi_id,lat,long,cap])
+        sql = "SELECT photo_id,url FROM Photos WHERE rover_id=%s AND camera_id=%s AND posi_id<%s"
+        param=([rover_id,camera_id,posi_id])
         cursor.execute(sql,param)
         req = cursor.fetchall()
         id_avant,url_avant = req[0]['photo_id'], req[1]['url']
@@ -452,8 +452,8 @@ def bouton_apres(id):
         data=cursor.fetchall()[0]
         lat,long,cap=data['lat'], data['long'], data['cap']
 
-        sql = "SELECT photo_id,url FROM Photos WHERE rover_id=%s AND camera_id=%s AND posi_id>%s AND (lat!=%s OR long!=%s OR cap!=%s)"
-        param=([rover_id,camera_id,posi_id,lat,long,cap])
+        sql = "SELECT photo_id,url FROM Photos WHERE rover_id=%s AND camera_id=%s AND posi_id>%s"
+        param=([rover_id,camera_id,posi_id])
         cursor.execute(sql,param)
         req = cursor.fetchall()
         id_apres,url_apres = req[0]['photo_id'], req[1]['url']

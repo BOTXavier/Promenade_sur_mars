@@ -21,12 +21,18 @@
         <!-- Header -->
         {% include("layout/header.html") %}
         <!-- Main -->
-        <div style="text-align: center;">
-        <input class="input-box" type="number" style="color: (0, 0, 0)">
-        <input class="input-box" type="number" style="color: (0, 0, 0)">
-        </div>
 
-        <a href="/data/para1,para2" class="button small">>Charger les données</a>
+        <form action="/data" method="GET">
+              
+                <div style="text-align: center;">
+                    <input class="input-box" type="number" name="deb" id="deb" placeholder="début" required=""/>
+                    <input class="input-box" type="number" name="fin" id="fin" placeholder="fin" required=""/>
+                </div>
+
+                <input type="submit" value="Charger les données"> 
+
+
+          </form>
 
         <!-- Footer -->
         {% include("layout/footer.html") %}

@@ -28,15 +28,16 @@ def deter_dernier_sol(dico_photos,dico_rovers):
         dernier_sol.append(sol+1)
     return dernier_sol
 
-def créer_dicos():
-    N=2
-    dicos123=ini.data_base(N,[0,0,0,0],{},{},{})
+def créer_dicos(deb,fin):
+    N=fin-deb
+    dicos123=ini.data_base(N,[deb,deb,deb,deb],{},{},{})
     dico_photos,dico_rovers,dico_cameras=dicos123[0],dicos123[1],dicos123[2]
 
     DERNIER_SOL=deter_dernier_sol(dico_photos,dico_rovers)
+    print(DERNIER_SOL)
     ini.data_base(N,DERNIER_SOL,dico_photos,dico_rovers,dico_cameras)
 
-    dico_posi=ini.check_posi([0,0,0,0],dico_photos,dico_rovers,dico_cameras,{})
+    dico_posi=ini.check_posi([deb,deb,deb,deb],dico_photos,dico_rovers,dico_cameras,{})
     return (dico_photos,dico_rovers,dico_cameras,dico_posi)
 
 #dico_photos,dico_rovers,dico_cameras,dico_posi=créer_dicos()
