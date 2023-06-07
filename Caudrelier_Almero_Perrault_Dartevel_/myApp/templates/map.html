@@ -1,83 +1,69 @@
 <!DOCTYPE HTML>
-
-
-
 <html>
 
-
-
 <head>
-
     <title>Map Mars - MarsViewing</title>
-
     <link rel="shortcut icon" href="/static/images/favicon.ico" type="image/x-icon" />
-
     <meta charset="utf-8" />
-
     <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
-
     <link rel="stylesheet" href="/static/css/main.css" />
+    <noscript>
+        <link rel="stylesheet" href="/static/css/noscript.css" />
+    </noscript>
+    <style>
+        body,
+        html {
+            height: 100%;
+            margin: 0;
+            padding: 0;
+        }
 
-    <noscript><link rel="stylesheet" href="/static/css/noscript.css" /></noscript>
+        .content-wrapper {
+            height: 100%;
+            width: 50%;
+            margin: 0 auto;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
 
+        .button {
+            margin: 10px;
+        }
 
-        <script>
-
-            function switchWayPoint(wpLat, wpLong){
-
-                document.getElementById("marsMap").src=`https://mars.nasa.gov/maps/location/?mission=M20&mapLon=${wpLong}&mapLat=${wpLat}&mapZoom=17&selected=Rover%20Waypoints,${wpLat},${wpLong}`;
-
-            }
-
-        </script>
-
+        #marsMap {
+            width: 800px;
+            height: 400px;
+            border: none;
+        }
+    </style>
+    <script>
+        function switchWayPoint(wpLat, wpLong) {
+            document.getElementById("marsMap").src = `https://mars.nasa.gov/maps/location/?mission=M20&mapLon=${wpLong}&mapLat=${wpLat}&mapZoom=17&selected=Rover%20Waypoints,${wpLat},${wpLong}`;
+        }
+    </script>
 </head>
 
-
-
 <body class="is-preload">
-
     <div id="page-wrapper">
 
-
-
         <!-- Header -->
-
         {% include("layout/header.html") %}
 
-        <!-- Main -->  
-
-
-
-        <h3>Louis-Yann CAUDRELIER</h3>
-
-
-
-        <button onclick='switchWayPoint("{{parameter[0]}}","{{parameter[1]}}")'>Oueston</button>     
-
-        <iframe id="marsMap" src='https://mars.nasa.gov/maps/location/?mission=M20&site=NOW&mapLon=77.3694133758545&mapLat=18.479955026560873&mapZoom=16&globeLon=77.42958068847659&globeLat=18.463327291058505&globeZoom=11&globeCamera=0,-9765.625,0,0,1,0&panePercents=0,100,0&on=Rover Position$1.00,Rover Waypoints$1.00,Rover Drive Path$1.00,Sampling Locations$1.00,Surface View$1.00,Helicopter Position$1.00,Flight Test Zone$1.00,Labels$1.00,Color Basemap$1.00,Grayscale Basemap$1.00,Northeast Syrtis Base Map$1.00&selected=Rover Waypoints,18.47906148,77.36950725&viewerImg=0&viewerLoc=0.10000,0.00000,0.00000,75' id="toto" width='800' height='400' scrolling='no' frameborder='0' allowfullscreen></iframe>
-
-
-        <a href="/localisationstreet/{{parameter[0]}},{{parameter[1]}}" class="button small">posi</a>
+        <!-- Main -->
+        <div class="content-wrapper">
+            <button class="button small" onclick='switchWayPoint("{{parameter[0]}}","{{parameter[1]}}")'>Où-est-on</button>
+            <iframe id="marsMap" src='https://mars.nasa.gov/maps/location/?mission=M20&site=NOW&mapLon=77.3694133758545&mapLat=18.479955026560873&mapZoom=16&globeLon=77.42958068847659&globeLat=18.463327291058505&globeZoom=11&globeCamera=0,-9765.625,0,0,1,0&panePercents=0,100,0&on=Rover Position$1.00,Rover Waypoints$1.00,Rover Drive Path$1.00,Sampling Locations$1.00,Surface View$1.00,Helicopter Position$1.00,Flight Test Zone$1.00,Labels$1.00,Color Basemap$1.00,Grayscale Basemap$1.00,Northeast Syrtis Base Map$1.00&selected=Rover Waypoints,18.47906148,77.36950725&viewerImg=0&viewerLoc=0.10000,0.00000,0.00000,75' id="toto" width='800' height='400' scrolling='no' frameborder='0' allowfullscreen></iframe>
+            <a href="/localisationstreet/{{parameter[0]}},{{parameter[1]}}" class="button small">Voir sur la carte</a>
+        </div>
 
         <!-- Footer -->
-
         {% include("layout/footer.html") %}
-
-
-
     </div>
 
-
-
     <!-- Scripts -->
-
     {% include("layout/scripts.html") %}
-
-
-
 </body>
-
-
 
 </html>
