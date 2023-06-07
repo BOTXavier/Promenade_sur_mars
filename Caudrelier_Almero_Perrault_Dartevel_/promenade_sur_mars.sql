@@ -80,6 +80,15 @@ CREATE TABLE `positions` (
   FOREIGN KEY (rover_id) REFERENCES rovers(rover_id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_general_ci;
 
+--
+-- Déchargement des données de la table `rovers`
+--
+
+INSERT INTO `rovers` (`rover_id`, `name`, `landing_date`, `launch_date`, `status`) VALUES
+(8, 'Perseverance', '2021-02-18', '2020-07-30', 'active'),
+(5, 'Curiosity', '2012-08-06', '2011-11-26', 'active'),
+(7, 'Spirit', '2004-01-04', '2003-06-10', 'complete'),
+(6, 'Opportunity', '2004-01-25', '2003-07-07', 'complete');
 
 --
 -- Déchargement des données de la table `cameras`
@@ -5711,15 +5720,7 @@ INSERT INTO `positions` (`posi_id`, `rover_id`, `lat`, `longitude`, `cap`, `sol`
 
 
 
---
--- Déchargement des données de la table `rovers`
---
 
-INSERT INTO `rovers` (`rover_id`, `name`, `landing_date`, `launch_date`, `status`) VALUES
-(8, 'Perseverance', '2021-02-18', '2020-07-30', 'active'),
-(5, 'Curiosity', '2012-08-06', '2011-11-26', 'active'),
-(7, 'Spirit', '2004-01-04', '2003-06-10', 'complete'),
-(6, 'Opportunity', '2004-01-25', '2003-07-07', 'complete');
 
 --
 -- Index pour les tables déchargées
