@@ -25,6 +25,7 @@
 
   </li>
 
+  {% if session['login'] %}
   <li>
     <a href="#">Bases de Données</a>
     <ul>
@@ -32,10 +33,11 @@
       <li><a href="/Photos">Photos</a></li>
       <li><a href="/Rovers">Rovers</a></li>
       <li><a href="/rovers-positions">Positions</a></li>
-      <li><a href="/visubdd">Visualisation de la base de données</a></li>
-      
+      <li><a href="/visubdd">Visualisation BDD</a></li>
     </ul>
+  {% else %}
   </li>
+  {% endif %}
 
   {% if session['login'] %}
   <li>
